@@ -3,65 +3,793 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>学校课件 · 数学 — Simon 学习中心</title>
+<title>数学专项 · 卷一 0580/21 W19 — Simon 学习中心</title>
 <style>
 :root{
   --bg:#F5F5F7; --card:#FFFFFF; --ink:#1D1D1F; --sub:#6E6E73;
-  --hair:#D2D2D7; --blue:#0071E3; --amber:#C56A00;
+  --hair:#D2D2D7; --blue:#0071E3; --green:#30D158; --red:#FF3B30;
+  --amber:#C56A00; --ambbg:#FFF4E3; --soft:#FAFAFC; --track:#E8E8ED;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{
-  background:var(--bg); color:var(--ink);
+body{background:var(--bg);color:var(--ink);
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-  font-size:17px; line-height:1.55; -webkit-font-smoothing:antialiased;
-}
-.wrap{max-width:920px;margin:0 auto;padding:0 22px}
-.top{border-bottom:1px solid var(--hair);background:rgba(245,245,247,.85);backdrop-filter:saturate(180%) blur(20px);position:sticky;top:0}
-.top-in{display:flex;align-items:baseline;justify-content:space-between;padding:14px 0}
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+.top{border-bottom:1px solid var(--hair);background:rgba(245,245,247,.85);backdrop-filter:saturate(180%) blur(20px);position:sticky;top:0;z-index:20}
+.top-in{display:flex;align-items:baseline;justify-content:space-between;padding:13px 0}
 .back{font-size:15px;color:var(--blue);text-decoration:none}
 .back::before{content:"‹ "}
 .brand{font-size:13px;color:var(--sub)}
-.hero{padding:56px 0 28px}
+.hero{padding:44px 0 20px}
 .eyebrow{font-size:13px;font-weight:600;color:var(--sub);letter-spacing:.02em;margin-bottom:8px}
-.hero h1{font-size:clamp(28px,5vw,42px);font-weight:600;letter-spacing:-.02em}
-.chip{display:inline-block;font-size:12px;font-weight:600;color:var(--amber);background:#FFF4E3;border-radius:99px;padding:3px 10px;margin-left:10px;vertical-align:6px}
-.card{
-  background:var(--card);border-radius:20px;padding:32px;margin-bottom:18px;
-  box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 28px rgba(0,0,0,.05);
-}
-.card h2{font-size:20px;font-weight:600;letter-spacing:-.01em;margin-bottom:10px}
-.card p{color:var(--sub);font-size:15px}
-.card p+p{margin-top:8px}
-.go{display:inline-block;margin-top:16px;font-size:15px;font-weight:500;color:var(--blue);text-decoration:none}
-.go::after{content:" ›"}
-.foot{border-top:1px solid var(--hair);margin-top:56px;padding:22px 0 44px;font-size:13px;color:var(--sub)}
+.hero h1{font-size:clamp(26px,5vw,38px);font-weight:600;letter-spacing:-.02em}
+.hero p{margin-top:8px;font-size:16px;color:var(--sub)}
+/* 卷页签 */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 14px}
+.tab{font-size:14px;font-weight:500;border:1px solid var(--hair);background:var(--card);border-radius:99px;padding:7px 16px;cursor:pointer;color:var(--ink)}
+.tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tab.lock{color:var(--sub);cursor:not-allowed}
+.tab.lock::after{content:" · 整理中";font-size:12px}
+/* 仪表盘 */
+.dash{background:var(--card);border-radius:20px;padding:20px 24px;margin-bottom:16px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 28px rgba(0,0,0,.05)}
+.dash-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.dash-nums{display:flex;gap:22px;flex-wrap:wrap}
+.dn b{font-size:22px;font-weight:600;letter-spacing:-.02em}
+.dn span{display:block;font-size:12px;color:var(--sub);margin-top:1px}
+.bar{height:6px;background:var(--track);border-radius:99px;margin-top:14px;overflow:hidden}
+.bar i{display:block;height:100%;width:0%;background:var(--green);border-radius:99px;transition:width .6s cubic-bezier(.2,.6,.2,1)}
+.btn{font:inherit;font-size:14px;font-weight:500;border:0;border-radius:99px;padding:8px 18px;cursor:pointer}
+.btn:hover{opacity:.85}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-ghost{background:var(--track);color:var(--ink)}
+.btn-mini{font-size:13px;padding:6px 14px}
+/* 复习队列 */
+.review{background:var(--ambbg);border-radius:16px;padding:14px 20px;margin-bottom:22px;font-size:14px;display:none}
+.review b{color:var(--amber)}
+.rv-chip{display:inline-block;background:#fff;border:1px solid #EAD9BF;border-radius:99px;padding:3px 12px;margin:4px 6px 0 0;font-size:13px;cursor:pointer}
+/* 题卡 */
+.q{background:var(--card);border-radius:20px;padding:26px 28px;margin-bottom:18px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 28px rgba(0,0,0,.05)}
+.q-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.q-num{font-size:15px;font-weight:700;background:var(--ink);color:#fff;border-radius:10px;padding:3px 11px}
+.chip{font-size:12px;font-weight:600;border-radius:99px;padding:3px 11px;background:var(--track);color:var(--sub)}
+.chip.old{background:#F2E8FF;color:#6C3FC5}
+.marks{font-size:12px;color:var(--sub);margin-left:auto}
+.st{font-size:12px;font-weight:600;border-radius:99px;padding:3px 11px}
+.st0{background:var(--track);color:var(--sub)}
+.st1{background:var(--ambbg);color:var(--amber)}
+.st2{background:#E8F2FF;color:var(--blue)}
+.st3{background:#E4F9EA;color:#1D8A43}
+.stem{font-size:16.5px;line-height:1.65}
+.stem sup{font-size:.72em}
+.gloss{margin-top:8px;font-size:13px;color:var(--sub)}
+.fig{margin:16px 0 6px;text-align:center}
+.fig svg{max-width:100%;height:auto}
+.figcap{font-size:12px;color:var(--sub);text-align:center;margin-top:4px}
+/* 作答区 */
+.ans{margin-top:16px}
+.part-label{font-size:14px;font-weight:600;margin:14px 0 8px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.opts{grid-template-columns:1fr}}
+.opt{font:inherit;text-align:left;font-size:15px;border:1.5px solid var(--hair);background:var(--soft);border-radius:14px;padding:11px 14px;cursor:pointer;transition:border-color .15s}
+.opt:hover{border-color:var(--blue)}
+.opt.sel-ok{border-color:var(--green);background:#F0FBF3}
+.opt.sel-no{border-color:var(--red);background:#FFF5F5}
+.opt.dim{opacity:.45;pointer-events:none}
+.opt b{font-weight:700;margin-right:6px}
+.inrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:6px}
+.inp{font:inherit;font-size:15px;border:1.5px solid var(--hair);border-radius:12px;padding:9px 13px;width:220px;background:var(--soft);outline:none}
+.inp:focus{border-color:var(--blue)}
+.inp.w-s{width:110px}.inp.w-xs{width:74px}
+.unit{font-size:14px;color:var(--sub)}
+select.inp{width:auto;cursor:pointer}
+.fb{margin-top:10px;font-size:14px;font-weight:500;display:none}
+.fb.ok{display:block;color:#1D8A43}
+.fb.no{display:block;color:var(--red)}
+.fb .why{display:block;font-weight:400;color:var(--sub);margin-top:3px}
+/* 讲解 */
+.exp{margin-top:18px;border-top:1px solid var(--hair);padding-top:16px;display:none}
+.exp.open{display:block}
+.exp h4{font-size:14px;font-weight:600;margin-bottom:10px}
+.step{background:var(--soft);border-radius:12px;padding:11px 15px;margin-bottom:8px;font-size:14.5px;display:none}
+.step.show{display:block;animation:rise .4s cubic-bezier(.2,.6,.2,1)}
+.step b{color:var(--blue)}
+.final{background:#E4F9EA;border-radius:12px;padding:11px 15px;font-size:14.5px;font-weight:600;color:#1D8A43;display:none;margin-bottom:8px}
+.final.show{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* 思路卡 */
+.card-m{border-left:3px solid var(--blue);background:var(--soft);border-radius:0 12px 12px 0;padding:12px 16px;margin-top:10px;font-size:14px;display:none}
+.card-m.show{display:block}
+.card-m b{display:block;margin-bottom:4px}
+.card-m .mo{color:var(--sub)}
+/* 变式 */
+.vt{margin-top:16px;border-top:1px dashed var(--hair);padding-top:14px}
+.vt-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.vt-head h4{font-size:14px;font-weight:600}
+.vt-tag{font-size:12px;color:var(--sub)}
+.vt-body{margin-top:10px;display:none}
+.vt-stem{font-size:15px;background:var(--soft);border-radius:12px;padding:12px 15px;margin-bottom:10px}
+.anim-box{margin:10px 0}
+.play{font-size:13px}
+.foot{border-top:1px solid var(--hair);margin-top:44px;padding:20px 0 44px;font-size:13px;color:var(--sub)}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:14px;border-radius:99px;padding:9px 20px;opacity:0;pointer-events:none;transition:opacity .3s;z-index:50}
+.toast.show{opacity:1}
+@media(prefers-reduced-motion:reduce){.step.show{animation:none}.bar i{transition:none}}
 </style>
 </head>
 <body>
 <header class="top"><div class="wrap top-in">
   <a class="back" href="../">学习中心</a>
-  <span class="brand">学校课件</span>
+  <span class="brand">学校课件 · 数学专项</span>
 </div></header>
 
 <main class="wrap">
   <section class="hero">
-    <div class="eyebrow">学校课件 · 与校内进度同步</div>
-    <h1>数学<span class="chip">整理中</span></h1>
+    <div class="eyebrow">IGCSE 0580 Mathematics · Extended · 真题四层精练</div>
+    <h1>数学专项</h1>
+    <p>原题 → 作答 → 分步讲解 → 变式重练。变式连对两次，才算真正掌握。</p>
   </section>
 
-  <div class="card">
-    <h2>这一区在准备什么</h2>
-    <p>这里将放置与爱莎荔湾校内进度同步的数学课件与练习——按学校教材的章节顺序编排，作为课内学习的巩固与延伸。</p>
-    <p>资料整理完成后会直接在这个网址上线，收藏本页即可，不需要换链接。</p>
+  <div class="tabs">
+    <button class="tab on">卷一 · 0580/21 · W19 P2</button>
+    <button class="tab lock" onclick="toast('卷二整理中，完成卷一后上线')">卷二 · W20 P2</button>
+    <button class="tab lock" onclick="toast('卷三整理中')">卷三 · W19 P4</button>
+    <button class="tab lock" onclick="toast('卷四整理中')">卷四 · W20 P4</button>
   </div>
 
-  <div class="card">
-    <h2>在此之前，先做这件事</h2>
-    <p>暑期自学系统里的数学诊断已经就绪，先完成它——诊断结果会决定这一区上线后的练习侧重。</p>
-    <a class="go" href="../study/">去做数学诊断</a>
+  <div class="dash">
+    <div class="dash-top">
+      <div class="dash-nums">
+        <div class="dn"><b id="dAns">0<span style="font-size:14px;color:var(--sub)">/31</span></b><span>已作答</span></div>
+        <div class="dn"><b id="dRight">0</b><span>当前全对</span></div>
+        <div class="dn"><b id="dMast">0<span style="font-size:14px;color:var(--sub)">/26</span></b><span>已掌握</span></div>
+        <div class="dn"><b id="dRev">0</b><span>待复习</span></div>
+      </div>
+      <button class="btn btn-ghost btn-mini" onclick="exportReport()">导出学习报告</button>
+    </div>
+    <div class="bar"><i id="dBar"></i></div>
   </div>
+
+  <div class="review" id="rvBox"><b>待复习：</b>做错过的题在这里排队，用变式把它们清掉。<div id="rvChips"></div></div>
+
+  <div id="qwrap"></div>
 </main>
 
-<footer class="foot"><div class="wrap">Simon 学习门户 · 2026 夏 · v1</div></footer>
+<footer class="foot"><div class="wrap">数学专项 v1 · 卷一 0580/21/O/N/19 · 70 分 · Simon 学习门户 2026 夏<br>本卷答案与讲解由 Claude 独立求解并经程序复核；如与官方评分标准有出入，以官方为准。</div></footer>
+<div class="toast" id="toast"></div>
+<script>
+'use strict';
+/* ================= 工具 ================= */
+function $(s,r){return (r||document).querySelector(s)}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e}
+function toast(m){var t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove('show')},2200)}
+function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t}return a}
+function ri(a,b){return a+Math.floor(Math.random()*(b-a+1))}
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function fmtN(x){var r=Math.round(x*1e6)/1e6;return String(r)}
+/* 数字解析：容忍 $ 逗号 空格 ×10^ e记法 分数 */
+function parseNum(s){
+  if(s==null)return NaN;
+  s=String(s).toLowerCase().replace(/[,$\s]/g,'').replace(/×/g,'x').replace(/−/g,'-');
+  s=s.replace(/(x|\*)10\^(-?\d+)/g,'e$2').replace(/10\^(-?\d+)/g,'1e$1');
+  if(/^-?\d+\/\d+$/.test(s)){var p=s.split('/');return parseInt(p[0],10)/parseInt(p[1],10)}
+  var v=Number(s);return isFinite(v)?v:NaN;
+}
+function numEq(user,ans,tol){var u=parseNum(user);if(!isFinite(u))return false;return Math.abs(u-ans)<=(tol!=null?tol:Math.max(1e-9,Math.abs(ans)*1e-9))}
+/* 分数：要求最简 */
+function fracEq(user,n,d,needSimplest){
+  var s=String(user).replace(/[\s]/g,'').replace(/−/g,'-');
+  var m=s.match(/^(-?\d+)\/(\d+)$/);
+  if(!m){ if(!needSimplest&&isFinite(parseNum(s)))return Math.abs(parseNum(s)-n/d)<1e-9; return false}
+  var a=parseInt(m[1],10),b=parseInt(m[2],10);
+  if(b===0)return false;
+  if(a*d!==b*n)return false;
+  return needSimplest?gcd(a,b)===1:true;
+}
+/* 表达式数值等价判定：白名单 + 隐式乘法 + 抽样比较 */
+function evalExpr(s,vars,vals){
+  s=String(s).toLowerCase().replace(/\s+/g,'').replace(/−/g,'-').replace(/×/g,'*').replace(/÷/g,'/').replace(/π/g,'pi');
+  if(!/^[0-9a-z+\-*/^().]*$/.test(s))return NaN;
+  if(!s)return NaN;
+  s=s.replace(/(\d)([a-z(])/g,'$1*$2').replace(/([a-z)])(\()/g,'$1*$2').replace(/(\))([a-z0-9])/g,'$1*$2');
+  s=s.replace(/([a-z])([a-z])/g,'$1*$2').replace(/([a-z])(\d)/g,'$1*$2');
+  s=s.replace(/p\*i/g,'pi');
+  s=s.replace(/\^/g,'**');
+  try{
+    var f=new Function(vars.concat('pi').join(','),'return ('+s+')');
+    var out=f.apply(null,vals.concat(Math.PI));
+    return (typeof out==='number'&&isFinite(out))?out:NaN;
+  }catch(e){return NaN}
+}
+function exprEq(user,target,vars){
+  for(var k=0;k<3;k++){
+    var vals=vars.map(function(){return 1.3+Math.random()*2.4});
+    var u=evalExpr(user,vars,vals), t=evalExpr(target,vars,vals);
+    if(!isFinite(u)||!isFinite(t))return false;
+    if(Math.abs(u-t)>1e-6*Math.max(1,Math.abs(t)))return false;
+  }
+  return true;
+}
+function parseSet(s){
+  s=String(s).replace(/[{}\s]/g,'');
+  if(s==='')return [];
+  var a=s.split(/[,，、]/).map(function(x){return x.trim()}).filter(function(x){return x!==''});
+  return a.map(Number).sort(function(x,y){return x-y});
+}
+function setEq(user,arr){var u=parseSet(user);if(u.some(isNaN))return false;var t=arr.slice().sort(function(x,y){return x-y});return u.length===t.length&&u.every(function(v,i){return v===t[i]})}
+</script>
+<script>
+'use strict';
+/* ============ 分数显示助手 ============ */
+function FR(n,d){return '<span style="display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;margin:0 3px;line-height:1.25"><span style="border-bottom:1.3px solid currentColor;padding:0 5px">'+n+'</span><span style="padding:0 5px">'+d+'</span></span>'}
+function VEC(a,b){return '<span style="display:inline-flex;align-items:center;vertical-align:middle;margin:0 2px"><span style="font-size:21px;font-weight:300">(</span><span style="display:inline-flex;flex-direction:column;line-height:1.15;text-align:center;padding:0 3px"><span>'+a+'</span><span>'+b+'</span></span><span style="font-size:21px;font-weight:300">)</span></span>'}
+function r2sf(x){return Number(x.toPrecision(2))}
+/* ============ 题库：卷一 0580/21/O/N/19 ============ */
+var QS=[
+
+{n:1,marks:1,topic:'百分数',stem:'Work out 5% of $25.',gloss:'work out 算出 · per cent(%) 百分之',
+parts:[{id:'1',t:'mcq',opts:[['$1.25',1,''],['$5',0,'把"5%"当成了"$5"——% 是比例，不是金额。'],['$12.50',0,'这是 50%（一半）。小数点错了一位：5% = 0.05，不是 0.5。'],['$0.125',0,'多除了一次 10：5% = 5/100 = 0.05，不是 0.005。']]}],
+steps:['<b>per cent</b> 的本义是"每一百份中的几份"：5% = 5/100 = 0.05。','数学英语里 <b>of = 乘号</b>：5% of 25 就是 0.05 × 25。','0.05 × 25 = 1.25。快捷路径：10% 是 2.5，一半就是 1.25。'],
+finalTxt:'答案：$1.25',
+card:{m:'百分数三件套：x% = x÷100；"of"就是乘；先化小数（或分数）再乘。',mo:['已知部分求百分比：部分÷整体×100','百分比增减：乘 (1 ± x%)','反向求原价：除以 (1 ± x%)']},
+vg:function(){var a=pick([4,6,8,12,15,35]),N=pick([20,40,60,80,120,150,240]);return{stem:'Work out '+a+'% of $'+N+'.',part:{t:'num',ans:a/100*N,tol:0.001,ph:'金额',unit:'$（填数字）'},sol:a+'% = '+(a/100)+'，× '+N+' = '+fmtN(a/100*N)}}},
+
+{n:2,marks:1,topic:'因式分解',stem:'Factorise&nbsp;&nbsp;5<i>p</i> + <i>pt</i>.',gloss:'factorise 因式分解 · common factor 公因式',
+parts:[{id:'2',t:'expr',vars:['p','t'],target:'p*(5+t)',ph:'如 p(5+t)',needParen:true,oneEach:['p','t']}],
+steps:['找<b>公因式</b>：5p 和 pt 两项都含有 p。','把 p 提到括号外：5p + pt = p(5 + t)。','检验：把 p(5+t) 乘回去，正好还原成 5p + pt。'],
+finalTxt:'答案：p(5 + t)',
+card:{m:'因式分解第一动作永远是找公因式；提完之后再看括号里能否继续分解。',mo:['数字与字母的混合公因式，如 6x²+9x','四项分组分解 grouping','二次三项式 x² + bx + c 型交叉分解']},
+vg:function(){var L=shuffle(['p','q','m','n','k','w']).slice(0,2),a=ri(3,9);return{stem:'Factorise&nbsp;&nbsp;'+a+'<i>'+L[0]+'</i> + <i>'+L[0]+L[1]+'</i>.',part:{t:'expr',vars:L,target:L[0]+'*('+a+'+'+L[1]+')',ph:'如 '+L[0]+'('+a+'+'+L[1]+')',needParen:true,oneEach:L},sol:'公因式 '+L[0]+' → '+L[0]+'('+a+' + '+L[1]+')'}}},
+
+{n:3,marks:2,topic:'计算器与有效数字',stem:'Calculate.&nbsp;&nbsp;'+FR('16.379 − 0.879','4.2')+' × 1.241<br>Give your answer correct to <b>2 significant figures</b>.',gloss:'significant figures (s.f.) 有效数字 · correct to 精确到',
+parts:[{id:'3',t:'mcq',opts:[['4.6',1,''],['4.58',0,'这是 2 位<b>小数</b>(d.p.)。题目要的是 2 位<b>有效数字</b>(s.f.)——从第一个非零数字开始数。'],['4.5',0,'只截断没有四舍五入：4.5<u>7</u>9…，第三位是 7，要进位。'],['16',0,'运算顺序错了：分数线相当于括号，必须先算完整个分子。']]}],
+steps:['分数线自带括号效果：先算分子 16.379 − 0.879 = 15.5。','一行按完计算器：15.5 ÷ 4.2 × 1.241 = 4.57988…（中途不要抄下再输入，会累积误差）。','<b>2 s.f.</b>：从首个非零数字数两位 → 4.5|7988，第三位 7 进位 → <b>4.6</b>。'],
+finalTxt:'答案：4.6',
+card:{m:'s.f. 从第一个非零数字数起，d.p. 从小数点后数起——0580 最爱混考这两个概念；没特别说明时默认给 3 s.f.。',mo:['夹 0 的数（如 0.03047）数 s.f.','estimate 估算题：每个数先 round 到 1 s.f. 再算','答案本身以 0 结尾时的表达（如 4.0）']},
+vg:function(){var A=ri(120,200)/10,B=ri(8,40)/10,C=ri(25,60)/10,D=ri(105,180)/100;var t=(A-B)/C*D;return{stem:'Calculate&nbsp;'+FR(A.toFixed(1)+' − '+B.toFixed(1),C.toFixed(1))+' × '+D.toFixed(2)+'&nbsp;&nbsp;correct to 2 significant figures.',part:{t:'num',ans:r2sf(t),tol:1e-9,ph:'2 s.f.'},sol:'原值 '+t.toFixed(4)+' → 2 s.f. = '+r2sf(t)}}},
+
+{n:4,marks:2,topic:'数的表示 · 标准形式',stem:'Write&nbsp;&nbsp;<b>15 060</b>',gloss:'in words 用文字写出 · standard form 标准形式 a×10ⁿ (1 ≤ a < 10)',
+parts:[
+ {id:'4a',label:'(a) in words',t:'mcq',opts:[['fifteen thousand and sixty',1,''],['fifteen thousand and six',0,'60 是 sixty；six 是 6——末尾两位是 6<u>0</u>。'],['fifteen thousand six hundred',0,'six hundred 是 600，会变成 15 600。百位其实是 0，跳过不读。'],['one hundred and fifty thousand and sixty',0,'这是 150 060。15 060 的"15"在千位段：fifteen thousand。']]},
+ {id:'4b',label:'(b) in standard form',t:'sf',val:15060,ph:'如 1.506×10^4（可用 * 或 x）'}],
+steps:['分段读数：15 060 = 15 个千 + 60 → <b>fifteen thousand and sixty</b>（百位是 0，直接跳过）。','标准形式要求 a×10ⁿ 且 1 ≤ a < 10：把小数点从 15060. 向左移到 1 和 5 之间。','移了 4 位，所以指数是 4：<b>1.506 × 10⁴</b>。'],
+finalTxt:'答案：(a) fifteen thousand and sixty　(b) 1.506 × 10⁴',
+card:{m:'标准形式口诀：a 落在 [1,10) 区间；小数点移几位，指数就是几；向左移为正、向右移为负。',mo:['小于 1 的数 → 负指数，如 0.00206 = 2.06×10⁻³','标准形式的乘除：系数与指数分开处理','用指数直接比较数的大小']},
+vg:function(){var N=ri(102,9899)*10;return{stem:'Write <b>'+N+'</b> in standard form.',part:{t:'sf',val:N,ph:'a×10^n 形式'},sol:'小数点左移 '+(String(N).length-1)+' 位 → '+(N/Math.pow(10,String(N).length-1))+'×10^'+(String(N).length-1)}}},
+
+{n:5,marks:2,topic:'合并同类项',stem:'Simplify&nbsp;&nbsp;5<i>c</i> − <i>d</i> − 3<i>d</i> − 2<i>c</i>.',gloss:'simplify 化简 · like terms 同类项',
+parts:[{id:'5',t:'expr',vars:['c','d'],target:'3*c-4*d',ph:'如 3c-4d',oneEach:['c','d']}],
+steps:['<b>同类项</b> = 字母部分完全相同的项。把 c 归一堆、d 归一堆，符号跟着项一起搬家。','c 项：5c − 2c = 3c。','d 项：−d − 3d = −4d（注意 −d 的隐形系数是 −1，不是 0）。合并得 3c − 4d。'],
+finalTxt:'答案：3c − 4d',
+card:{m:'合并同类项只动系数、不动字母；每一项的符号是它自己的一部分，移动时必须带着走。',mo:['含括号：先展开（注意负号分配）再合并','系数是分数：先通分','三个字母混排的长式子：逐字母清点']},
+vg:function(){var a=ri(4,9),b=ri(2,5),e=ri(1,3),f=ri(2,6);var c1=a-e,c2=-1-b;if(c1===0)c1=1,a=e+1;return{stem:'Simplify&nbsp;&nbsp;'+a+'<i>m</i> − <i>n</i> − '+b+'<i>n</i> − '+e+'<i>m</i> + '+f+'.',part:{t:'expr',vars:['m','n'],target:c1+'*m+('+c2+')*n+'+f,ph:'如 2m-3n+5',oneEach:['m','n']},sol:'m 项：'+a+'−'+e+'='+c1+'；n 项：−1−'+b+'='+c2+'；常数 '+f}}},
+
+{n:6,marks:2,topic:'一元一次方程',stem:'Solve.&nbsp;&nbsp;'+FR('<i>x</i> − 2','3')+' = 3',gloss:'solve 解方程 · both sides 等式两边',
+parts:[{id:'6',t:'num',ans:11,tol:1e-9,ph:'x =',unit:''}],
+steps:['分母最碍事，先消它：两边同乘 3 → x − 2 = 9。','移项：x = 9 + 2 = 11。','代回检验：(11 − 2) ÷ 3 = 3 ✓。'],
+finalTxt:'答案：x = 11',
+card:{m:'解方程的纪律：每一步都对"两边"做同一件事；先消分母、再展括号、再归拢 x。',mo:['x 在分母：交叉相乘','两边都有 x：先把 x 项归到一边','分数系数方程：两边乘最小公分母']},
+vg:function(){var a=ri(1,9),b=ri(2,6),c=ri(2,7);return{stem:'Solve.&nbsp;&nbsp;'+FR('<i>x</i> − '+a,b)+' = '+c,part:{t:'num',ans:a+b*c,tol:1e-9,ph:'x ='},sol:'两边×'+b+'：x−'+a+'='+(b*c)+' → x='+(a+b*c)}}},
+
+{n:7,marks:2,topic:'指数运算',stem:'Simplify&nbsp;&nbsp;2<i>x</i><sup>3</sup> × 3<i>x</i><sup>2</sup>.',gloss:'indices 指数 · add the indices 指数相加',
+parts:[{id:'7',t:'mcq',opts:[['6x<sup>5</sup>',1,''],['6x<sup>6</sup>',0,'指数<b>相乘</b>是"幂的幂"(xᵐ)ⁿ 的规则；同底数相乘应当指数<b>相加</b>。'],['5x<sup>5</sup>',0,'系数 2 和 3 是相乘（2×3=6），不是相加。'],['5x<sup>6</sup>',0,'系数与指数两处都错了：系数相乘、指数相加。']]}],
+steps:['系数与字母分开处理：2 × 3 = 6。','同底数幂相乘，<b>指数相加</b>：x³ × x² = x³⁺² = x⁵。','合成：6x⁵。'],
+finalTxt:'答案：6x⁵',
+card:{m:'指数三律：乘 → 加；除 → 减；幂的幂 → 乘。系数永远按普通数字运算，与指数律无关。',mo:['(axᵐ)ⁿ：系数也要乘方','除法 axᵐ ÷ bxⁿ','负指数、分数指数（本卷 Q10 正是它）']},
+vg:function(){var a=ri(2,6),b=ri(2,6),m=ri(2,6),k=ri(2,5);return{stem:'Simplify&nbsp;&nbsp;'+a+'<i>x</i><sup>'+m+'</sup> × '+b+'<i>x</i><sup>'+k+'</sup>.',part:{t:'expr',vars:['x'],target:(a*b)+'*x^'+(m+k),ph:'如 '+(a*b)+'x^'+(m+k),oneEach:['x']},sol:'系数 '+a+'×'+b+'='+(a*b)+'；指数 '+m+'+'+k+'='+(m+k)}}},
+
+{n:8,marks:2,topic:'分数运算',stem:'Without using a calculator, work out&nbsp;&nbsp;'+FR('5','16')+' × 1'+FR('1','7')+'.<br>You must show all your working and give your answer as a fraction in its <b>simplest form</b>.',gloss:'mixed number 带分数 · improper fraction 假分数 · simplest form 最简形式',
+parts:[{id:'8',t:'frac',fn:5,fd:14,ph:'如 a/b（最简分数）'}],
+steps:['带分数必须先化假分数：1'+FR('1','7')+' = '+FR('8','7')+'。','<b>先约分再相乘</b>：'+FR('5','16')+' × '+FR('8','7')+'，斜对角的 8 与 16 约成 1 与 2——比乘完再约省一半力气。','剩下 '+FR('5','2×7')+' = '+FR('5','14')+'。5 与 14 互质，已是最简。'],
+finalTxt:'答案：5/14',
+card:{m:'分数乘法先斜着约分再乘；带分数一律先化假分数——这两个习惯能消灭这类题 90% 的错误。',mo:['除以分数 = 乘它的倒数','三个分数连乘连约','分数四则混合（注意运算顺序）']},
+vg:function(){var d=pick([5,7,9,11]),c=ri(1,d-1);while(gcd(c,d)!==1)c=ri(1,d-1);var m=d+c,k=pick([2,3,4]),b=m*k,a=ri(2,9);while(gcd(a,b)===b||a===b)a=ri(2,9);var n0=a*m,d0=b*d,g=gcd(n0,d0);return{stem:'Without a calculator, work out&nbsp;'+FR(a,b)+' × 1'+FR(c,d)+'.&nbsp;Give your answer as a fraction in its simplest form.',part:{t:'frac',fn:n0/g,fd:d0/g,ph:'a/b 最简'},sol:'1'+c+'/'+d+'='+m+'/'+d+'；'+a+'/'+b+'×'+m+'/'+d+' 约分 → '+(n0/g)+'/'+(d0/g)}}},
+
+{n:9,marks:2,topic:'单利 Simple Interest',stem:'Paula invests $600 at a rate of <i>r</i>% per year <b>simple interest</b>.<br>At the end of 10 years, the total interest earned is $90.<br>Find the value of <i>r</i>.',gloss:'invest 投资 · rate 利率 · simple interest 单利（每年利息固定）',
+parts:[{id:'9',t:'mcq',opts:[['r = 1.5',1,''],['r = 0.015',0,'公式里已经写了 r/100，解出的 r 本身就是百分数的数值，不用再除 100。'],['r = 15',0,'漏掉了年数 10：90 = 600 × r/100 × <b>10</b>。'],['r = 6.67',0,'这是 600÷90——把公式记反了。利息 = 本金 × 利率 × 年数。']]}],
+steps:['单利公式：I = P × '+FR('r','100')+' × t（每年利息固定，不滚存）。','代入：90 = 600 × '+FR('r','100')+' × 10 = 60r。','r = 90 ÷ 60 = 1.5。'],
+finalTxt:'答案：r = 1.5',
+card:{m:'单利：利息 = 本金×年利率×年数，线性增长；复利才是指数滚雪球。看到 simple 先写公式再代数。',mo:['换未知量：求本金 P 或年数 t','复利 compound：A = P(1 + r/100)ⁿ','单利与复利同题对比（0580 常考）']},
+vg:function(){var P=pick([400,500,800,1200,2000]),t=pick([4,5,8,10]),r=pick([1.5,2,2.5,3,4]);var I=P*r/100*t;return{stem:'A sum of $'+P+' is invested at <i>r</i>% per year simple interest. After '+t+' years the total interest is $'+fmtN(I)+'. Find <i>r</i>.',part:{t:'num',ans:r,tol:1e-9,ph:'r ='},sol:I+' = '+P+'×r/100×'+t+' → r = '+r}}},
+
+{n:10,marks:2,topic:'分数指数幂',stem:'Simplify.&nbsp;&nbsp;<span style="font-size:19px">(</span>'+FR('<i>x</i><sup>3</sup>','8')+'<span style="font-size:19px">)</span><sup>−'+ '4⁄3'+'</sup>',gloss:'index/indices 指数 · reciprocal 倒数 · cube root 立方根',
+parts:[{id:'10',t:'expr',vars:['x'],target:'16/x^4',ph:'如 16/x^4',maxLen:10,oneSlash:true}],
+steps:['<b>负指数先翻倒数</b>：(x³/8)<sup>−4/3</sup> = (8/x³)<sup>4/3</sup>。','<b>分数指数 = 先开方后乘方</b>：8<sup>4/3</sup> = (³√8)⁴ = 2⁴ = 16。先开方数字小，心算不出错。','(x³)<sup>4/3</sup> = x⁴。合成：16/x⁴（写 16x⁻⁴ 也对）。'],
+finalTxt:'答案：16/x⁴',
+card:{m:'a^(m/n) = (ⁿ√a)^m，铁律是先开方再乘方；负号管倒数、分母管开方、分子管乘方，三件事分开处理。',mo:['纯数字：27^(−2/3)','带系数：(16x⁸)^(3/4)——系数也要开','解指数方程：8^x = 1/4（化同底）']},
+vg:function(){var c=pick([8,27]),base=(c===8?2:3),m=pick([1,2,4,5]);var K=Math.pow(base,m);return{stem:'Simplify.&nbsp;&nbsp;<span style="font-size:19px">(</span>'+FR('<i>x</i><sup>3</sup>',c)+'<span style="font-size:19px">)</span><sup>−'+m+'⁄3</sup>',part:{t:'expr',vars:['x'],target:K+'/x^'+m,ph:'如 k/x^n',maxLen:10,oneSlash:true},sol:'翻倒数 → ('+c+'/x³)^('+m+'/3)；'+c+'^('+m+'/3)=(³√'+c+')^'+m+'='+K+' → '+K+'/x^'+m}}},
+
+{n:11,marks:2,topic:'公式变形',stem:'<i>P</i> = 2<i>r</i> + π<i>r</i><br>Rearrange the formula to write <i>r</i> in terms of <i>P</i> and π.',gloss:'rearrange 变形/移项 · in terms of 用…表示 · subject 主项',
+parts:[{id:'11',t:'expr',vars:['p'],target:'p/(2+pi)',ph:'r = ？（π 打成 pi）',needParen:true}],
+steps:['目标字母 r 出现在两项里——<b>先提公因式</b>：P = r(2 + π)。','两边同除 (2 + π)：r = P/(2 + π)。','括号必须完整：P/2 + π 是另一个式子。检验：把 r 乘回 (2+π) 应还原成 P。'],
+finalTxt:'答案：r = P/(2 + π)',
+card:{m:'变形公式就是解方程，把目标字母当未知数；它出现多次且同次幂 → 提公因式后整体除。',mo:['目标字母在分母：先交叉乘','目标字母带平方：最后开方（如 A = πr²）','目标字母两侧都有：先归拢到一边']},
+vg:function(){var a=ri(2,6);return{stem:'<i>P</i> = '+a+'<i>r</i> + π<i>r</i>.&nbsp;&nbsp;Write <i>r</i> in terms of <i>P</i> and π.',part:{t:'expr',vars:['p'],target:'p/('+a+'+pi)',ph:'r = ？（π 打成 pi）',needParen:true},sol:'P = r('+a+'+π) → r = P/('+a+'+π)'}}},
+
+{n:12,marks:2,topic:'上下界 Bounds',stem:'The sides of a square are 15.1 cm, correct to 1 decimal place.<br>Find the <b>upper bound</b> of the area of the square.',gloss:'upper/lower bound 上界/下界 · correct to 1 d.p. 精确到一位小数',
+parts:[{id:'12',t:'mcq',opts:[['229.5225 cm<sup>2</sup>',1,''],['228.01 cm<sup>2</sup>',0,'这是 15.1²——直接用了测量值。求上界必须先把边长推到最大可能：15.1 + 0.05。'],['231.04 cm<sup>2</sup>',0,'边界加多了：1 d.p. 的半单位是 0.05，不是 0.1。15.2 是不可能达到的值。'],['60.6 cm',0,'这是周长的上界（4 × 15.15），题目问的是面积。']]}],
+steps:['精确到 1 d.p. → 误差半径 = 半个单位 = 0.05。真实边长范围：15.05 ≤ s < 15.15。','面积要最大 → 用最大的边：upper bound = 15.15 × 15.15。','= 229.5225 cm²。<b>bounds 题不四舍五入</b>，把小数写全，这正是采分点。'],
+finalTxt:'答案：229.5225 cm²',
+card:{m:'界 = 测量值 ± 半个精度单位。组合量取界的方向：乘法/加法同向取；除法/减法反向取（要最大商 → 分子最大、分母最小）。',mo:['下界面积/周长','速度 = 距离÷时间 的上界（上配下）','"能否肯定超过某值"判断题']},
+vg:function(){var s=ri(82,199)/10;var ub=(s+0.05)*(s+0.05);return{stem:'The sides of a square are '+s.toFixed(1)+' cm, correct to 1 decimal place. Find the upper bound of the area.',part:{t:'num',ans:Math.round(ub*1e4)/1e4,tol:1e-3,ph:'cm²，不要四舍五入'},sol:'('+s.toFixed(1)+'+0.05)² = '+(s+0.05).toFixed(2)+'² = '+(Math.round(ub*1e4)/1e4)}}},
+
+{n:13,marks:2,topic:'三角形面积公式',anim:'a13',
+fig:'<svg viewBox="0 0 320 185" width="320"><text x="10" y="16" font-size="10" fill="#6E6E73">NOT TO SCALE</text><polygon points="280,32 38,72 118,168" fill="#F0F4F8" stroke="#1D1D1F" stroke-width="1.6"/><line id="f13h" x1="118" y1="168" x2="100.4" y2="61.7" stroke="#30D158" stroke-width="2" stroke-dasharray="4 4" opacity="0"/><rect id="f13ra" x="97" y="60" width="9" height="9" fill="none" stroke="#30D158" stroke-width="1.4" opacity="0" transform="rotate(9 100.4 61.7)"/><text id="f13hl" x="128" y="112" font-size="12" fill="#1D8A43" opacity="0">h = 11·sin 39°</text><text x="146" y="42" font-size="13" fill="#1D1D1F">11 cm</text><text x="206" y="112" font-size="13" fill="#1D1D1F">13 cm</text><path d="M 254,36.3 A 26,26 0 0 1 260.7,49.7" fill="none" stroke="#0071E3" stroke-width="1.5"/><text x="228" y="55" font-size="12" fill="#0071E3">39°</text></svg>',
+stem:'Calculate the area of the triangle.',gloss:'included angle 夹角 · area of triangle 三角形面积',
+parts:[{id:'13',t:'num',ans:45.0,tol:0.05,ph:'面积',unit:'cm²（3 s.f.）'}],
+steps:['已知<b>两边和它们的夹角</b>——不需要找高，公式自带：Area = ½·a·b·sin C。','为什么成立？高 h = 11·sin 39°（点"播放动画"看高从顶点落下），面积 = ½ × 底 13 × h。','½ × 11 × 13 × sin 39° = 71.5 × 0.6293 = 44.996… ≈ <b>45.0 cm²</b>。'],
+finalTxt:'答案：45.0 cm²',
+card:{m:'选面积公式看条件：有底有高 → ½bh；两边夹角 → ½ab·sinC。角必须"夹"在两条已知边中间，不夹不能用。',mo:['已知面积反解夹角（sin C = …，注意两解）','钝角夹角照样代入（sin 钝角为正）','与正弦/余弦定理串联的多步题']},
+vg:function(){var a=ri(5,14),b=ri(5,14),C=pick([28,35,42,55,64,73]);var ans=Math.round(0.5*a*b*Math.sin(C*Math.PI/180)*10)/10;return{stem:'A triangle has sides '+a+' cm and '+b+' cm with an included angle of '+C+'°. Calculate its area, correct to 1 d.p.',part:{t:'num',ans:ans,tol:0.06,ph:'cm²（1 d.p.）'},sol:'½×'+a+'×'+b+'×sin'+C+'° = '+ans+' cm²'}}},
+
+{n:14,marks:3,topic:'比例尺与面积',stem:'The scale of a map is 1 : 10 000 000.<br>On the map, the area of Slovakia is 4.9 cm<sup>2</sup>.<br>Calculate the actual area of Slovakia. Give your answer in square kilometres.',gloss:'scale 比例尺 · actual 实际的 · square kilometres 平方千米',
+parts:[{id:'14',t:'mcq',opts:[['49 000 km<sup>2</sup>',1,''],['490 km<sup>2</sup>',0,'线性比例只用了一次。<b>面积比 = 线性比的平方</b>：1 cm 对应 100 km，则 1 cm² 对应 100² = 10 000 km²。'],['4 900 000 km<sup>2</sup>',0,'面积平方的思路对了，但 cm → km 的换算断了链：10⁷ cm = 10⁵ m = 100 km，不是 1000 km。'],['49 km<sup>2</sup>',0,'只把 4.9 乘了 10——既没用比例尺平方，换算也不完整。']]}],
+steps:['先做<b>线性</b>换算并换成顺手单位：1 cm ↔ 10 000 000 cm = 100 000 m = <b>100 km</b>。','面积是二维量：1 cm² ↔ (100 km)² = <b>10 000 km²</b>。','4.9 × 10 000 = <b>49 000 km²</b>。（真实斯洛伐克约 49 035 km²，可作合理性检验。）'],
+finalTxt:'答案：49 000 km²',
+card:{m:'比例尺三级跳：长度用一次比、面积用平方、体积用立方。先把"1 cm 对应多少 km"算干净，再平方，链条不断。',mo:['反向：已知实际面积求图上面积','两张不同比例尺地图互换','相似模型的体积比（0580 常与相似形结合）']},
+vg:function(){var k=pick([5,6,7]),m=ri(20,90)/10;var lin=Math.pow(10,k-5);var ans=m*lin*lin;return{stem:'A map has scale 1 : '+Math.pow(10,k).toLocaleString('en')+'. A region has area '+m+' cm² on the map. Find its actual area in km².',part:{t:'num',ans:ans,tol:Math.max(0.01,ans*1e-6),ph:'km²'},sol:'1 cm = '+lin+' km → 1 cm² = '+(lin*lin)+' km² → '+m+'×'+(lin*lin)+' = '+fmtN(ans)}}},
+
+{n:15,marks:3,topic:'反比例',stem:'<i>y</i> is <b>inversely proportional</b> to <i>x</i><sup>2</sup>.<br>When <i>x</i> = 4, <i>y</i> = 2.<br>Find <i>y</i> when <i>x</i> = '+FR('1','2')+' .',gloss:'inversely proportional 成反比 · constant of proportionality 比例常数 k',
+parts:[{id:'15',t:'mcq',opts:[['y = 128',1,''],['y = 16',0,'用成了 y ∝ 1/x（一次反比）。题目是 1/x²——x 缩到 1/8 时，y 要放大 8² = 64 倍。'],['y = 1/32',0,'方向反了：这是<b>正比</b> y ∝ x² 的结果。inversely = 反比 = k 除以。'],['y = 8',0,'这是比例常数 k 的一半——k = 2×16 = 32，k 只是中间量，不是答案。']]}],
+steps:['逐词翻译成公式：inversely → 除；x² → 平方：<b>y = k / x²</b>。','用已知点定 k：2 = k/4² → k = 32。','代新值：y = 32 ÷ (½)² = 32 ÷ ¼ = <b>128</b>。'],
+finalTxt:'答案：y = 128',
+card:{m:'比例题三步铁流程：写通式（带 k）→ 已知点求 k → 代新值。directly=乘、inversely=除、square/cube 照写，公式是从英文逐词翻译出来的。',mo:['y ∝ √x、y ∝ x³ 等其他幂次','给表格判断比例类型','联合比例：与 a 正比、与 b² 反比']},
+vg:function(){var x0=pick([2,3,4,5]),mult=pick([1,2,3]);var k=mult*x0*x0;var y0=k/(x0*x0);var x1=pick([0.5,1,2,10].filter(function(v){return v!==x0}));var ans=k/(x1*x1);return{stem:'<i>y</i> is inversely proportional to <i>x</i>². When <i>x</i> = '+x0+', <i>y</i> = '+y0+'. Find <i>y</i> when <i>x</i> = '+x1+' .',part:{t:'num',ans:ans,tol:1e-6,ph:'y ='},sol:'k = '+y0+'×'+x0+'² = '+k+'；y = '+k+'/'+x1+'² = '+fmtN(ans)}}},
+
+{n:16,marks:3,topic:'正弦定理 · 钝角',anim:'a16',
+fig:'<svg viewBox="0 0 330 175" width="330"><text x="10" y="14" font-size="10" fill="#6E6E73">NOT TO SCALE</text><polygon points="38,150 115,32 300,118" fill="#F0F4F8" stroke="#1D1D1F" stroke-width="1.6"/><text x="46" y="84" font-size="13" fill="#1D1D1F">8 cm</text><text x="200" y="58" font-size="13" fill="#1D1D1F">12 cm</text><path d="M 273.5,113.5 A 28,28 0 0 0 272.6,129.6" fill="none" stroke="#0071E3" stroke-width="1.5"/><text x="246" y="120" font-size="12" fill="#0071E3">39°</text><path d="M 62,135 A 26,26 0 0 0 63.3,141.7" fill="none" stroke="#FF3B30" stroke-width="1.5"/><text x="66" y="138" font-size="14" font-style="italic" fill="#FF3B30">x</text></svg>',
+stem:'Calculate the <b>obtuse</b> angle <i>x</i> in this triangle.',gloss:'obtuse 钝角 · sine rule 正弦定理 · ambiguous case 两解情形',
+parts:[{id:'16',t:'mcq',opts:[['x = 109.3°',1,''],['x = 70.7°',0,'这是计算器 sin⁻¹ 直接吐出的锐角。但题目与图都说 x 是<b>钝角</b>——sin θ = sin(180° − θ)，一个正弦值对应两个角，看动画。'],['x = 24.8°',0,'边角配错了对：正弦定理里"角对边"必须成对——39° 对的是 8 cm，x 对的是 12 cm。'],['x = 141°',0,'180 − 39 = 141 不是正弦定理，只是把两个角凑了个和。']]}],
+steps:['正弦定理配对（角对边）：x 对 12，39° 对 8 → '+FR('sin x','12')+' = '+FR('sin 39°','8')+'。','sin x = 12 sin 39° ÷ 8 = 0.9440 → 计算器给出 70.7°。','但计算器<b>只报锐角</b>。x 是钝角，且 sin(180°−θ)=sin θ → x = 180° − 70.7° = <b>109.3°</b>。检验内角和：109.3+39=148.3 < 180 ✓。'],
+finalTxt:'答案：x = 109.3°（接受 109.2°–109.3°）',
+card:{m:'sin⁻¹ 永远只给 0–90° 的解；题目说钝角、或图形明显是钝角时，用 180° 去减。最后必须用内角和 < 180° 验证解的合法性。',mo:['判断两解是否都成立（ambiguous case 完整版）','余弦定理求角——为什么它没有两解？','先正弦定理再内角和求第三角']},
+vg:function(){var th,s2,s1,arg;do{th=pick([32,38,44]);s2=pick([7,8,9]);s1=s2+ri(1,5);arg=s1*Math.sin(th*Math.PI/180)/s2}while(arg>=0.985);var ans=Math.round((180-Math.asin(arg)*180/Math.PI)*10)/10;return{stem:'In a triangle, the side opposite the obtuse angle <i>x</i> is '+s1+' cm; a '+th+'° angle is opposite a side of '+s2+' cm. Find <i>x</i> (1 d.p.).',part:{t:'num',ans:ans,tol:0.15,ph:'钝角 x'},sol:'sin x = '+s1+'sin'+th+'°/'+s2+' → 锐解 '+(180-ans).toFixed(1)+'° → x = 180−'+(180-ans).toFixed(1)+' = '+ans+'°'}}},
+
+{n:17,marks:3,topic:'扇形面积',anim:'a17',
+fig:'<svg viewBox="0 0 300 178" width="300"><text x="222" y="60" font-size="10" fill="#6E6E73">NOT TO SCALE</text><path id="f17w" d="M138,150 L190,150 A130,130 0 0 0 151.9,58.1 L115.2,94.9 A78,78 0 0 1 138,150 Z" fill="#D8DDE4"/><line x1="60" y1="150" x2="190" y2="150" stroke="#1D1D1F" stroke-width="1.6"/><line x1="60" y1="150" x2="151.9" y2="58.1" stroke="#1D1D1F" stroke-width="1.6"/><path id="f17o" d="M190,150 A130,130 0 0 0 151.9,58.1" fill="none" stroke="#1D1D1F" stroke-width="1.6"/><path id="f17i" d="M138,150 A78,78 0 0 0 115.2,94.9" fill="none" stroke="#1D1D1F" stroke-width="1.6"/><path d="M 86,150 A 26,26 0 0 0 78.4,131.6" fill="none" stroke="#0071E3" stroke-width="1.5"/><text x="90" y="141" font-size="12" fill="#0071E3">45°</text><text x="82" y="94" font-size="13" fill="#1D1D1F" transform="rotate(-45 92 100)">5 cm</text><text x="106" y="165" font-size="13" fill="#1D1D1F">3 cm</text></svg>',
+stem:'The diagram shows two sectors of circles with the same centre.<br>Calculate the <b>shaded</b> area.',gloss:'sector 扇形 · same centre 同心 · shaded 阴影',
+parts:[{id:'17',t:'num',ans:6.2832,tol:0.03,ph:'可填 6.28 或 2pi',unit:'cm²'}],
+steps:['阴影 = <b>大扇形 − 小扇形</b>，两者共用同一个 45° 圆心角。','套扇形面积 = '+FR('θ','360')+'·πr²，一步并算：'+FR('45','360')+'·π·(5² − 3²) = ⅛ · π · 16。','= <b>2π ≈ 6.28 cm²</b>。并在一起算（R²−r²）比分别算再相减更快且免累积舍入。'],
+finalTxt:'答案：2π ≈ 6.28 cm²',
+card:{m:'扇形就是圆的 θ/360 份；同心环形楔用 (θ/360)·π(R²−r²) 一步到位。角在分子、360 在分母，弧长同理换 2πr。',mo:['弧长 arc length 与楔形周长（两半径 + 两弧）','已知面积反求 θ 或 r','扇形卷成圆锥（P4 高频）']},
+vg:function(){var R=ri(6,9),r=R-ri(2,4),th=pick([30,45,60,72,90]);var ans=th/360*Math.PI*(R*R-r*r);return{stem:'Two sectors with the same centre have radii '+R+' cm and '+r+' cm and angle '+th+'°. Find the area between them (3 s.f.).',part:{t:'num',ans:ans,tol:Math.max(0.02,ans*0.006),ph:'cm²'},sol:'('+th+'/360)π('+R+'²−'+r+'²) = '+ans.toFixed(3)+' cm²'}}},
+
+{n:18,marks:3,topic:'代数分式',stem:'Write&nbsp;&nbsp;'+FR('<i>x</i>','2')+' − '+FR('2<i>x</i> + 4','<i>x</i> + 1')+'&nbsp;&nbsp;as a single fraction, in its simplest form.',gloss:'single fraction 单一分式 · common denominator 公分母',
+parts:[{id:'18',t:'expr',vars:['x'],target:'(x^2-3*x-8)/(2*(x+1))',ph:'如 (x^2-3x-8)/(2(x+1))',needParen:true,oneSlash:true}],
+steps:['公分母 = 2(x+1)。第一项补乘 (x+1)，第二项补乘 2：'+FR('x(x+1)','2(x+1)')+' − '+FR('2(2x+4)','2(x+1)')+'。','合并分子——<b>减号后面整体带括号</b>：x(x+1) − 2(2x+4) = x² + x − 4x − 8 = x² − 3x − 8。','查约分：x² − 3x − 8 的判别式 = 9+32 = 41，非完全平方 → 分不动，已最简：'+FR('x² − 3x − 8','2(x + 1)')+'。'],
+finalTxt:'答案：(x² − 3x − 8) / (2(x + 1))',
+card:{m:'分式合并四步：定公分母 → 每项补乘 → 合并分子（减法必带括号！）→ 试约分。九成失分在第二个分子忘了整体乘负号。',mo:['分母为 x 与 x±a 的两项','三项通分','解分式方程：合并后令分子 = 0（并检验分母）']},
+vg:function(){var a=pick([2,3]),b=ri(1,3),c=ri(2,6),d=ri(1,4);var mid=d-a*b;var tgt='(x^2+('+mid+')*x-'+(a*c)+')/('+a+'*(x+'+d+'))';return{stem:'Write&nbsp;'+FR('<i>x</i>',a)+' − '+FR(b+'<i>x</i> + '+c,'<i>x</i> + '+d)+'&nbsp;as a single fraction in its simplest form.',part:{t:'expr',vars:['x'],target:tgt,ph:'(…)/(…)',needParen:true,oneSlash:true},sol:'[x(x+'+d+')−'+a+'('+b+'x+'+c+')]/['+a+'(x+'+d+')] = (x²'+(mid>=0?'+':'')+mid+'x−'+(a*c)+')/('+a+'(x+'+d+'))'}}},
+
+{n:19,marks:3,topic:'矩阵',old:true,stem:'M = <span style="font-size:20px">(</span><span style="display:inline-flex;flex-direction:column;line-height:1.2;text-align:center;padding:0 4px"><span>1&nbsp;&nbsp;2</span><span>3&nbsp;&nbsp;4</span></span><span style="font-size:20px">)</span>&nbsp;&nbsp;&nbsp;P = <span style="font-size:20px">(</span><span style="display:inline-flex;flex-direction:column;line-height:1.2;text-align:center;padding:0 4px"><span>5&nbsp;&nbsp;6</span><span>7&nbsp;&nbsp;8</span></span><span style="font-size:20px">)</span>',gloss:'matrix 矩阵 · determinant 行列式 |M| · 本题属旧大纲（现行 0580 已移除矩阵），按学校作业保留',
+parts:[
+ {id:'19a',label:'(a) Find MP',t:'mat2',ans:[[19,22],[43,50]]},
+ {id:'19b',label:'(b) Find |M|（行列式）',t:'num',ans:-2,tol:1e-9,ph:'|M| ='}],
+steps:['矩阵乘法口诀：<b>左手横扫、右手竖扫</b>——结果第 i 行第 j 列 = M 的第 i 行 · P 的第 j 列。','四个元素逐个算：1×5+2×7=<b>19</b>；1×6+2×8=<b>22</b>；3×5+4×7=<b>43</b>；3×6+4×8=<b>50</b>。','行列式 |M| = 主对角积 − 副对角积 = 1×4 − 2×3 = <b>−2</b>。'],
+finalTxt:'答案：MP = (19 22 / 43 50)，|M| = −2',
+card:{m:'矩阵乘法行×列、逐格填；行列式 ad−bc。注意 MP ≠ PM，矩阵乘法不满足交换律。',mo:['逆矩阵 M⁻¹ = 1/|M| × (d −b / −c a)','|M|=0 时逆矩阵不存在——为什么？','矩阵与图形变换的对应（旧大纲）']},
+vg:function(){var a=ri(-4,6),b=ri(-4,6),c=ri(-4,6),d=ri(-4,6);if(a*d-b*c===0)d=d+1;return{stem:'M = ('+a+' '+b+' / '+c+' '+d+')。Find the determinant |M|.',part:{t:'num',ans:a*d-b*c,tol:1e-9,ph:'|M| ='},sol:'|M| = '+a+'×'+d+' − '+b+'×'+c+' = '+(a*d-b*c)}}},
+
+{n:20,marks:3,topic:'树状图概率',
+fig:'<svg viewBox="0 0 350 195" width="350"><g stroke="#9AA2AB" stroke-width="1.4" fill="none"><line x1="24" y1="98" x2="118" y2="50"/><line x1="24" y1="98" x2="118" y2="146"/><line x1="150" y1="50" x2="252" y2="26"/><line x1="150" y1="50" x2="252" y2="74"/><line x1="150" y1="146" x2="252" y2="122"/><line x1="150" y1="146" x2="252" y2="170"/></g><text x="52" y="62" font-size="12" fill="#1D1D1F">9/10</text><text x="52" y="140" font-size="12" fill="#6E6E73">1/10</text><text x="188" y="28" font-size="12" fill="#1D1D1F">15/16</text><text x="188" y="72" font-size="12" fill="#6E6E73">1/16</text><text x="188" y="124" font-size="12" fill="#1D1D1F">3/4</text><text x="188" y="168" font-size="12" fill="#6E6E73">1/4</text><text x="120" y="54" font-size="12" fill="#1D1D1F">迟到</text><text x="120" y="150" font-size="12" fill="#1D1D1F">准点</text><text x="256" y="30" font-size="12" fill="#0071E3">乘车 ✓</text><text x="256" y="78" font-size="12" fill="#6E6E73">不乘</text><text x="256" y="126" font-size="12" fill="#0071E3">乘车 ✓</text><text x="256" y="174" font-size="12" fill="#6E6E73">不乘</text></svg>',
+stem:'The probability that the school bus is late is '+FR('9','10')+' .<br>If the bus is <b>late</b>, the probability that Seb travels on the bus is '+FR('15','16')+' .<br>If the bus is <b>on time</b>, the probability that Seb travels on the bus is '+FR('3','4')+' .<br>Find the probability that Seb travels on the bus.',gloss:'probability 概率 · on time 准点 · tree diagram 树状图',
+parts:[{id:'20',t:'mcq',opts:[['147/160',1,''],['27/32',0,'只算了"迟到→乘车"这一条枝（135/160）。准点（概率 1/10）时 Seb 也可能乘车，那条枝必须加上。'],['3/40',0,'只算了"准点→乘车"这一条枝，漏掉了主干"迟到→乘车"。'],['9/16',0,'把两条完整路径<b>相乘</b>了。跨枝事件是"或"的关系要<b>相加</b>；同一条枝内部才相乘。']]}],
+steps:['画树（见图）：第一层 迟到 9/10 / 准点 1/10；第二层挂各自的乘车概率。','<b>沿枝相乘</b>：迟到且乘车 = '+FR('9','10')+'×'+FR('15','16')+' = '+FR('135','160')+'；准点且乘车 = '+FR('1','10')+'×'+FR('3','4')+' = '+FR('12','160')+'。','<b>跨枝相加</b>：'+FR('135','160')+' + '+FR('12','160')+' = <b>'+FR('147','160')+'</b>。自检：每个节点分支概率之和都是 1 ✓。'],
+finalTxt:'答案：147/160（= 0.919）',
+card:{m:'树状图两条铁律：沿枝相乘、跨枝相加；每个节点的分支概率和必为 1——用它自检树画没画对。',mo:['不放回抽取：第二层分母减 1','"至少一次" = 1 − 全都不发生','三层树与条件概率 P(A|B)']},
+vg:function(){var combos=[[4,5,2,3,1,2],[9,10,3,4,1,3],[2,3,5,6,1,4],[7,10,4,5,2,5]];var c=pick(combos);var pn=c[0],pd=c[1],an=c[2],ad=c[3],bn=c[4],bd=c[5];var N=pn*an*bd+(pd-pn)*bn*ad,D=pd*ad*bd,g=gcd(N,D);return{stem:'P(rain) = '+pn+'/'+pd+'. If it rains, P(bus) = '+an+'/'+ad+'; if not, P(bus) = '+bn+'/'+bd+'. Find P(bus)，答案写最简分数。',part:{t:'frac',fn:N/g,fd:D/g,ph:'a/b'},sol:pn+'/'+pd+'×'+an+'/'+ad+' + '+(pd-pn)+'/'+pd+'×'+bn+'/'+bd+' = '+(N/g)+'/'+(D/g)}}},
+
+{n:21,marks:4,topic:'几何变换',anim:'a21',
+fig:'<svg viewBox="0 0 300 292" width="300"><g stroke="#E3E5E8" stroke-width="1">'+(function(){var s='';for(var i=0;i<=8;i++){s+='<line x1="'+(36+28*i)+'" y1="28" x2="'+(36+28*i)+'" y2="252"/>';s+='<line x1="36" y1="'+(252-28*i)+'" x2="260" y2="'+(252-28*i)+'"/>'}return s})()+'</g><line x1="36" y1="252" x2="266" y2="252" stroke="#1D1D1F" stroke-width="1.5"/><line x1="36" y1="252" x2="36" y2="22" stroke="#1D1D1F" stroke-width="1.5"/>'+(function(){var s='';for(var i=1;i<=8;i++){s+='<text x="'+(33+28*i)+'" y="266" font-size="9.5" fill="#6E6E73">'+i+'</text>';s+='<text x="24" y="'+(255-28*i)+'" font-size="9.5" fill="#6E6E73">'+i+'</text>'}return s+'<text x="26" y="266" font-size="9.5" fill="#6E6E73">0</text><text x="268" y="258" font-size="11" font-style="italic">x</text><text x="30" y="18" font-size="11" font-style="italic">y</text>'})()+'<line id="f21yx" x1="36" y1="252" x2="260" y2="28" stroke="#0071E3" stroke-width="1.4" stroke-dasharray="5 4" opacity="0"/><text id="f21yxl" x="236" y="46" font-size="11" fill="#0071E3" opacity="0">y = x</text><polygon id="f21T" points="176,84 176,56 232,56" fill="#C9CDD3" stroke="#1D1D1F" stroke-width="1.4"/><text x="200" y="76" font-size="12" font-style="italic">T</text><polygon points="148,224 148,196 204,196" fill="none" stroke="#1D1D1F" stroke-width="1.4"/><text x="168" y="214" font-size="12" font-style="italic">A</text></svg>',
+stem:'',gloss:'transformation 变换 · translation 平移 · vector 向量 · reflect 反射',
+parts:[
+ {id:'21a',label:'(a) Describe fully the single transformation that maps shape T onto shape A.',t:'mcq',opts:[['Translation by vector '+VEC('−1','−5'),1,''],['Translation by vector '+VEC('1','5'),0,'方向反了。向量 = 终点 − 起点：从 T 的 (5,7) 到 A 的 (4,2)，是向左 1、向下 5。'],['Rotation, 180°, centre (5.5, 4.5)',0,'旋转 180° 会让三角形"倒个头"（直角顶点跑到右下方）。A 与 T 的朝向完全一致——朝向不变的等大移动只能是平移。'],['Reflection in the line y = 4',0,'反射会翻转图形的朝向（变成镜像手性）；A 与 T 是同手性的，排除反射。']]},
+ {id:'21b',label:'(b) On the grid, reflect shape T in the line y = x —— 在下方交互网格上点出反射后三角形的三个顶点',t:'grid',target:[[6,5],[7,5],[7,7]]}],
+steps:['先认对应点：T 的直角顶点 (5,7) ↔ A 的直角顶点 (4,2)。位移 = (4−5, 2−7) = <b>(−1, −5)</b>。','逐点验证：(5,6)→(4,1) ✓，(7,7)→(6,2) ✓。三点同向量 → 平移。答题必须写全两个采分点：<b>Translation</b> + <b>列向量</b>。','(b) 沿 y = x 反射的规则：<b>坐标互换</b> (x, y) → (y, x)。(5,6)→(6,5)；(5,7)→(7,5)；(7,7)→(7,7)——落在镜线上的点纹丝不动。点"播放动画"看镜线。'],
+finalTxt:'答案：(a) Translation, vector (−1, −5)　(b) 顶点 (6,5)、(7,5)、(7,7)',
+card:{m:'描述变换要"报全名"：平移→向量；旋转→中心+角度+方向；反射→镜线方程；放大→中心+比例因子。少报一项直接丢分。',mo:['y = −x 反射：(x,y)→(−y,−x)','两次变换的合成等效于什么单一变换','负比例因子的放大（图形穿过中心翻到对面）']},
+vg:function(){var u=ri(-4,4)||2,v=ri(-5,5)||-3;var a=ri(1,3),b=ri(1,3);var P1=[a,b],P2=[a,b+1],P3=[a+2,b+1];function tr(P){return '('+(P[0]+u)+', '+(P[1]+v)+')'}var right=VEC(u,v),o=[[right,1,''],[VEC(-u,-v),0,'方向反了：向量 = 终点 − 起点。'],[VEC(v,u),0,'横纵分量写反了：上面是 x 方向，下面是 y 方向。'],[VEC(u,-v),0,'y 分量符号错了。']];return{stem:'Triangle P has vertices ('+P1+'), ('+P2+'), ('+P3+'). It is translated to ('+tr(P1)+', '+tr(P2)+', '+tr(P3)+'). Which vector describes the translation?',part:{t:'mcq',opts:shuffle(o)},sol:'向量 = 终点−起点 = ('+u+', '+v+')'}}},
+
+{n:22,marks:4,topic:'流量与单位换算',stem:'A pipe is completely full of water.<br>Water flows through the pipe at a speed of 1.2 m/s into a tank.<br>The cross-section of the pipe has an area of 6 cm<sup>2</sup>.<br>Calculate the number of <b>litres</b> of water flowing into the tank in 1 hour.',gloss:'cross-section 横截面 · flow 流动 · litre 升（1 L = 1000 cm³）',
+parts:[{id:'22',t:'mcq',opts:[['2592 litres',1,''],['2.592 litres',0,'体积算对了（2 592 000 cm³），但升的换算是 ÷1000，不是 ÷1 000 000——1 L = 1000 cm³。'],['43.2 litres',0,'这是 1 <b>分钟</b>的流量。1 小时 = 3600 秒。'],['259 200 litres',0,'速度换算断链：1.2 m/s = 120 cm/s（×100），你的数字多了一百倍。']]}],
+steps:['统一单位是第一步：1.2 m/s = <b>120 cm/s</b>（截面积是 cm²，就把速度也化成 cm）。','每秒流量 = 速度 × 截面积 = 120 × 6 = 720 cm³/s——想象每秒推出一根 120 cm 长、截面 6 cm² 的"水柱"。','1 小时 = 3600 s → 720 × 3600 = 2 592 000 cm³ ÷ 1000 = <b>2592 L</b>。'],
+finalTxt:'答案：2592 litres',
+card:{m:'流量 = 截面积 × 速度，本质是"每秒推出一根水柱"。这类题的分全在单位链上：先统一到同一长度单位，最后一步才换升。',mo:['已知流量反求速度或管径','注满水箱需要多长时间','两管同时注水（相加流量）']},
+vg:function(){var v=pick([0.8,1.5,2,2.5]),A=pick([4,5,8,10]),mins=pick([20,30,45,60]);var ans=v*100*A*mins*60/1000;return{stem:'Water flows at '+v+' m/s through a pipe of cross-section '+A+' cm². How many litres flow in '+mins+' minutes?',part:{t:'num',ans:ans,tol:0.5,ph:'litres'},sol:v*100+' cm/s × '+A+' cm² × '+(mins*60)+' s ÷ 1000 = '+fmtN(ans)+' L'}}},
+
+{n:23,marks:4,topic:'集合',
+fig:'<svg viewBox="0 0 330 172" width="330"><rect x="8" y="10" width="314" height="152" rx="8" fill="none" stroke="#1D1D1F" stroke-width="1.4"/><circle cx="118" cy="88" r="60" fill="none" stroke="#0071E3" stroke-width="1.5"/><circle cx="196" cy="88" r="54" fill="none" stroke="#C56A00" stroke-width="1.5"/><text x="66" y="36" font-size="13" fill="#0071E3" font-style="italic">A</text><text x="238" y="36" font-size="13" fill="#C56A00" font-style="italic">B</text><text x="14" y="26" font-size="12" fill="#6E6E73">ℰ</text><text x="82" y="74" font-size="13">0</text><text x="88" y="112" font-size="13">4</text><text x="112" y="58" font-size="13">6</text><text x="152" y="80" font-size="13">2</text><text x="154" y="106" font-size="13">5</text><text x="222" y="92" font-size="13">1</text><text x="298" y="32" font-size="13">3</text></svg>',
+stem:'ℰ = {0, 1, 2, 3, 4, 5, 6}&nbsp;&nbsp;&nbsp;&nbsp;A = {0, 2, 4, 5, 6}&nbsp;&nbsp;&nbsp;&nbsp;B = {1, 2, 5}<br>Complete each of the following statements.',gloss:'∩ 交集 · ∪ 并集 · A′ 补集 · n(B) 元素个数 · ⊂ 真子集',
+parts:[{id:'23',t:'q23'}],
+steps:['A ∩ B = "两边都有"的元素。逐个筛：2 ✓、5 ✓ → <b>{2, 5}</b>。','n(B) 数个数：B 有 1、2、5 三个元素 → <b>3</b>。','{0, 4, 6} 的共同身份：都在 A 里、都<b>不在</b> B 里 → <b>A ∩ B′</b>（B′ 读作 B 的补集，写 B′∩A 同样得分）。','{2, 4} 的每个元素都在 A = {0,2,4,5,6} 中，且不等于 A → <b>⊂</b>（真子集；写 ⊆ 也接受）。'],
+finalTxt:'答案：{2,5}；3；A ∩ B′；⊂',
+card:{m:'读符号先问一句话：∩"都有吗"、∪"合起来"、′"不在里面"、⊂"每个都在吗"。做韦恩图题先把每个元素放进正确的格子（见图），再答一切问题。',mo:['n(A∪B) = n(A)+n(B)−n(A∩B)','用集合符号描述韦恩图阴影','三集合韦恩图（P4 高频）']},
+vg:function(){var U=[0,1,2,3,4,5,6,7],A=[],B=[];U.forEach(function(x){if(Math.random()<0.55)A.push(x);if(Math.random()<0.45)B.push(x)});if(!A.length)A=[1,3];if(!B.length)B=[2,3];var ans=A.filter(function(x){return B.indexOf(x)<0});return{stem:'ℰ = {0,…,7}，A = {'+A.join(', ')+'}，B = {'+B.join(', ')+'}。求 A ∩ B′（在 A 中但不在 B 中的元素）。',part:{t:'set',arr:ans,ph:'如 {1,4}（空集填 {}）'},sol:'从 A 中剔除同时在 B 里的元素 → {'+ans.join(', ')+'}'}}},
+
+{n:24,marks:4,topic:'复合函数与反函数',stem:'f(<i>x</i>) = 3<i>x</i> − 5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g(<i>x</i>) = 2<sup><i>x</i></sup>',gloss:'composite function 复合函数 fg(x)=f(g(x)) · inverse function 反函数 f⁻¹',
+parts:[
+ {id:'24a',label:'(a) Find fg(3).',t:'mcq',opts:[['19',1,''],['13',0,'把 g 读成了 2x。g(x) = 2<sup>x</sup> 是指数函数：g(3) = 2³ = 8，不是 6。'],['16',0,'这是 gf(3) = g(4) = 2⁴。fg 的顺序是<b>从右往左</b>：先 g 后 f。'],['24',0,'f(8) = 3×8 − 5，最后的 −5 忘了减。']]},
+ {id:'24b',label:'(b) Find f⁻¹(x).',t:'expr',vars:['x'],target:'(x+5)/3',ph:'如 (x+5)/3',needParen:true,oneSlash:true}],
+steps:['fg(3) 读作"f of g of 3"，<b>先里后外</b>：g(3) = 2³ = 8。','再喂给 f：f(8) = 3×8 − 5 = <b>19</b>。','反函数三步：设 y = 3x − 5 → 反解 x = (y+5)/3 → 交换记号：<b>f⁻¹(x) = (x+5)/3</b>。检验：f((x+5)/3) = x ✓。'],
+finalTxt:'答案：(a) 19　(b) f⁻¹(x) = (x + 5)/3',
+card:{m:'复合从右往左、先里后外；反函数=把加减乘除全部逆序反着来。f⁻¹ 的含义是"输出反查输入"，不是 1/f。',mo:['gf 与 fg 结果不同（顺序敏感性）','f²(x) = f(f(x))','解方程 fg(x) = k']},
+vg:function(){var a=ri(2,5),b=ri(1,9),c=pick([2,3]),k=pick([2,3]);var ans=a*Math.pow(c,k)-b;return{stem:'f(x) = '+a+'x − '+b+', g(x) = '+c+'<sup>x</sup>. Find fg('+k+').',part:{t:'num',ans:ans,tol:1e-9,ph:'fg('+k+') ='},sol:'g('+k+')='+c+'^'+k+'='+Math.pow(c,k)+' → f('+Math.pow(c,k)+')='+a+'×'+Math.pow(c,k)+'−'+b+'='+ans}}},
+
+{n:25,marks:4,topic:'向量',anim:'a25',
+fig:'<svg viewBox="0 0 300 185" width="300"><defs><marker id="ar25" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><path d="M0,0 L8,3.5 L0,7 Z" fill="#1D1D1F"/></marker><marker id="ar25b" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><path d="M0,0 L8,3.5 L0,7 Z" fill="#0071E3"/></marker></defs><text x="240" y="20" font-size="10" fill="#6E6E73">NOT TO SCALE</text><line x1="30" y1="150" x2="264" y2="150" stroke="#1D1D1F" stroke-width="1.6" marker-end="url(#ar25)"/><line x1="30" y1="150" x2="146" y2="34" stroke="#1D1D1F" stroke-width="1.6" marker-end="url(#ar25)"/><line x1="270" y1="150" x2="150" y2="30" stroke="#9AA2AB" stroke-width="1.3" stroke-dasharray="5 4"/><path id="f25p" d="M70,110 L30,150 L150,150" fill="none" stroke="#0071E3" stroke-width="2.4" opacity="0" marker-end="url(#ar25b)"/><circle cx="30" cy="150" r="3" fill="#1D1D1F"/><circle cx="150" cy="150" r="3" fill="#1D1D1F"/><circle cx="270" cy="150" r="3.4" fill="#1D1D1F"/><circle cx="70" cy="110" r="3" fill="#1D1D1F"/><circle cx="150" cy="30" r="3.4" fill="#1D1D1F"/><circle cx="210" cy="90" r="3.4" fill="#30D158"/><text x="20" y="166" font-size="13" font-style="italic">O</text><text x="146" y="167" font-size="13" font-style="italic">A</text><text x="266" y="167" font-size="13" font-style="italic">P</text><text x="52" y="106" font-size="13" font-style="italic">B</text><text x="140" y="22" font-size="13" font-style="italic">Q</text><text x="218" y="88" font-size="13" font-style="italic" fill="#1D8A43">M</text><text x="140" y="144" font-size="13" font-weight="600" fill="#1D1D1F">p</text><text x="76" y="66" font-size="13" font-weight="600" fill="#1D1D1F">q</text></svg>',
+stem:'O is the origin, <span style="text-decoration:overline">OP</span> = 2<span style="text-decoration:overline">OA</span>, <span style="text-decoration:overline">OQ</span> = 3<span style="text-decoration:overline">OB</span> and PM = MQ.<br><span style="text-decoration:overline">OP</span> = <b>p</b> and <span style="text-decoration:overline">OQ</span> = <b>q</b>.<br>Find, in terms of <b>p</b> and <b>q</b>, in its simplest form',gloss:'position vector 位置向量（从原点出发）· in terms of 用…表示 · midpoint 中点',
+parts:[
+ {id:'25a',label:'(a) 向量 BA',t:'expr',vars:['p','q'],target:'(1/2)*p-(1/3)*q',ph:'如 1/2p - 1/3q'},
+ {id:'25b',label:'(b) M 的位置向量',t:'expr',vars:['p','q'],target:'(1/2)*p+(1/2)*q',ph:'如 1/2p + 1/2q'}],
+steps:['先翻译条件：OP = 2OA 说明 A 是 OP 的中点 → <span style="text-decoration:overline">OA</span> = ½<b>p</b>；同理 <span style="text-decoration:overline">OB</span> = ⅓<b>q</b>。','BA 用"<b>终点 − 起点</b>"：BA = OA − OB = ½<b>p</b> − ⅓<b>q</b>。（等价路径法：从 B 走回 O 再走到 A，见动画。）','PM = MQ → M 是 PQ 中点 → 位置向量 OM = ½(OP + OQ) = <b>½p + ½q</b>。中点 = 两端位置向量的平均值。'],
+finalTxt:'答案：(a) BA = ½p − ⅓q　(b) OM = ½p + ½q',
+card:{m:'向量两板斧：终点−起点（都用位置向量）；或沿已知向量"走路"。中点公式 OM = ½(OP+OQ) 直接背，分点按比例改权重。',mo:['分点 PM:MQ = 2:1 时 OM = ⅓p + ⅔q（权重交叉）','证三点共线：证一向量是另一向量的倍数','向量分解求未知系数']},
+vg:function(){var m=ri(2,4),n=ri(2,4);while(n===m)n=ri(2,4);return{stem:'<span style="text-decoration:overline">OP</span> = '+m+'<span style="text-decoration:overline">OA</span>, <span style="text-decoration:overline">OQ</span> = '+n+'<span style="text-decoration:overline">OB</span>, <span style="text-decoration:overline">OP</span> = <b>p</b>, <span style="text-decoration:overline">OQ</span> = <b>q</b>. Find <span style="text-decoration:overline">BA</span> in terms of <b>p</b> and <b>q</b>.',part:{t:'expr',vars:['p','q'],target:'(1/'+m+')*p-(1/'+n+')*q',ph:'如 1/'+m+'p - 1/'+n+'q'},sol:'OA = p/'+m+'，OB = q/'+n+' → BA = OA − OB'}}},
+
+{n:26,marks:5,topic:'速度-时间图',anim:'a26',
+fig:'<svg viewBox="0 0 330 190" width="330"><text x="246" y="52" font-size="10" fill="#6E6E73">NOT TO SCALE</text><path id="f26r" d="M40,150 L40,45 L210,45 L210,150 Z" fill="#30D158" opacity="0"/><path id="f26t" d="M210,150 L210,45 L300,150 Z" fill="#0071E3" opacity="0"/><line x1="40" y1="150" x2="318" y2="150" stroke="#1D1D1F" stroke-width="1.5"/><line x1="40" y1="150" x2="40" y2="26" stroke="#1D1D1F" stroke-width="1.5"/><polyline points="40,45 210,45 300,150" fill="none" stroke="#1D1D1F" stroke-width="2"/><line x1="210" y1="45" x2="210" y2="150" stroke="#9AA2AB" stroke-width="1" stroke-dasharray="4 4"/><text x="20" y="49" font-size="12">20</text><text x="8" y="95" font-size="11" fill="#6E6E73">Speed</text><text x="10" y="108" font-size="11" fill="#6E6E73">(m/s)</text><text x="36" y="164" font-size="12">0</text><text x="203" y="164" font-size="12">15</text><text x="236" y="176" font-size="11" fill="#6E6E73">Time (s)</text><text id="f26c1" x="102" y="102" font-size="13" font-weight="600" fill="#1D8A43" opacity="0">300 m</text><text id="f26c2" x="228" y="132" font-size="13" font-weight="600" fill="#0071E3" opacity="0">80 m</text><text id="f26tt" x="196" y="34" font-size="13" font-weight="700" fill="#1D1D1F" opacity="0">共 380 m</text></svg>',
+stem:'A car travels at 20 m/s for 15 seconds before it comes to rest by decelerating at 2.5 m/s<sup>2</sup>.<br>Find the <b>total distance</b> travelled.',gloss:'come to rest 停止 · decelerate 减速 · speed-time graph 下方面积 = 距离',
+parts:[{id:'26',t:'num',ans:380,tol:0.5,ph:'总距离',unit:'m'}],
+steps:['速度-时间图的核心：<b>图线下方的面积 = 距离</b>。本图 = 一个矩形 + 一个三角形（点"播放动画"）。','匀速段（矩形）：20 × 15 = <b>300 m</b>。','减速段先求耗时：从 20 m/s 到 0，每秒减 2.5 → t = 20 ÷ 2.5 = 8 s。三角形 = ½ × 8 × 20 = <b>80 m</b>。总距离 = 300 + 80 = <b>380 m</b>。'],
+finalTxt:'答案：380 m',
+card:{m:'速度-时间图三件套：斜率 = 加速度、面积 = 距离、水平线 = 匀速。"减速至停"类题先用 时间 = 速度÷减速度 补出缺失的时间。',mo:['梯形面积一步式 ½(上底+下底)×高','三段式行程（加速+匀速+减速）','对照 distance-time 图：那里斜率才是速度']},
+vg:function(){var a=pick([1.5,2,2.5,3]),v=a*ri(4,10),t1=pick([10,12,15,20]);var ans=v*t1+0.5*(v/a)*v;return{stem:'A train travels at '+v+' m/s for '+t1+' s, then decelerates uniformly at '+a+' m/s² until it stops. Find the total distance.',part:{t:'num',ans:ans,tol:0.5,ph:'m'},sol:'匀速 '+(v*t1)+' m；刹车 '+v+'/'+a+'='+(v/a)+' s → 三角 ½×'+(v/a)+'×'+v+'='+(0.5*v/a*v)+' m；共 '+ans+' m'}}}
+];
+</script>
+<script>
+'use strict';
+/* ================= 状态 ================= */
+var SKEY='simon_school_math_v1';
+var ST={meta:{created:new Date().toISOString().slice(0,10),opened:0},it:{},qv:{}};
+try{var _s=JSON.parse(localStorage.getItem(SKEY));if(_s&&_s.it)ST=_s}catch(e){}
+ST.meta.opened=(ST.meta.opened||0)+1;
+function save(){try{localStorage.setItem(SKEY,JSON.stringify(ST))}catch(e){}}
+function IT(id){if(!ST.it[id])ST.it[id]={a:0,w:0,ok:0};return ST.it[id]}
+
+/* ================= 判定 ================= */
+function checkSpec(sp,val){
+  if(sp.t==='num'){
+    var s=String(val);var u;
+    if(/pi|π/i.test(s)){u=evalExpr(s,[],[])}else{u=parseNum(s)}
+    if(!isFinite(u))return{ok:0,msg:'没读懂这个数——检查格式（可用小数、分数 a/b，或 2pi 这样的 π 式）'};
+    return{ok:Math.abs(u-sp.ans)<=(sp.tol!=null?sp.tol:1e-9)?1:0,msg:''};
+  }
+  if(sp.t==='sf'){
+    var z=String(val).toLowerCase().replace(/\s|,/g,'').replace(/×/g,'x').replace(/−/g,'-').replace(/\*/g,'x');
+    var m=z.match(/^(-?\d*\.?\d+)x10\^(-?\d+)$/)||z.match(/^(-?\d*\.?\d+)e(-?\d+)$/);
+    if(!m){if(isFinite(parseNum(val))&&Math.abs(parseNum(val)-sp.val)<1e-6)return{ok:0,msg:'数值对了，但必须写成 a×10ⁿ 的标准形式（如 1.5×10^3）'};return{ok:0,msg:'格式：a×10^n，例如 1.506×10^4'}}
+    var a=parseFloat(m[1]),e=parseInt(m[2],10);
+    if(Math.abs(a)<1||Math.abs(a)>=10)return{ok:0,msg:'标准形式要求 1 ≤ a < 10——你的 a = '+a};
+    return{ok:Math.abs(a*Math.pow(10,e)-sp.val)<=Math.abs(sp.val)*1e-9?1:0,msg:''};
+  }
+  if(sp.t==='frac'){
+    var s2=String(val).replace(/\s/g,'');
+    if(!/\//.test(s2)){return{ok:0,msg:'请写成分数 a/b'}}
+    if(fracEq(s2,sp.fn,sp.fd,true))return{ok:1,msg:''};
+    if(fracEq(s2,sp.fn,sp.fd,false))return{ok:0,msg:'数值对了，但还能约分——题目要求最简形式'};
+    return{ok:0,msg:''};
+  }
+  if(sp.t==='expr'){
+    var s3=String(val);
+    if(sp.needParen&&s3.indexOf('(')<0)return{ok:0,msg:'这个答案需要括号来保住结构'};
+    if(sp.oneSlash&&(s3.match(/\//g)||[]).length>1)return{ok:0,msg:'请合并为单一分式——只保留一条分数线'};
+    if(sp.maxLen&&s3.replace(/\s/g,'').length>sp.maxLen)return{ok:0,msg:'数值上等价，但还不是最简形式——继续化简'};
+    if(sp.oneEach){for(var i=0;i<sp.oneEach.length;i++){var L=sp.oneEach[i];var cnt=(s3.toLowerCase().match(new RegExp(L,'g'))||[]).length;if(cnt!==1)return{ok:0,msg:'最简结果里字母 '+L+' 应恰好出现一次——先合并同类项'}}}
+    return{ok:exprEq(s3,sp.target,sp.vars)?1:0,msg:''};
+  }
+  if(sp.t==='set'){return{ok:setEq(val,sp.arr)?1:0,msg:''}}
+  return{ok:0,msg:''};
+}
+
+/* ================= 渲染 ================= */
+var qwrap=$('#qwrap');
+function stChip(n){
+  var q=QS[n-1];var allOk=q.parts.every(function(p){return IT(p.id).ok});var anyA=q.parts.some(function(p){return IT(p.id).a>0});
+  var anyW=q.parts.some(function(p){return IT(p.id).w});var v=ST.qv[n]||0;
+  if(allOk&&v>=2)return['st3','已掌握'];
+  if(anyW&&!(allOk&&v>=2))return['st1','需复习'];
+  if(allOk)return['st2','已答对 · 待变式'];
+  if(anyA)return['st2','进行中'];
+  return['st0','未做'];
+}
+function refreshChip(n){var c=stChip(n);var e=$('#st-'+n);e.className='st '+c[0];e.textContent=c[1]}
+function dash(){
+  var a=0,r=0,rev=0,m=0;
+  QS.forEach(function(q){
+    q.parts.forEach(function(p){var t=IT(p.id);if(t.a>0)a++;if(t.ok)r++});
+    var c=stChip(q.n);if(c[1]==='已掌握')m++;if(c[1]==='需复习')rev++;
+  });
+  $('#dAns').firstChild.nodeValue=a;$('#dRight').textContent=r;$('#dMast').firstChild.nodeValue=m;$('#dRev').textContent=rev;
+  $('#dBar').style.width=Math.round(a/31*100)+'%';
+  var box=$('#rvBox'),ch=$('#rvChips');ch.innerHTML='';
+  var list=QS.filter(function(q){return stChip(q.n)[1]==='需复习'});
+  if(list.length){box.style.display='block';list.forEach(function(q){var c=el('span','rv-chip','Q'+q.n+' · '+q.topic);c.onclick=function(){var t=$('#q-'+q.n);t.scrollIntoView({behavior:'smooth',block:'start'})};ch.appendChild(c)})}
+  else box.style.display='none';
+  save();
+}
+function fb(node,ok,msg,why){
+  node.className='fb '+(ok?'ok':'no');
+  node.innerHTML=(ok?'✓ 正确':'✗ 还不对')+(msg?'<span class="why">'+msg+'</span>':'')+(why?'<span class="why">'+why+'</span>':'');
+}
+function afterAttempt(q,part,ok){
+  var t=IT(part.id);t.a++;if(ok)t.ok=1;else{t.w=1;t.ok=0}
+  refreshChip(q.n);unlockExtras(q);dash();
+}
+function unlockExtras(q){
+  var anyA=q.parts.some(function(p){return IT(p.id).a>0});
+  var allA=q.parts.every(function(p){return IT(p.id).a>0});
+  $('#expbtn-'+q.n).disabled=!anyA;
+  $('#vtbtn-'+q.n).disabled=!allA;
+  $('#vtlock-'+q.n).textContent=allA?'':'（先把上面的原题各试一次）';
+}
+function renderMCQ(q,part,host){
+  var grid=el('div','opts');var fbn=el('div','fb');
+  var order=shuffle(part.opts.map(function(o,i){return i}));
+  order.forEach(function(oi,k){
+    var o=part.opts[oi];
+    var b=el('button','opt','<b>'+String.fromCharCode(65+k)+'</b>'+o[0]);
+    b.onclick=function(){
+      if(o[1]){b.className='opt sel-ok';grid.querySelectorAll('.opt').forEach(function(x){if(x!==b)x.className='opt dim'});fb(fbn,1,'');afterAttempt(q,part,1)}
+      else{b.className='opt sel-no dim';fb(fbn,0,'',o[2]);afterAttempt(q,part,0)}
+    };
+    grid.appendChild(b);
+  });
+  host.appendChild(grid);host.appendChild(fbn);
+  if(IT(part.id).ok){fb(fbn,1,'此前已答对（选项已重新洗牌，可再练）')}
+}
+function renderInput(q,part,host){
+  var row=el('div','inrow');var inp=el('input','inp');inp.placeholder=part.ph||'';inp.setAttribute('aria-label','答案输入');
+  var btn=el('button','btn btn-blue btn-mini','检查');var u=part.unit?el('span','unit',part.unit):null;
+  var fbn=el('div','fb');
+  function go(){var r=checkSpec(part,inp.value);fb(fbn,r.ok,r.msg);afterAttempt(q,part,r.ok)}
+  btn.onclick=go;inp.addEventListener('keydown',function(e){if(e.key==='Enter')go()});
+  row.appendChild(inp);if(u)row.appendChild(u);row.appendChild(btn);
+  host.appendChild(row);host.appendChild(fbn);
+  if(IT(part.id).ok)fb(fbn,1,'此前已答对，可再练');
+}
+function renderMat2(q,part,host){
+  var box=el('div','inrow');box.innerHTML='<span style="font-size:26px;font-weight:300">(</span>';
+  var col=el('span','', '');col.style.cssText='display:inline-flex;flex-direction:column;gap:6px';
+  var ins=[];
+  for(var r=0;r<2;r++){var rw=el('span');rw.style.cssText='display:flex;gap:6px';for(var c=0;c<2;c++){var i2=el('input','inp w-xs');i2.placeholder='?';ins.push(i2);rw.appendChild(i2)}col.appendChild(rw)}
+  box.appendChild(col);box.appendChild(el('span','','<span style="font-size:26px;font-weight:300">)</span>'));
+  var btn=el('button','btn btn-blue btn-mini','检查');var fbn=el('div','fb');
+  btn.onclick=function(){
+    var ok=1;for(var k=0;k<4;k++){var want=part.ans[Math.floor(k/2)][k%2];if(!numEq(ins[k].value,want,1e-9)){ok=0}}
+    fb(fbn,ok,ok?'':'至少一格不对——每格 = M 的对应行 · P 的对应列');afterAttempt(q,part,ok);
+  };
+  box.appendChild(btn);host.appendChild(box);host.appendChild(fbn);
+  if(IT(part.id).ok)fb(fbn,1,'此前已答对');
+}
+function renderQ23(q,part,host){
+  var wrap=el('div');
+  var i1=el('input','inp w-s');i1.placeholder='{ }';
+  var i2=el('input','inp w-xs');i2.placeholder='个数';
+  var s1=el('select','inp'),s2=el('select','inp');
+  ['A','B','A′','B′'].forEach(function(o){s1.appendChild(el('option','',o));s2.appendChild(el('option','',o))});
+  s1.value='A';s2.value='A';
+  var symWrap=el('span');var chosen='';
+  ['⊂','⊆','⊄','∈','='].forEach(function(sym){
+    var b=el('button','btn btn-ghost btn-mini',sym);b.style.marginRight='6px';
+    b.onclick=function(){chosen=sym;symWrap.querySelectorAll('button').forEach(function(x){x.style.background=''});b.style.background='#CFE5FF'};
+    symWrap.appendChild(b);
+  });
+  function row(html,node){var r=el('div','inrow');r.innerHTML='<span style="min-width:120px">'+html+'</span>';r.appendChild(node);var mk=el('span','unit');mk.style.minWidth='22px';r.appendChild(mk);wrap.appendChild(r);return mk}
+  var m1=row('A ∩ B =',i1),m2=row('n(B) =',i2);
+  var pairBox=el('span');pairBox.appendChild(s1);pairBox.appendChild(el('span','unit',' ∩ '));pairBox.appendChild(s2);
+  var m3=row('{0, 4, 6} =',pairBox);
+  var m4=row('{2, 4} ___ A：',symWrap);
+  var btn=el('button','btn btn-blue btn-mini','检查全部');var fbn=el('div','fb');
+  btn.onclick=function(){
+    var r1=setEq(i1.value,[2,5]);m1.textContent=r1?'✓':'✗';
+    var r2=numEq(i2.value,3,0);m2.textContent=r2?'✓':'✗';
+    var pr=[s1.value,s2.value].sort().join('');var r3=(pr==='AB′');m3.textContent=r3?'✓':'✗';
+    var r4=(chosen==='⊂'||chosen==='⊆');m4.textContent=r4?'✓':'✗';
+    var ok=r1&&r2&&r3&&r4;
+    fb(fbn,ok,ok?'':'带 ✗ 的空对照韦恩图再核一遍（第三空 = 在 A 且不在 B → A ∩ B′）');
+    afterAttempt(q,part,ok?1:0);
+  };
+  wrap.appendChild(btn);wrap.appendChild(fbn);host.appendChild(wrap);
+  if(IT(part.id).ok)fb(fbn,1,'此前已全对');
+}
+function mkGridSVG(){
+  var s='<svg viewBox="0 0 300 292" width="300" style="touch-action:manipulation"><g stroke="#E3E5E8" stroke-width="1">';
+  for(var i=0;i<=8;i++){s+='<line x1="'+(36+28*i)+'" y1="28" x2="'+(36+28*i)+'" y2="252"/><line x1="36" y1="'+(252-28*i)+'" x2="260" y2="'+(252-28*i)+'"/>'}
+  s+='</g><line x1="36" y1="252" x2="266" y2="252" stroke="#1D1D1F" stroke-width="1.5"/><line x1="36" y1="252" x2="36" y2="22" stroke="#1D1D1F" stroke-width="1.5"/>';
+  for(var j=1;j<=8;j++){s+='<text x="'+(33+28*j)+'" y="266" font-size="9.5" fill="#6E6E73">'+j+'</text><text x="24" y="'+(255-28*j)+'" font-size="9.5" fill="#6E6E73">'+j+'</text>'}
+  s+='<text x="26" y="266" font-size="9.5" fill="#6E6E73">0</text>';
+  s+='<line x1="36" y1="252" x2="260" y2="28" stroke="#0071E3" stroke-width="1.3" stroke-dasharray="5 4" opacity=".55"/><text x="236" y="46" font-size="11" fill="#0071E3">y = x</text>';
+  s+='<polygon points="176,84 176,56 232,56" fill="#C9CDD3" stroke="#1D1D1F" stroke-width="1.3" opacity=".85"/><text x="198" y="76" font-size="12" font-style="italic">T</text>';
+  s+='<polygon id="gUser" points="" fill="rgba(48,209,88,.18)" stroke="#30D158" stroke-width="1.6"/><g id="gDots"></g><g id="gHits">';
+  for(var gx=0;gx<=8;gx++)for(var gy=0;gy<=8;gy++)s+='<circle cx="'+(36+28*gx)+'" cy="'+(252-28*gy)+'" r="9" fill="rgba(0,0,0,0)" data-x="'+gx+'" data-y="'+gy+'" style="cursor:pointer"/>';
+  return s+'</g></svg>';
+}
+function renderGrid(q,part,host){
+  var box=el('div');box.innerHTML=mkGridSVG();
+  var picked=[];var dots=box.querySelector('#gDots'),poly=box.querySelector('#gUser');
+  function paint(){
+    dots.innerHTML=picked.map(function(p){return '<circle cx="'+(36+28*p[0])+'" cy="'+(252-28*p[1])+'" r="4.5" fill="#30D158"/>'}).join('');
+    poly.setAttribute('points',picked.length===3?picked.map(function(p){return (36+28*p[0])+','+(252-28*p[1])}).join(' '):'');
+  }
+  box.querySelector('#gHits').addEventListener('click',function(e){
+    var t=e.target;if(!t.getAttribute||t.getAttribute('data-x')==null)return;
+    var x=+t.getAttribute('data-x'),y=+t.getAttribute('data-y');
+    var idx=picked.findIndex(function(p){return p[0]===x&&p[1]===y});
+    if(idx>=0)picked.splice(idx,1);else{if(picked.length>=3){toast('最多 3 个顶点——先点掉一个再换');return}picked.push([x,y])}
+    paint();
+  });
+  var row=el('div','inrow');var btn=el('button','btn btn-blue btn-mini','检查作图');var clr=el('button','btn btn-ghost btn-mini','清空');
+  var fbn=el('div','fb');
+  btn.onclick=function(){
+    if(picked.length!==3){toast('先点出 3 个顶点');return}
+    var key=function(a){return a.map(function(p){return p[0]+','+p[1]}).sort().join(';')};
+    var ok=key(picked)===key(part.target);
+    fb(fbn,ok,ok?'三个顶点全部正确':'对照规则 (x,y)→(y,x) 逐点检查；提示：镜线上的点反射后不动');
+    afterAttempt(q,part,ok?1:0);
+  };
+  clr.onclick=function(){picked=[];paint()};
+  row.appendChild(btn);row.appendChild(clr);
+  host.appendChild(box);host.appendChild(row);host.appendChild(fbn);
+  if(IT(part.id).ok)fb(fbn,1,'此前已作对');
+}
+function renderPart(q,part,host){
+  if(part.label)host.appendChild(el('div','part-label',part.label));
+  if(part.t==='mcq')renderMCQ(q,part,host);
+  else if(part.t==='mat2')renderMat2(q,part,host);
+  else if(part.t==='q23')renderQ23(q,part,host);
+  else if(part.t==='grid')renderGrid(q,part,host);
+  else renderInput(q,part,host);
+}
+/* ================= 变式 ================= */
+function renderVariant(q,body,counter){
+  body.innerHTML='';var v=q.vg();q._v=v;
+  body.appendChild(el('div','vt-stem',v.stem));
+  var host=el('div');body.appendChild(host);
+  var fbn=el('div','fb');var solEl=el('div','step');solEl.style.display='none';
+  function done(ok){
+    if(ok){ST.qv[q.n]=(ST.qv[q.n]||0)+1}else{ST.qv[q.n]=0}
+    counter.textContent='已连对 '+(ST.qv[q.n]||0)+' / 2';
+    solEl.innerHTML='<b>解</b>：'+v.sol;solEl.style.display='block';
+    refreshChip(q.n);dash();
+    if((ST.qv[q.n]||0)>=2)toast('Q'+q.n+' 已掌握 ✓ 变式连对两次');
+  }
+  if(v.part.t==='mcq'){
+    var grid=el('div','opts');
+    var order=shuffle(v.part.opts.map(function(o,i){return i}));
+    order.forEach(function(oi,k){var o=v.part.opts[oi];var b=el('button','opt','<b>'+String.fromCharCode(65+k)+'</b>'+o[0]);
+      b.onclick=function(){grid.querySelectorAll('.opt').forEach(function(x){x.classList.add('dim')});b.className='opt '+(o[1]?'sel-ok':'sel-no');fb(fbn,o[1]?1:0,'',o[2]||'');done(o[1]?1:0)};
+      grid.appendChild(b)});
+    host.appendChild(grid);
+  }else{
+    var row=el('div','inrow');var inp=el('input','inp');inp.placeholder=v.part.ph||'';
+    var btn=el('button','btn btn-blue btn-mini','检查');
+    var locked=false;
+    function go(){if(locked)return;locked=true;inp.disabled=true;btn.disabled=true;var r=checkSpec(v.part,inp.value);fb(fbn,r.ok,r.msg);done(r.ok)}
+    btn.onclick=go;inp.addEventListener('keydown',function(e){if(e.key==='Enter')go()});
+    row.appendChild(inp);row.appendChild(btn);host.appendChild(row);
+  }
+  body.appendChild(fbn);body.appendChild(solEl);
+}
+/* ================= 动画 ================= */
+function sd(id,ms,fn){setTimeout(fn,ms)}
+var ANIM={
+ a13:function(fig){var h=fig.querySelector('#f13h'),ra=fig.querySelector('#f13ra'),l=fig.querySelector('#f13hl');[h,ra,l].forEach(function(x){x.style.transition='opacity .5s';x.style.opacity=0});sd(0,60,function(){h.style.opacity=1});sd(0,650,function(){ra.style.opacity=1});sd(0,1150,function(){l.style.opacity=1})},
+ a17:function(fig){var o=fig.querySelector('#f17o'),i=fig.querySelector('#f17i'),w=fig.querySelector('#f17w');
+   [o,i].forEach(function(p){var L=(p.getTotalLength?p.getTotalLength():320);p.style.transition='none';p.style.strokeDasharray=L;p.style.strokeDashoffset=L});
+   w.style.transition='none';w.style.opacity=0;
+   sd(0,60,function(){[o,i].forEach(function(p){p.style.transition='stroke-dashoffset .9s ease';p.style.strokeDashoffset=0})});
+   sd(0,1000,function(){w.style.transition='opacity .6s';w.style.opacity=1});},
+ a21:function(fig){var yx=fig.querySelector('#f21yx'),yl=fig.querySelector('#f21yxl');
+   yx.style.transition='opacity .5s';yl.style.transition='opacity .5s';yx.style.opacity=1;yl.style.opacity=1;
+   var old=fig.querySelector('#f21clone');if(old)old.parentNode.removeChild(old);
+   var svg=fig.querySelector('svg');var c=document.createElementNS('http://www.w3.org/2000/svg','polygon');
+   c.setAttribute('id','f21clone');c.setAttribute('fill','rgba(48,209,88,.2)');c.setAttribute('stroke','#30D158');c.setAttribute('stroke-width','1.5');
+   svg.appendChild(c);
+   var A=[[176,84],[176,56],[232,56]],B=[[204,112],[232,112],[232,56]],t0=null;
+   function step(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/900);
+     c.setAttribute('points',A.map(function(p,i){return (p[0]+(B[i][0]-p[0])*k)+','+(p[1]+(B[i][1]-p[1])*k)}).join(' '));
+     if(k<1)requestAnimationFrame(step)}
+   sd(0,500,function(){requestAnimationFrame(step)});},
+ a25:function(fig){var p=fig.querySelector('#f25p');var L=(p.getTotalLength?p.getTotalLength():320);p.style.transition='none';p.style.opacity=1;p.style.strokeDasharray=L;p.style.strokeDashoffset=L;sd(0,60,function(){p.style.transition='stroke-dashoffset 1.1s ease';p.style.strokeDashoffset=0})},
+ a26:function(fig){var ids=['f26r','f26c1','f26t','f26c2','f26tt'],ds=[60,700,1300,1900,2500];
+   ids.forEach(function(id){var e=fig.querySelector('#'+id);e.style.transition='none';e.style.opacity=0});
+   ids.forEach(function(id,i){sd(0,ds[i],function(){var e=fig.querySelector('#'+id);e.style.transition='opacity .55s';e.style.opacity=(id==='f26r'||id==='f26t')?0.22:1})});},
+ a16:function(fig,box){
+   box.innerHTML='<svg viewBox="0 0 340 175" width="340">'
+   +'<line x1="30" y1="140" x2="322" y2="140" stroke="#9AA2AB" stroke-width="1.3"/>'
+   +'<line id="g1" x1="30" y1="140" x2="151.2" y2="41.8" stroke="#1D1D1F" stroke-width="1.8" opacity="0"/>'
+   +'<text id="g1t" x="66" y="80" font-size="12" opacity="0">12（对着 x）</text>'
+   +'<path d="M 56,140 A 26,26 0 0 0 50.2,123.6" fill="none" stroke="#0071E3" stroke-width="1.4"/><text x="60" y="130" font-size="11" fill="#0071E3">39°</text>'
+   +'<path id="g2" d="M 84.4,180 A 104,104 0 0 1 218,180" fill="none" stroke="#C56A00" stroke-width="1.4" stroke-dasharray="5 4" opacity="0" transform="translate(0,-40)"/>'
+   +'<text id="g2t" x="228" y="70" font-size="11" fill="#C56A00" opacity="0">以另一端为圆心、半径 8 画弧</text>'
+   +'<line id="g3" x1="151.2" y1="41.8" x2="117" y2="140" stroke="#FF3B30" stroke-width="1.8" opacity="0"/>'
+   +'<text id="g3t" x="86" y="156" font-size="11.5" fill="#FF3B30" opacity="0">交点① → 钝角 109.3°</text>'
+   +'<line id="g4" x1="151.2" y1="41.8" x2="185.5" y2="140" stroke="#6E6E73" stroke-width="1.8" opacity="0"/>'
+   +'<text id="g4t" x="192" y="156" font-size="11.5" fill="#6E6E73" opacity="0">交点② → 锐角 70.7°（sin⁻¹ 只报它）</text>'
+   +'</svg><div class="figcap">同一组"两边一对角"能拼出两个三角形——这就是 sin 的两解</div>';
+   ['g1','g1t','g2','g2t','g4','g4t','g3','g3t'].forEach(function(id,i){var e=box.querySelector('#'+id);e.style.transition='opacity .5s';sd(0,150+i*520,function(){e.style.opacity=1})});
+ }
+};
+</script>
+<script>
+'use strict';
+function buildQ(q){
+  var card=el('div','q');card.id='q-'+q.n;
+  var head=el('div','q-head');
+  head.appendChild(el('span','q-num','Q'+q.n));
+  head.appendChild(el('span','chip',q.topic));
+  if(q.old)head.appendChild(el('span','chip old','旧大纲'));
+  var st=el('span','st st0','未做');st.id='st-'+q.n;head.appendChild(st);
+  head.appendChild(el('span','marks','['+q.marks+' 分]'));
+  card.appendChild(head);
+  if(q.stem)card.appendChild(el('div','stem',q.stem));
+  if(q.gloss)card.appendChild(el('div','gloss',q.gloss));
+  var figEl=null;
+  if(q.fig){figEl=el('div','fig',q.fig);card.appendChild(figEl)}
+  var ansBox=el('div','ans');card.appendChild(ansBox);
+  q.parts.forEach(function(p){renderPart(q,p,ansBox)});
+  var ctr=el('div','inrow');ctr.style.marginTop='14px';
+  var eb=el('button','btn btn-ghost btn-mini','看分步讲解');eb.id='expbtn-'+q.n;eb.disabled=true;
+  ctr.appendChild(eb);card.appendChild(ctr);
+  var exp=el('div','exp');
+  exp.appendChild(el('h4','','分步讲解 · 先想再看'));
+  var stepEls=q.steps.map(function(s,i){var d=el('div','step','<b>第 '+(i+1)+' 步</b>　'+s);exp.appendChild(d);return d});
+  var fin=el('div','final',q.finalTxt);exp.appendChild(fin);
+  var nxt=el('button','btn btn-blue btn-mini','下一步 ▸');exp.appendChild(nxt);
+  var cm=el('div','card-m','<b>思路卡 · '+q.topic+'</b>'+q.card.m+'<div class="mo" style="margin-top:6px">常见变形：'+q.card.mo.join('；')+'。</div>');
+  exp.appendChild(cm);
+  if(q.anim){
+    var ar=el('div','anim-box');
+    var pb=el('button','btn btn-ghost btn-mini play','▶ 播放动画');
+    ar.appendChild(pb);
+    var animBox=el('div');ar.appendChild(animBox);
+    exp.appendChild(ar);
+    pb.onclick=function(){try{if(q.anim==='a16'){ANIM.a16(figEl,animBox)}else{ANIM[q.anim](figEl)}}catch(e){}};
+  }
+  card.appendChild(exp);
+  var shown=0;
+  nxt.onclick=function(){
+    if(shown<stepEls.length){stepEls[shown].classList.add('show');shown++;
+      if(shown===stepEls.length){fin.classList.add('show');cm.classList.add('show');nxt.style.display='none'}}
+  };
+  eb.onclick=function(){
+    if(eb.disabled)return;
+    exp.classList.toggle('open');
+    eb.textContent=exp.classList.contains('open')?'收起讲解':'看分步讲解';
+  };
+  var vt=el('div','vt');
+  var vh=el('div','vt-head');
+  vh.appendChild(el('h4','','变式重练 · 换个数字，同一思路'));
+  var counter=el('span','vt-tag','已连对 '+(ST.qv[q.n]||0)+' / 2');vh.appendChild(counter);
+  vh.appendChild(el('span','vt-tag','· 连对两次 → 已掌握'));
+  var lockHint=el('span','vt-tag');lockHint.id='vtlock-'+q.n;vh.appendChild(lockHint);
+  vt.appendChild(vh);
+  var vrow=el('div','inrow');
+  var gv=el('button','btn btn-blue btn-mini','生成变式');gv.id='vtbtn-'+q.n;gv.disabled=true;
+  vrow.appendChild(gv);vt.appendChild(vrow);
+  var vbody=el('div','vt-body');vt.appendChild(vbody);
+  gv.onclick=function(){if(gv.disabled)return;vbody.style.display='block';renderVariant(q,vbody,counter);gv.textContent='换一题'};
+  card.appendChild(vt);
+  qwrap.appendChild(card);
+  refreshChip(q.n);unlockExtras(q);
+}
+function exportReport(){
+  var items={};QS.forEach(function(q){q.parts.forEach(function(p){items[p.id]=IT(p.id)})});
+  var a=0,r=0,m=0,rev=0;
+  QS.forEach(function(q){q.parts.forEach(function(p){var t=IT(p.id);if(t.a)a++;if(t.ok)r++});var c=stChip(q.n);if(c[1]==='已掌握')m++;if(c[1]==='需复习')rev++});
+  var rep={schema:'simon_school_math_v1',paper:'0580/21/O/N/19',exported:new Date().toISOString(),opened:ST.meta.opened,
+    summary:{answered:a,of:31,right:r,mastered:m,ofQ:26,review:rev},items:items,variants:ST.qv};
+  var d=new Date();var pad=function(x){return (x<10?'0':'')+x};
+  var fn=''+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'_Simon数学卷一_学习报告.json';
+  var link=document.createElement('a');
+  link.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(rep,null,2));
+  link.download=fn;document.body.appendChild(link);link.click();document.body.removeChild(link);
+  toast('学习报告已导出');
+}
+window.exportReport=exportReport;
+QS.forEach(buildQ);
+dash();save();
+window.__M={ST:function(){return ST},checkSpec:checkSpec,QS:QS,SKEY:SKEY,dash:dash,IT:IT};
+</script>
 </body>
 </html>

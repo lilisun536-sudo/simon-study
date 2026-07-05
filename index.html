@@ -103,8 +103,8 @@ body{
 
     <a class="card rise d3" href="school/">
       <div class="eyebrow">学校课件</div>
-      <h2>数学 · 同步校内<span class="chip" id="schoolChip">整理中</span></h2>
-      <p class="desc">与爱莎荔湾校内进度同步的数学练习，内容整理后上线，网址不变。</p>
+      <h2>数学 · 同步校内<span class="chip" id="schoolChip">卷一上线</span></h2>
+      <p class="desc">IGCSE 0580 真题四层精练：原题 · 作答 · 讲解 · 变式。卷一（W19 P2）已上线。</p>
       <p class="go">查看</p>
     </a>
 
@@ -138,6 +138,12 @@ body{
       document.getElementById('today').textContent=new Date().toLocaleDateString('zh-CN',{month:'long',day:'numeric',weekday:'long'});
     }catch(e){}
 
+    try{
+      var SM=JSON.parse(localStorage.getItem('simon_school_math_v1'));
+      if(SM&&SM.it){var ns=0;for(var kk in SM.it){if(SM.it[kk].a>0)ns++}
+        if(ns>0)document.getElementById('schoolChip').textContent='已作答 '+ns+'/31';
+      }
+    }catch(e){}
     var S=null;
     try{S=JSON.parse(localStorage.getItem(KEY));}catch(e){S=null;}
 

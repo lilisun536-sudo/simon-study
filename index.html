@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simon · 学习中心</title>
+<style>
+:root{
+  --bg:#F5F5F7; --card:#FFFFFF; --ink:#1D1D1F; --sub:#6E6E73;
+  --hair:#D2D2D7; --blue:#0071E3; --green:#30D158; --amber:#C56A00;
+  --track:#E8E8ED;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:17px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:920px;margin:0 auto;padding:0 22px}
+/* 顶栏 */
+.top{border-bottom:1px solid var(--hair);background:rgba(245,245,247,.85);backdrop-filter:saturate(180%) blur(20px);position:sticky;top:0;z-index:10}
+.top-in{display:flex;align-items:baseline;justify-content:space-between;padding:14px 0}
+.brand{font-size:15px;font-weight:600;letter-spacing:-.01em}
+.today{font-size:13px;color:var(--sub)}
+/* 主标 */
+.hero{padding:64px 0 40px}
+.hero h1{font-size:clamp(32px,6vw,52px);font-weight:600;letter-spacing:-.022em;line-height:1.12}
+.hero p{margin-top:10px;font-size:19px;color:var(--sub);letter-spacing:-.01em}
+/* 卡片 */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding-bottom:72px}
+.card{
+  grid-column:span 1; background:var(--card); border-radius:20px;
+  padding:28px; text-decoration:none; color:inherit; display:block;
+  box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 28px rgba(0,0,0,.05);
+  transition:transform .28s cubic-bezier(.2,.6,.2,1),box-shadow .28s;
+}
+.card:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(0,0,0,.05),0 16px 40px rgba(0,0,0,.09)}
+.card:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.card-main{grid-column:1 / -1;display:flex;align-items:center;gap:28px;padding:32px}
+.eyebrow{font-size:13px;font-weight:600;color:var(--sub);letter-spacing:.02em;margin-bottom:6px}
+.card h2{font-size:24px;font-weight:600;letter-spacing:-.015em}
+.card-main h2{font-size:28px}
+.desc{margin-top:8px;font-size:15px;color:var(--sub)}
+.status{margin-top:14px;font-size:14px;color:var(--ink);font-weight:500}
+.go{margin-top:16px;font-size:15px;font-weight:500;color:var(--blue)}
+.go::after{content:" ›"}
+.chip{display:inline-block;font-size:12px;font-weight:600;color:var(--amber);background:#FFF4E3;border-radius:99px;padding:3px 10px;margin-left:8px;vertical-align:2px}
+/* 进度环（签名元素） */
+.ring-box{flex:0 0 auto;position:relative;width:96px;height:96px}
+.ring-box svg{width:96px;height:96px;transform:rotate(-90deg)}
+.ring-track{fill:none;stroke:var(--track);stroke-width:7}
+.ring-bar{fill:none;stroke:var(--green);stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset 1s cubic-bezier(.2,.6,.2,1)}
+.ring-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;letter-spacing:-.02em}
+.card-body{flex:1 1 auto;min-width:0}
+/* 页脚 */
+.foot{border-top:1px solid var(--hair);padding:22px 0 44px;font-size:13px;color:var(--sub)}
+/* 入场动画 */
+.rise{opacity:0;transform:translateY(14px);animation:rise .7s cubic-bezier(.2,.6,.2,1) forwards}
+.d1{animation-delay:.05s}.d2{animation-delay:.15s}.d3{animation-delay:.25s}.d4{animation-delay:.32s}
+@keyframes rise{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .rise{animation:none;opacity:1;transform:none}
+  .card,.ring-bar{transition:none}
+}
+@media (max-width:640px){
+  .grid{grid-template-columns:1fr}
+  .card-main{flex-direction:column;align-items:flex-start;gap:20px}
+  .hero{padding:44px 0 30px}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap top-in">
+  <span class="brand">Simon · 学习中心</span>
+  <span class="today" id="today"></span>
+</div></header>
+
+<main class="wrap">
+  <section class="hero rise d1">
+    <h1 id="greet">你好，Simon。</h1>
+    <p>今天从哪一块开始？</p>
+  </section>
+
+  <section class="grid">
+    <a class="card card-main rise d2" href="study/">
+      <div class="ring-box" aria-hidden="true">
+        <svg viewBox="0 0 96 96">
+          <circle class="ring-track" cx="48" cy="48" r="41"></circle>
+          <circle class="ring-bar" id="ringBar" cx="48" cy="48" r="41"></circle>
+        </svg>
+        <div class="ring-label" id="ringPct">—</div>
+      </div>
+      <div class="card-body">
+        <div class="eyebrow">暑期自学系统 · v1.2</div>
+        <h2>六科自学课件</h2>
+        <p class="desc">心理学 · Java · 英文写作 · 数学 · 经济 · 理化 —— 202 个可追踪练习点，进度自动保存。</p>
+        <p class="status" id="studyStatus">读取进度中…</p>
+        <p class="go">进入学习</p>
+      </div>
+    </a>
+
+    <a class="card rise d3" href="school/">
+      <div class="eyebrow">学校课件</div>
+      <h2>数学 · 同步校内<span class="chip" id="schoolChip">整理中</span></h2>
+      <p class="desc">与爱莎荔湾校内进度同步的数学练习，内容整理后上线，网址不变。</p>
+      <p class="go">查看</p>
+    </a>
+
+    <a class="card rise d4" href="game/">
+      <div class="eyebrow">编程实验室</div>
+      <h2>写代码 · 做游戏</h2>
+      <p class="desc">反应时测验示例 + 代码游乐场。你的 Java 期末项目，从这里找感觉。</p>
+      <p class="go">打开实验室</p>
+    </a>
+  </section>
+</main>
+
+<footer class="foot"><div class="wrap">Simon 学习门户 · 2026 夏 · v1 &nbsp;·&nbsp; 请固定使用同一浏览器，进度保存在本机。</div></footer>
+
+<script>
+(function(){
+  var KEY='simon_summer_v1', TOTAL=202;
+  var STORES=['answers','clsf','traces','ords','essays','rubrics','checks','dict','vocab','reviews'];
+
+  function greet(){
+    var h=new Date().getHours();
+    if(h<5)return '夜深了，Simon。';
+    if(h<12)return '早上好，Simon。';
+    if(h<18)return '下午好，Simon。';
+    return '晚上好，Simon。';
+  }
+
+  function boot(){
+    document.getElementById('greet').textContent=greet();
+    try{
+      document.getElementById('today').textContent=new Date().toLocaleDateString('zh-CN',{month:'long',day:'numeric',weekday:'long'});
+    }catch(e){}
+
+    var S=null;
+    try{S=JSON.parse(localStorage.getItem(KEY));}catch(e){S=null;}
+
+    var bar=document.getElementById('ringBar');
+    var pctEl=document.getElementById('ringPct');
+    var stEl=document.getElementById('studyStatus');
+    var C=2*Math.PI*41;
+    bar.setAttribute('stroke-dasharray',C);
+
+    if(!S||typeof S!=='object'){
+      bar.setAttribute('stroke-dashoffset',C);
+      pctEl.textContent='—';
+      stEl.textContent='尚未开始 · 第一次打开会自动建立你的学习档案';
+      return;
+    }
+    var n=0;
+    for(var i=0;i<STORES.length;i++){
+      var o=S[STORES[i]];
+      if(o&&typeof o==='object')n+=Object.keys(o).length;
+    }
+    if(n>TOTAL)n=TOTAL;
+    var pct=Math.round(n/TOTAL*100);
+    var last='';
+    try{
+      if(S.activity&&typeof S.activity==='object'){
+        var ds=Object.keys(S.activity).sort();
+        if(ds.length)last=ds[ds.length-1];
+      }
+    }catch(e){}
+    bar.setAttribute('stroke-dashoffset',String(C*(1-pct/100)));
+    pctEl.textContent=pct+'%';
+    stEl.textContent='已覆盖 '+n+' / '+TOTAL+' 个练习点'+(last?(' · 最近学习 '+last):'');
+  }
+
+  window.__hubBoot=boot;
+  boot();
+})();
+</script>
+</body>
+</html>

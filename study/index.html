@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simon · 暑期学习课件 v1 (2026)</title>
+<style>
+:root{
+  --paper:#FBFBF9; --ink:#1C2733; --muted:#5B6B7B;
+  --navy:#1F4E78; --navy-d:#173B5C; --sky:#EAF1F7; --sky-d:#D9E6F2;
+  --rust:#B4452C; --rust-bg:#FAEFEB;
+  --ok:#2F7D4F; --ok-bg:#EDF5F0;
+  --line:#DCE3EA; --code-bg:#16202B; --code-ink:#D8E2EC;
+}
+*{box-sizing:border-box; margin:0; padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:'Segoe UI','Microsoft YaHei','PingFang SC',sans-serif;
+  font-size:15.5px; line-height:1.65;
+}
+::selection{background:var(--sky-d)}
+
+/* ---------- layout ---------- */
+#app{display:flex; min-height:100vh}
+#rail{
+  width:228px; flex-shrink:0; border-right:1px solid var(--line);
+  background:#fff; position:sticky; top:0; height:100vh; overflow-y:auto;
+  padding:20px 0 30px;
+}
+#main{flex:1; min-width:0; padding:34px 48px 90px; max-width:880px}
+@media(max-width:760px){
+  #app{flex-direction:column}
+  #rail{width:100%; height:auto; position:static; display:flex; flex-wrap:wrap; gap:2px; padding:8px}
+  #main{padding:20px 16px 70px}
+}
+
+/* ---------- rail nav ---------- */
+.rail-brand{padding:0 18px 14px; border-bottom:1px solid var(--line); margin-bottom:10px}
+.rail-brand .nm{font-family:Georgia,'Times New Roman',serif; font-size:19px; font-weight:700; color:var(--navy)}
+.rail-brand .sub{font-size:11px; color:var(--muted); letter-spacing:.06em; margin-top:2px}
+.rail-group{font-size:10.5px; letter-spacing:.14em; color:var(--muted); padding:14px 18px 4px; text-transform:uppercase}
+.nav-btn{
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  width:100%; text-align:left; padding:8px 18px; border:0; background:none;
+  font:inherit; font-size:14px; color:var(--ink); cursor:pointer;
+  border-left:3px solid transparent;
+}
+.nav-btn:hover{background:var(--sky)}
+.nav-btn.active{background:var(--sky); border-left-color:var(--navy); color:var(--navy); font-weight:600}
+.nav-btn .pct{font-size:11px; color:var(--muted); font-variant-numeric:tabular-nums}
+.nav-btn.active .pct{color:var(--navy)}
+@media(max-width:760px){
+  .rail-brand,.rail-group{display:none}
+  .nav-btn{width:auto; border:1px solid var(--line); border-radius:4px; padding:6px 10px; font-size:13px}
+  .nav-btn.active{border-color:var(--navy)}
+}
+
+/* ---------- sections ---------- */
+.view{display:none}
+.view.on{display:block}
+.eyebrow{font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:6px}
+h1.vt{font-family:Georgia,'Times New Roman',serif; font-size:30px; font-weight:700; color:var(--navy); line-height:1.25; margin-bottom:6px}
+.vlead{color:var(--muted); margin-bottom:26px; max-width:640px}
+h2.unit{
+  font-family:Georgia,serif; font-size:21px; color:var(--navy);
+  margin:40px 0 4px; padding-top:22px; border-top:1px solid var(--line);
+}
+h2.unit:first-of-type{margin-top:18px; border-top:0; padding-top:0}
+.unit-sub{font-size:13px; color:var(--muted); margin-bottom:16px}
+h3.lesson{font-size:16.5px; font-weight:700; margin:26px 0 10px; color:var(--ink)}
+h3.lesson .tag{font-size:11px; font-weight:600; color:var(--navy); background:var(--sky); padding:2px 8px; border-radius:3px; margin-left:8px; vertical-align:2px}
+
+/* ---------- cards / common ---------- */
+.card{background:#fff; border:1px solid var(--line); border-radius:6px; padding:20px 22px; margin:14px 0}
+.card p{margin:0 0 10px} .card p:last-child{margin-bottom:0}
+.note{background:var(--sky); border:1px solid var(--sky-d); border-radius:6px; padding:12px 16px; margin:14px 0; font-size:14px}
+.warn{background:var(--rust-bg); border:1px solid #E8C9BE; border-radius:6px; padding:12px 16px; margin:14px 0; font-size:14px}
+.cn{color:var(--muted); font-size:13.5px; border-left:3px solid var(--sky-d); padding-left:12px; margin:10px 0}
+.terms{display:flex; flex-wrap:wrap; gap:8px; margin:12px 0}
+.term{font-size:12.5px; background:#fff; border:1px solid var(--line); border-radius:4px; padding:4px 10px}
+.term b{color:var(--navy)}
+pre.code{
+  background:var(--code-bg); color:var(--code-ink); border-radius:6px;
+  padding:14px 18px; overflow-x:auto; font-family:Consolas,'Courier New',monospace;
+  font-size:13.5px; line-height:1.6; margin:12px 0;
+}
+pre.code .cm{color:#7E94A8}
+table.tb{border-collapse:collapse; width:100%; margin:12px 0; font-size:14px}
+table.tb th{background:var(--navy); color:#fff; font-weight:600; padding:7px 10px; text-align:left}
+table.tb td{border:1px solid var(--line); padding:7px 10px; background:#fff}
+table.tb tr:nth-child(even) td{background:#F6F8FA}
+
+/* ---------- quiz ---------- */
+.q{background:#fff; border:1px solid var(--line); border-radius:6px; padding:16px 18px; margin:12px 0}
+.q .stem{font-weight:600; margin-bottom:10px}
+.q .stem .qno{color:var(--navy); margin-right:6px}
+.opt{
+  display:block; width:100%; text-align:left; font:inherit; font-size:14.5px;
+  background:#fff; border:1px solid var(--line); border-radius:5px;
+  padding:9px 13px; margin:6px 0; cursor:pointer; color:var(--ink);
+}
+.opt:hover{border-color:var(--navy); background:var(--sky)}
+.q.done .opt{cursor:default; opacity:.62}
+.q.done .opt:hover{border-color:var(--line); background:#fff}
+.q.done .opt.sel{opacity:1; border-width:2px}
+.q.done .opt.sel.right{border-color:var(--ok); background:var(--ok-bg)}
+.q.done .opt.sel.wrong{border-color:var(--rust); background:var(--rust-bg)}
+.q.done .opt.key{opacity:1; border-color:var(--ok); background:var(--ok-bg)}
+.exp{display:none; margin-top:10px; font-size:14px; background:#F6F8FA; border-radius:5px; padding:10px 14px}
+.q.done .exp{display:block}
+.verdict{display:none; font-weight:700; font-size:13px; margin-top:8px}
+.q.done .verdict{display:block}
+.verdict.right{color:var(--ok)} .verdict.wrong{color:var(--rust)}
+
+/* trace input */
+.trace{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:8px 0}
+.trace label{font-size:13.5px; color:var(--muted); min-width:150px}
+.trace input{
+  font-family:Consolas,monospace; font-size:14px; padding:7px 10px;
+  border:1px solid var(--line); border-radius:5px; width:150px;
+}
+.trace .mark{font-size:13px; font-weight:700; min-width:120px}
+.trace .mark.right{color:var(--ok)} .trace .mark.wrong{color:var(--rust)}
+
+/* buttons */
+.btn{
+  font:inherit; font-size:14px; font-weight:600; cursor:pointer;
+  background:var(--navy); color:#fff; border:1px solid var(--navy);
+  border-radius:5px; padding:8px 16px;
+}
+.btn:hover{background:var(--navy-d)}
+.btn.ghost{background:#fff; color:var(--navy)}
+.btn.ghost:hover{background:var(--sky)}
+.btn.sm{font-size:13px; padding:5px 12px}
+.btn.warn-b{background:var(--rust); border-color:var(--rust)}
+.btnrow{display:flex; gap:10px; flex-wrap:wrap; margin:12px 0}
+
+/* diagnostic items */
+.diag{background:#fff; border:1px solid var(--line); border-radius:6px; padding:16px 18px; margin:12px 0}
+.diag .dstem{margin-bottom:8px}
+.diag .dstem .qno{font-weight:700; color:var(--navy); margin-right:6px}
+.diag .topic{font-size:11px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase}
+.sol{display:none; background:#F6F8FA; border-radius:5px; padding:12px 14px; margin:10px 0; font-size:14px}
+.sol.open{display:block}
+.clsrow{display:flex; gap:6px; flex-wrap:wrap; margin-top:10px}
+.clsbtn{font:inherit; font-size:12.5px; padding:6px 10px; border-radius:4px; border:1px solid var(--line); background:#fff; cursor:pointer}
+.clsbtn:hover{border-color:var(--navy)}
+.clsbtn.on{color:#fff; font-weight:700}
+.clsbtn.on[data-cls="A"]{background:var(--ok); border-color:var(--ok)}
+.clsbtn.on[data-cls="B"]{background:#7A9A3D; border-color:#7A9A3D}
+.clsbtn.on[data-cls="C"]{background:#C77F2E; border-color:#C77F2E}
+.clsbtn.on[data-cls="D"]{background:var(--rust); border-color:var(--rust)}
+
+/* progress bars */
+.pbar{height:7px; background:var(--sky); border-radius:4px; overflow:hidden; margin-top:6px}
+.pbar i{display:block; height:100%; background:var(--navy); border-radius:4px; transition:width .3s}
+.modrow{display:flex; align-items:center; gap:14px; padding:10px 0; border-bottom:1px solid var(--line)}
+.modrow:last-child{border-bottom:0}
+.modrow .mn{flex:1; font-size:14.5px}
+.modrow .mp{width:46%; min-width:160px}
+.modrow .pcttx{width:44px; text-align:right; font-size:13px; color:var(--muted); font-variant-numeric:tabular-nums}
+
+/* masthead 学籍卡 */
+.mast{
+  border:1px solid var(--navy); border-radius:8px; overflow:hidden; margin-bottom:24px; background:#fff;
+}
+.mast .mt-top{background:var(--navy); color:#fff; padding:14px 22px; display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:6px}
+.mast .mt-top .nm{font-family:Georgia,serif; font-size:22px; font-weight:700}
+.mast .mt-top .pr{font-size:12px; letter-spacing:.08em; opacity:.92}
+.mast .mt-body{padding:16px 22px; display:flex; gap:30px; flex-wrap:wrap; align-items:center}
+.mast .stat .k{font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+.mast .stat .v{font-family:Georgia,serif; font-size:24px; color:var(--navy); font-weight:700; font-variant-numeric:tabular-nums}
+.dotrail{display:flex; gap:7px; align-items:center; margin-left:auto}
+.dotrail .wk{width:17px; height:17px; border-radius:50%; border:2px solid var(--navy); background:#fff; position:relative}
+.dotrail .wk.half{background:linear-gradient(90deg,var(--navy) 50%,#fff 50%)}
+.dotrail .wk.full{background:var(--navy)}
+.dotrail .lbl{font-size:10.5px; color:var(--muted); margin-left:4px}
+
+/* mistakes */
+.mk{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--line); font-size:14px}
+.mk:last-child{border-bottom:0}
+.mk .ml{flex:1}
+.mk .md{font-size:12px; color:var(--muted); white-space:nowrap}
+
+/* vocab flashcard */
+.fcwrap{max-width:480px}
+.fcstat{display:flex; gap:18px; font-size:13px; color:var(--muted); margin-bottom:12px; flex-wrap:wrap}
+.fcstat b{color:var(--navy)}
+.fcard{
+  background:#fff; border:1px solid var(--line); border-radius:8px;
+  min-height:200px; padding:26px; display:flex; flex-direction:column;
+  justify-content:center; align-items:center; text-align:center; cursor:pointer;
+}
+.fcard .w{font-family:Georgia,serif; font-size:30px; color:var(--navy); font-weight:700}
+.fcard .pos{font-size:13px; color:var(--muted); font-style:italic; margin-top:2px}
+.fcard .back{display:none; font-size:15px}
+.fcard.flip .front{display:none}
+.fcard.flip .back{display:block}
+.fcard .back .df{margin-bottom:6px}
+.fcard .back .cnz{color:var(--muted); margin-bottom:8px}
+.fcard .back .ex{font-style:italic; font-size:14px; color:var(--muted)}
+.gradebtns{display:flex; gap:10px; margin-top:14px; justify-content:center}
+
+/* ordering exercise */
+.ord .pool{display:flex; flex-direction:column; gap:8px; margin:10px 0}
+.ord .pick{font:inherit; text-align:left; background:#fff; border:1px solid var(--line); border-radius:5px; padding:9px 13px; cursor:pointer; font-size:14px}
+.ord .pick:hover{border-color:var(--navy)}
+.ord .pick.used{opacity:.35; cursor:default}
+.ord .seq{min-height:34px; background:var(--sky); border-radius:5px; padding:10px 14px; font-size:14px; margin:8px 0}
+
+/* listening */
+.dict{background:#fff; border:1px solid var(--line); border-radius:6px; padding:14px 16px; margin:10px 0}
+.dict input{font:inherit; font-size:14.5px; width:100%; padding:8px 11px; border:1px solid var(--line); border-radius:5px; margin:8px 0}
+.dict .diff{font-size:14px; margin-top:6px; line-height:1.9}
+.dict .diff .hit{background:var(--ok-bg); color:var(--ok); padding:1px 4px; border-radius:3px; margin-right:3px}
+.dict .diff .miss{background:var(--rust-bg); color:var(--rust); padding:1px 4px; border-radius:3px; margin-right:3px; text-decoration:line-through}
+
+/* essays */
+textarea.ess{
+  width:100%; min-height:230px; font:inherit; font-size:14.5px; line-height:1.7;
+  padding:14px; border:1px solid var(--line); border-radius:6px; resize:vertical; background:#fff;
+}
+.wc{font-size:12.5px; color:var(--muted); text-align:right; margin-top:4px; font-variant-numeric:tabular-nums}
+.rubgrid{display:grid; grid-template-columns:1fr auto; gap:8px 14px; align-items:center; max-width:480px; margin:10px 0}
+.rubgrid label{font-size:14px}
+.rubgrid select{font:inherit; padding:5px 8px; border:1px solid var(--line); border-radius:4px}
+
+/* checklist & planner */
+.ckrow{display:flex; gap:10px; align-items:flex-start; padding:7px 0; font-size:14.5px}
+.ckrow input{margin-top:4px; width:16px; height:16px; accent-color:var(--navy); flex-shrink:0}
+.ckrow.done label{color:var(--muted); text-decoration:line-through}
+.wkcard{background:#fff; border:1px solid var(--line); border-radius:6px; padding:16px 20px; margin:12px 0}
+.wkcard h4{font-family:Georgia,serif; color:var(--navy); font-size:16px; margin-bottom:4px}
+.wkcard .wsub{font-size:12.5px; color:var(--muted); margin-bottom:8px}
+.wkcard.future{background:#F6F8FA; border-style:dashed}
+
+/* reveal toggles */
+details.rv{margin:10px 0; border:1px solid var(--line); border-radius:6px; background:#fff}
+details.rv summary{cursor:pointer; padding:10px 16px; font-weight:600; font-size:14px; color:var(--navy)}
+details.rv .rvb{padding:0 16px 14px}
+
+footer{margin-top:60px; padding-top:16px; border-top:1px solid var(--line); font-size:12px; color:var(--muted)}
+:focus-visible{outline:2px solid var(--navy); outline-offset:2px}
+@media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+</style>
+</head>
+<body>
+<div id="app">
+  <nav id="rail">
+    <div class="rail-brand">
+      <div class="nm">Summer Console</div>
+      <div class="sub">SIMON SUN · 2026 · v1.2</div>
+    </div>
+    <div class="rail-group">总览</div>
+    <button class="nav-btn" data-nav="dash">仪表盘 <span class="pct" data-pct="all"></span></button>
+    <button class="nav-btn" data-nav="guide">使用说明</button>
+    <div class="rail-group">深做模块 · V1</div>
+    <button class="nav-btn" data-nav="psy">心理学 <span class="pct" data-pct="psy"></span></button>
+    <button class="nav-btn" data-nav="java">Java 入门 <span class="pct" data-pct="java"></span></button>
+    <button class="nav-btn" data-nav="math">数学诊断 <span class="pct" data-pct="math"></span></button>
+    <button class="nav-btn" data-nav="writing">英语 · 写作 <span class="pct" data-pct="writing"></span></button>
+    <button class="nav-btn" data-nav="vocab">英语 · 词汇卡</button>
+    <button class="nav-btn" data-nav="listen">英语 · 听力 <span class="pct" data-pct="listen"></span></button>
+    <button class="nav-btn" data-nav="econ">经济学 <span class="pct" data-pct="econ"></span></button>
+    <div class="rail-group">维持模块 · V1</div>
+    <button class="nav-btn" data-nav="sci">理化 G9 题库 <span class="pct" data-pct="sci"></span></button>
+    <div class="rail-group">计划</div>
+    <button class="nav-btn" data-nav="plan">9 周计划器</button>
+  </nav>
+  <main id="main">
+    <section class="view" id="v-dash"></section>
+    <section class="view" id="v-guide"></section>
+    <section class="view" id="v-psy"></section>
+    <section class="view" id="v-java"></section>
+    <section class="view" id="v-math"></section>
+    <section class="view" id="v-writing"></section>
+    <section class="view" id="v-vocab"></section>
+    <section class="view" id="v-listen"></section>
+    <section class="view" id="v-econ"></section>
+    <section class="view" id="v-sci"></section>
+    <section class="view" id="v-plan"></section>
+    <footer>20260611_Simon暑期课件_v1.2 · 单机离线运行 · 数据保存在本机浏览器，请每周用仪表盘"导出存档"备份 · 反馈回传给 Claude 生成 v2</footer>
+  </main>
+</div>
+<script>
+"use strict";
+/* =====================================================
+   CONTENT — 全部课程数据
+   ===================================================== */
+const CONTENT = {};
+/* ---------- 心理学 ---------- */
+CONTENT.psy = {
+ vt:'心理学 Psychology', eyebrow:'MODULE 01 · 预习 + 元学习引擎',
+ lead:'这是整个暑假的发动机。Unit 0 用心理学研究教你"怎么学"——本课件的每一个设计（自测、间隔复习、错题重现）都建立在这些研究之上。Unit 1 进入心理学本体：它如何作为一门科学运作。',
+ units:[
+ {t:'Unit 0 · The Psychology of Learning 学习的心理学', sub:'4 课 · 每课约 25 分钟 · 先读英文正文，遇到生词看下方词条，再做自测',
+  lessons:[
+  {t:'0.1 The Testing Effect — 为什么"自测"本身就是学习', tag:'V1 完整',
+   read:`<p>In 2006, psychologists Henry Roediger and Jeffrey Karpicke ran a deceptively simple experiment. College students studied a short science passage. One group re-read it four times (Study-Study-Study-Study). Another group read it once, then spent the remaining sessions trying to <b>recall</b> it from memory — closing the text and writing down everything they could remember (Study-Test-Test-Test).</p>
+   <p>Five minutes after the final session, the re-readers looked better: they remembered more. But one week later, the result flipped dramatically. The re-reading group had forgotten much of the material, retaining roughly 40%. The self-testing group retained roughly 60% — about half as much again, from the <i>same total study time</i>.</p>
+   <p>This is the <b>testing effect</b> (also called <b>retrieval practice</b>): the act of pulling information out of your memory strengthens it far more than pushing it back in by re-reading. Re-reading feels good because the text becomes fluent and familiar — but familiarity is not knowledge. Psychologists call this trap the <b>fluency illusion</b>: "it looks familiar" masquerading as "I know it".</p>
+   <p>The practical rule is brutal and simple: <b>close the book, recall, check, repeat.</b> Every quiz in this courseware exists because of this experiment.</p>`,
+   cn:'重读让文字变得眼熟，"眼熟"会伪装成"我会了"——这就是流利错觉。检索（回忆）不是检查学习的工具，检索本身就是学习。',
+   terms:[
+    {en:'retrieval practice',cn:'检索练习',d:'actively recalling information from memory'},
+    {en:'testing effect',cn:'测试效应',d:'memory improves more from self-testing than re-studying'},
+    {en:'fluency illusion',cn:'流利错觉',d:'mistaking familiarity for real knowledge'},
+    {en:'retention',cn:'保持/记忆留存',d:'how much information is kept over time'}],
+   quiz:[
+    {q:'In Roediger & Karpicke (2006), which group remembered more after one week?',
+     o:['The group that re-read the passage four times','The group that read once and self-tested three times','Both groups remembered the same amount','The result depended on students\u2019 IQ'],a:1,
+     e:'Five minutes after studying, re-readers led. One week later, the self-testing group retained roughly 60% vs roughly 40% — retrieval wins where it matters: long-term.'},
+    {q:'The "fluency illusion" describes:',
+     o:['Reading too quickly and missing details','Feeling that you know material because re-reading makes it look familiar','Being fluent in two languages','Forgetting material under exam stress'],a:1,
+     e:'Familiarity from smooth re-reading masquerades as knowledge. The only honest check is closing the book and recalling.'},
+    {q:'It is the night before an Economics test. Based on this lesson, the most effective use of one hour is:',
+     o:['Highlight the textbook chapter again','Re-read your notes four times','Close your notes and write down everything you remember, then check the gaps','Copy your notes out neatly'],a:2,
+     e:'Recall-then-check is retrieval practice. Highlighting and re-reading mostly build the fluency illusion.'}],
+   reflect:{id:'psy_u0l1_r', p:'回想你上学期经济期末是怎么复习的——属于"重读型"还是"检索型"？具体写 2-3 句（中英文都行）。'}},
+
+  {t:'0.2 Spacing — 遗忘曲线与间隔复习', tag:'V1 完整',
+   read:`<p>In the 1880s, Hermann Ebbinghaus memorised thousands of nonsense syllables and tested himself at intervals — the first systematic study of forgetting. His result, the <b>forgetting curve</b>, still holds: forgetting is steepest in the first day or two, then flattens. Most of what you "learn" today is gone by the weekend — unless you interrupt the curve.</p>
+   <p>The interruption is called the <b>spacing effect</b>. Reviews spread over time produce far stronger memory than the same total time spent in one block (<b>cramming</b> / massed practice). Large reviews covering hundreds of experiments confirm it across ages and subjects. A useful rule of thumb from this research: set the gap between reviews at roughly <b>10–20% of how long you want to remember the material</b>. Want it solid for a month? Review every 3–6 days. For an exam a year away? Space reviews weeks apart.</p>
+   <p>Spacing feels worse while you do it — recall is harder after a gap — but that difficulty is exactly what strengthens the memory. Psychologists call this a <b>desirable difficulty</b>.</p>
+   <p>This courseware applies the rule automatically: items you mark as "卡住" or "完全不会" resurface in your 错题本 for review after 3 days and again after 7.</p>`,
+   cn:'间隔复习当下感觉更费劲（因为隔了几天回忆更难），但正是这种"难"在加固记忆——叫做"合意困难"。临时抱佛脚赢在明天，间隔复习赢在月底。',
+   terms:[
+    {en:'forgetting curve',cn:'遗忘曲线',d:'memory loss is fastest right after learning, then levels off'},
+    {en:'spacing effect',cn:'间隔效应',d:'spread-out reviews beat one massive session'},
+    {en:'cramming / massed practice',cn:'突击式复习',d:'studying everything in one long block'},
+    {en:'desirable difficulty',cn:'合意困难',d:'effortful learning that feels worse but works better'}],
+   quiz:[
+    {q:'According to the forgetting curve, when is forgetting fastest?',
+     o:['In the first day or two after learning','About one week after learning','One month after learning','Forgetting happens at a constant speed'],a:0,
+     e:'The curve drops steeply at first and then flattens — which is why a quick review tomorrow is worth more than a long review next month.'},
+    {q:'You want to remember IGCSE Economics definitions solidly for a test in 30 days. The rule of thumb suggests reviewing roughly every:',
+     o:['Every day without gaps','Every 3–6 days','Every 15 days','Only on the last day'],a:1,
+     e:'10–20% of 30 days = 3–6 days between reviews.'},
+    {q:'Spaced review often feels harder than cramming because recall is effortful after a gap. This difficulty is:',
+     o:['A sign you should go back to cramming','Evidence the material is too hard for you','A "desirable difficulty" that strengthens memory','Caused by poor sleep'],a:2,
+     e:'The effort of retrieval after a delay is the mechanism, not a malfunction.'}],
+   reflect:{id:'psy_u0l2_r', p:'设计你自己的间隔：这个暑假你最想在 9 月还记得的一样东西是什么？按 10–20% 规则，它的复习间隔应该是几天？'}},
+
+  {t:'0.3 Sleep — 记忆在睡眠中完成', tag:'V1 完整',
+   read:`<p>Learning does not end when you close the laptop. During deep sleep, the brain <b>replays</b> the day's new memories: the hippocampus (a temporary holding area) re-activates them and gradually transfers them to the cortex for long-term storage. This process is called <b>consolidation</b> — and it cannot be skipped, postponed, or replaced by caffeine.</p>
+   <p>The cost of skipping it is measurable. In sleep-laboratory studies, participants deprived of a night's sleep showed dramatically reduced ability to form <i>new</i> memories the next day — in one well-known study, a deficit of around 40% compared with rested participants. An all-nighter before an exam is therefore a double loss: last night's material never consolidates, and today's brain cannot encode properly either.</p>
+   <p>For a 16-year-old, the research consensus recommends <b>8–10 hours</b>. Two practical enemies: late-night screens (bright light delays the sleep signal; the feed is engineered to hold you) and irregular schedules (the consolidation system works best on rhythm).</p>
+   <p>The summer arrangement in your weekly plan — no study after 21:00, screens away before bed — is not parental decoration. It is memory engineering.</p>`,
+   cn:'睡眠不是学习的休止符，是学习的下半场。海马体在深睡中把白天的新记忆"转存"到皮层——通宵复习等于把上下半场一起放弃。',
+   terms:[
+    {en:'consolidation',cn:'记忆巩固',d:'sleep-time transfer of memories into long-term storage'},
+    {en:'hippocampus',cn:'海马体',d:'brain region that temporarily holds new memories'},
+    {en:'cortex',cn:'大脑皮层',d:'long-term storage site of consolidated memories'},
+    {en:'encode',cn:'编码',d:'the initial forming of a memory'}],
+   quiz:[
+    {q:'During consolidation, new memories are transferred from:',
+     o:['Cortex to hippocampus','Hippocampus to cortex','Short-term memory to the eyes','Left brain to right brain'],a:1,
+     e:'The hippocampus is the temporary buffer; deep sleep replays and ships memories to the cortex.'},
+    {q:'Why is an all-nighter before an exam a "double loss"?',
+     o:['You waste electricity and time','Yesterday\u2019s learning never consolidates AND today\u2019s brain encodes poorly','Teachers can tell you didn\u2019t sleep','You will be hungry during the exam'],a:1,
+     e:'No sleep = no consolidation of what you studied + roughly 40% weaker encoding of new material the next day in lab studies.'},
+    {q:'The recommended sleep range for a 16-year-old is:',
+     o:['5–6 hours','6–7 hours','8–10 hours','11–12 hours'],a:2,
+     e:'Research consensus for teenagers is 8–10 hours; most teens chronically run below it.'}],
+   reflect:{id:'psy_u0l3_r', p:'诚实记录：过去一周你平均几点睡、睡了几小时？和 8–10 小时的差距是多少？'}},
+
+  {t:'0.4 Motivation — 自我决定理论与"奖励的陷阱"', tag:'V1 完整',
+   read:`<p>Why do you open Psychology videos voluntarily but need to be pushed toward Physics? The most influential modern answer is <b>Self-Determination Theory</b> (Deci & Ryan). It claims motivation thrives when three psychological needs are met:</p>
+   <p><b>Autonomy</b> — feeling that you chose the activity; <b>Competence</b> — feeling yourself getting visibly better; <b>Relatedness</b> — feeling connected to people who care about what you do. Remove any one, and motivation degrades from "I want to" (<b>intrinsic</b>) into "I have to" (<b>extrinsic</b>).</p>
+   <p>A famous warning comes from a 1973 experiment by Lepper and colleagues. Preschoolers who loved drawing were promised a shiny certificate for drawing. Later, in free-play time, the rewarded children drew <i>less</i> than children who had never been rewarded. The external reward had quietly replaced the internal one — psychologists call this the <b>overjustification effect</b>. Translation for you: be careful about attaching rewards (money, treats, even points) to things you already enjoy, like Psychology or Economics reading. Rewards are for jump-starting cold engines, not for engines already running.</p>
+   <p>This is also why the summer plan gives you choices (which book, which day off, task order) and visible progress bars — autonomy and competence are designed in, not hoped for.</p>`,
+   cn:'外部奖励会悄悄"替换"内在动机——对你已经喜欢的事（心理学、经济阅读），不要设奖励；奖励只用于冷启动你不喜欢的事。这个课件给你选择权和可见的进度条，就是在喂养自主感和胜任感。',
+   terms:[
+    {en:'Self-Determination Theory (SDT)',cn:'自我决定理论',d:'motivation needs autonomy, competence, relatedness'},
+    {en:'intrinsic motivation',cn:'内在动机',d:'doing something because it is interesting in itself'},
+    {en:'extrinsic motivation',cn:'外在动机',d:'doing something for an external reward or pressure'},
+    {en:'overjustification effect',cn:'过度合理化效应',d:'external rewards can crowd out existing interest'}],
+   quiz:[
+    {q:'The three needs in Self-Determination Theory are:',
+     o:['Money, grades, praise','Autonomy, competence, relatedness','Food, safety, belonging','Discipline, repetition, reward'],a:1,
+     e:'Autonomy (I chose it), competence (I\u2019m getting better), relatedness (people I\u2019m connected to care).'},
+    {q:'In Lepper et al. (1973), children rewarded for drawing later drew less in free time. This is called:',
+     o:['The testing effect','The forgetting curve','The overjustification effect','The fluency illusion'],a:2,
+     e:'The expected external reward displaced the activity\u2019s own internal reward.'},
+    {q:'Based on this lesson, which plan is most likely to BACKFIRE?',
+     o:['Paying yourself ¥50 for every Psychology chapter you read for fun','Using a checklist to track Java progress','Choosing your own order of daily tasks','Discussing Economics articles with your father'],a:0,
+     e:'Psychology reading is already intrinsically motivated — attaching money risks the overjustification effect. Save rewards for genuinely cold tasks.'}],
+   reflect:{id:'psy_u0l4_r', p:'这份暑假计划里，哪一部分给了你自主感？哪一部分让你觉得"被强迫"？各写一条，诚实写——这条会直接影响 v2 怎么改。'}}
+ ]},
+ {t:'Unit 1 · Psychology as a Science 心理学如何成为科学', sub:'3 课 · 研究方法是 IB 心理学的脊柱——新版 IB 大纲的内部评估就是设计一份研究提案',
+  lessons:[
+  {t:'1.1 Empirical, not common sense — 经验科学 vs 常识', tag:'V1 完整',
+   read:`<p>Everyone has theories about minds — that is exactly the problem. Psychology earns the word "science" only by being <b>empirical</b>: claims must be tested against systematically collected evidence, not against what feels true.</p>
+   <p>Common sense fails often. "We only use 10% of our brains" — false; imaging shows nearly all regions active across a normal day. "Opposites attract" — decades of relationship research find the reverse: similarity predicts attraction far better. If common sense were reliable, psychology would be unnecessary; because it is unreliable, psychology is a science with instruments, controls and statistics.</p>
+   <p>Two tools make claims testable. <b>Falsifiability</b>: a scientific claim must, in principle, be capable of being proven wrong by some observable result — "studying with music lowers recall accuracy" is falsifiable; "music changes your soul" is not. <b>Operationalisation</b>: vague concepts must be turned into measurable definitions. You cannot measure "aggression" directly, but you can count "number of times a child hits an inflatable doll in 20 minutes" — now it is data.</p>`,
+   cn:'科学心理学和"人生经验"的区别在于两个工具：可证伪性（你的说法必须可能被证明是错的）和操作化定义（把模糊概念变成可测量的指标）。',
+   terms:[
+    {en:'empirical',cn:'实证的',d:'based on systematic observation and evidence'},
+    {en:'falsifiability',cn:'可证伪性',d:'a claim must be capable of being proven wrong'},
+    {en:'operationalisation',cn:'操作化定义',d:'turning a vague concept into something measurable'}],
+   quiz:[
+    {q:'Which statement is FALSIFIABLE?',
+     o:['"Some people have hidden inner energy"','"Students who sleep 8 hours score higher on memory tests than students who sleep 5 hours"','"Everything happens for a reason"','"Music speaks to the heart"'],a:1,
+     e:'It predicts an observable, measurable difference that an experiment could prove wrong. The others cannot fail any test.'},
+    {q:'"Number of words recalled from a 20-word list after 10 minutes" is an example of:',
+     o:['A falsifiable theory','An operationalised measure of memory','A case study','Common sense'],a:1,
+     e:'It converts the vague concept "memory" into a countable measurement.'},
+    {q:'Why does psychology need to be empirical rather than relying on common sense?',
+     o:['Common sense is often wrong when tested (e.g. the 10% brain myth)','Common sense is always wrong','Scientists are smarter than ordinary people','Statistics are required by law'],a:0,
+     e:'Intuitions frequently fail systematic tests — which is the entire justification for doing the science.'}],
+   reflect:{id:'psy_u1l1_r', p:'写一条你听过的关于"学习"或"人"的常识说法，然后把它改写成一个可证伪的、操作化的研究问题。'}},
+
+  {t:'1.2 Research Methods — 实验、相关与因果', tag:'V1 完整',
+   read:`<p>The <b>experiment</b> is psychology's sharpest tool because it can establish cause. The researcher changes one thing — the <b>independent variable (IV)</b> — and measures its effect on another — the <b>dependent variable (DV)</b> — while holding everything else constant. Participants are split into an experimental group and a <b>control group</b>, ideally by <b>random allocation</b>, so the groups start equivalent.</p>
+   <p>Example: give one class a spaced revision schedule and another class a massed schedule (IV = revision schedule), then compare their test scores (DV = score). If allocation was random and conditions otherwise identical, a difference in scores can be attributed to the schedule.</p>
+   <p>A <b>correlational study</b> only measures whether two variables move together — say, hours of phone use and anxiety scores. Correlation can be strong, but it cannot prove cause. The classic illustration: ice-cream sales correlate with drowning deaths. Ice cream does not cause drowning; a hidden third variable — summer heat — drives both. Memorise the mantra: <b>correlation is not causation</b>.</p>
+   <p>A <b>case study</b> examines one unusual individual in depth — rich detail, weak generalisation. (Unit 2 will introduce H.M., the most famous case in memory research.)</p>`,
+   cn:'实验能证明因果（因为研究者主动操纵自变量、随机分组）；相关研究只能说明两个变量一起变动——背后可能藏着第三变量。冰淇淋销量与溺水的相关，是夏天的高温在背后驱动两者。',
+   terms:[
+    {en:'independent variable (IV)',cn:'自变量',d:'the factor the researcher deliberately changes'},
+    {en:'dependent variable (DV)',cn:'因变量',d:'the outcome that is measured'},
+    {en:'control group',cn:'控制组',d:'baseline group not receiving the treatment'},
+    {en:'random allocation',cn:'随机分配',d:'assigning participants to groups by chance'},
+    {en:'correlation',cn:'相关',d:'two variables moving together; not proof of cause'}],
+   quiz:[
+    {q:'Researchers give Class A a spaced revision schedule and Class B a massed schedule, then compare test scores. The IV is:',
+     o:['The test scores','The revision schedule (spaced vs massed)','The students\u2019 intelligence','The classroom'],a:1,
+     e:'The IV is what the researcher manipulates; the DV is the measured outcome (scores).'},
+    {q:'In the same study, the DV is:',
+     o:['The revision schedule','The number of students','The test scores','The teacher'],a:2,e:'The DV is the measured result.'},
+    {q:'Ice-cream sales correlate with drowning deaths because:',
+     o:['Ice cream impairs swimming','Drowning makes people buy ice cream','A third variable (summer heat) increases both','The data must be fake'],a:2,
+     e:'A lurking third variable can create correlation without causation.'},
+    {q:'Which method can establish CAUSE?',
+     o:['A well-designed experiment with random allocation','A correlational survey','A single case study','Reading many news articles'],a:0,
+     e:'Only manipulation + control + random allocation isolates cause.'}],
+   reflect:{id:'psy_u1l2_r', p:'你爸的判断"孩子成绩不好是因为不主动"——这是因果结论还是相关观察？如果让你设计研究检验它，IV 和 DV 分别是什么？'}},
+
+  {t:'1.3 Classic Study — Loftus & Palmer (1974) 记忆是重建的', tag:'V1 完整',
+   read:`<p>Can a single word rewrite a memory? Elizabeth Loftus and John Palmer showed 45 students short films of car accidents, then asked one critical question with the verb varied between groups: "About how fast were the cars going when they <b>smashed / collided / bumped / hit / contacted</b> each other?"</p>
+   <p>Same film, different verb — different memory. The "smashed" group estimated about <b>40.5 mph</b> on average; the "contacted" group about <b>31.8 mph</b>. One word shifted the remembered speed by nearly 9 mph.</p>
+   <p>A second experiment went further. A week later, participants were asked: "Did you see any broken glass?" There was none in the film. Yet participants who had heard "smashed" said yes about twice as often as those who heard "hit". The verb had not just biased a number — it had planted a detail that was never there.</p>
+   <p>The conclusion reshaped both psychology and the law: memory is not a video recording that is played back; it is <b>reconstructed</b> at the moment of recall, and the reconstruction can be steered by <b>leading questions</b>. This is why police interview protocols and courtroom rules about eyewitness testimony were rewritten in the decades after this study.</p>`,
+   cn:'记忆不是录像回放，是每次回忆时的"现场重建"——而重建过程会被提问的措辞引导。一个动词让被试"记得"看见了从未存在的碎玻璃。',
+   terms:[
+    {en:'reconstructive memory',cn:'重建性记忆',d:'memories are rebuilt at recall, not replayed'},
+    {en:'leading question',cn:'诱导性提问',d:'wording that steers the answer'},
+    {en:'eyewitness testimony',cn:'目击者证词',d:'court evidence from people who saw an event'}],
+   quiz:[
+    {q:'The IV in Loftus & Palmer\u2019s first experiment was:',
+     o:['The speed of the cars in the film','The verb used in the question','The age of the participants','The length of the film'],a:1,
+     e:'Everyone saw the same films; only the verb changed between groups.'},
+    {q:'The "broken glass" result matters because:',
+     o:['There really was glass in the film','It shows a single word can create a false detail in memory','Participants were lying','Glass is easy to remember'],a:1,
+     e:'No glass existed — yet "smashed" participants reported it about twice as often. The memory was reconstructed with an invented detail.'},
+    {q:'The study\u2019s biggest real-world impact was on:',
+     o:['Car safety design','How courts and police treat eyewitness testimony and question wording','Film-making techniques','Driving-school curricula'],a:1,
+     e:'It demonstrated that questioning style can contaminate testimony — directly influencing interview protocols.'}],
+   reflect:{id:'psy_u1l3_r', p:'Mini 设计任务：设计一个研究，检验"聊天记录里的表情包是否会改变人对对话内容的记忆"。写出你的 IV、DV，以及怎样分组。这是新版 IB 心理学内部评估（研究提案）的微缩练习。'}}
+ ]},
+ {t:'Unit 2 · Memory Models 记忆模型（V2 推出）', sub:'多重存储模型（Atkinson–Shiffrin）· 工作记忆（Baddeley）· 经典案例 H.M. —— 将根据你 Unit 0–1 的自测数据在 v2 中定制',
+  lessons:[]}
+]};
+/* ---------- Java ---------- */
+CONTENT.java = {
+ vt:'Java 入门 Computer Science', eyebrow:'MODULE 02 · 零基础 → G10 预备',
+ lead:'学校选定的教学语言是 Java——这与 2027 年首考的新版 IB DP 计算机科学大纲一致（新大纲只支持 Java 或 Python，由学校统一选定）。本模块在课件内做"读代码、预测输出"训练，真正的写代码在 IDE 里完成。期末小项目：用 Java 写一个心理学反应时测验程序。',
+ setup:`<p><b>环境搭建（第一周内完成，约 30 分钟）：</b></p>
+ <p>① 安装 JDK：搜索 <b>Adoptium Temurin 21 LTS</b>（国内下载慢可在"华为云镜像"或"清华大学开源软件镜像站"搜 OpenJDK 21）。安装后打开命令行输入 <code>java -version</code> 验证。</p>
+ <p>② 编辑器二选一：<b>BlueJ</b>（专为初学者设计、界面极简，许多国际学校用它教第一年）或 <b>VS Code</b>（装 Extension Pack for Java 插件，以后能一直用）。</p>
+ <p>③ 装不上也不耽误：在线编译器 <b>OneCompiler</b> 或 <b>W3Schools Java Tryit</b> 搜索即用，浏览器里直接写直接跑。</p>`,
+ units:[
+ {t:'Unit 1 · 程序的解剖学', sub:'4 课 · 计算思维 → 第一个程序 → 变量与类型 → 输入输出',
+  lessons:[
+  {t:'1.1 What is a program? 计算思维', tag:'V1 完整',
+   read:`<p>A program is a set of instructions so precise that a machine with zero common sense can follow them. That last part is the whole difficulty. Tell a friend "make tea" and they fill in a hundred missing steps automatically. A computer fills in nothing.</p>
+   <p>Try it: write instructions for a robot to make a cup of tea. "Put the teabag in the cup" — which cup? Where is it? Is your hand empty? "Pour hot water" — how much? When do you stop? Every ambiguity you discover is the gap between human language and an <b>algorithm</b>: a finite, exact, ordered sequence of steps.</p>
+   <p>Every algorithm in every language is built from just three structures: <b>sequence</b> (do A, then B, then C), <b>selection</b> (IF a condition holds, do this, ELSE do that), and <b>iteration</b> (REPEAT something while a condition holds). Master these three and you can, in principle, express any computation. Unit 1 covers sequence; Unit 2 covers selection and iteration.</p>`,
+   cn:'编程的困难不在记语法，在于把"人类默认补全的常识"全部显式写出来。所有程序只由三种结构组成：顺序、选择、循环。',
+   terms:[
+    {en:'algorithm',cn:'算法',d:'a finite, precise, ordered set of steps'},
+    {en:'sequence',cn:'顺序结构',d:'steps executed one after another'},
+    {en:'selection',cn:'选择结构',d:'branching with IF / ELSE'},
+    {en:'iteration',cn:'循环结构',d:'repeating steps while a condition holds'}],
+   quiz:[
+    {q:'"IF the water is boiling, pour it; ELSE wait 30 seconds" is an example of:',
+     o:['Sequence','Selection','Iteration','Compilation'],a:1,e:'A condition decides between two paths — that is selection.'},
+    {q:'Why must algorithms be more precise than instructions for a human?',
+     o:['Computers read more slowly','Computers fill in zero missing steps with common sense','Algorithms are written in English','Humans cannot follow long instructions'],a:1,
+     e:'A computer executes exactly what is written — no more, no less. Every hidden assumption must be made explicit.'},
+    {q:'"Repeat: add the next number to the total, until no numbers remain" is:',
+     o:['Sequence','Selection','Iteration','A syntax error'],a:2,e:'Repeating while a condition holds = iteration.'}]},
+
+  {t:'1.2 Hello, Simon — 第一个 Java 程序', tag:'V1 完整',
+   read:`<p>Here is the smallest complete Java program. Every Java journey starts by understanding all five lines:</p>`,
+   code:`public class Hello {
+    public static void main(String[] args) {
+        System.out.println("Hello, Simon!");
+    }
+}`,
+   read2:`<p><b>Line 1</b> — <code>public class Hello</code>: all Java code lives inside a <b>class</b>; think of it as a labelled container. The file must be saved as <code>Hello.java</code> — the name must match, capital letter and all (Java is <b>case-sensitive</b>: <code>hello</code> ≠ <code>Hello</code>).</p>
+   <p><b>Line 2</b> — <code>public static void main(String[] args)</code>: the <b>entry point</b>. When you run the program, the machine looks for exactly this line and starts there. For now, memorise it as a fixed incantation; each word will earn its meaning in later units.</p>
+   <p><b>Line 3</b> — <code>System.out.println("Hello, Simon!")</code>: print this text to the screen, then start a new line. Note the <b>semicolon</b> — every statement ends with one; forgetting it is the #1 beginner error.</p>
+   <p><b>How it runs:</b> your source file (<code>Hello.java</code>) is first <b>compiled</b> by <code>javac</code> into bytecode (<code>Hello.class</code>), which the Java Virtual Machine then executes. Compile first, run second — two distinct steps, even when your IDE hides them behind one green button.</p>`,
+   cn:'三个最常见的新手错误：忘记分号、大小写写错（println 不是 PrintLn）、文件名和类名不一致。编译（javac）和运行（java）是两个独立步骤。',
+   terms:[
+    {en:'class',cn:'类',d:'the container all Java code lives in'},
+    {en:'main method',cn:'主方法',d:'the fixed entry point where execution starts'},
+    {en:'compile',cn:'编译',d:'translate source code into bytecode before running'},
+    {en:'case-sensitive',cn:'大小写敏感',d:'Hello and hello are different names'}],
+   quiz:[
+    {q:'Where does a Java program begin executing?',
+     o:['The first line of the file','The main method','The last line','Wherever you click'],a:1,e:'The JVM looks for public static void main and starts there.'},
+    {q:'What happens if you delete the semicolon after println("...")?',
+     o:['Nothing, semicolons are decoration','The program prints twice','A compile error — the compiler refuses to produce bytecode','The computer restarts'],a:2,
+     e:'Java will not compile a statement without its terminating semicolon. You fix it before the program can run at all.'}],
+   traces:[
+    {id:'jv_u1l2_t1', code:`System.out.println("IGCSE");
+System.out.println(2026);`, ask:'第 1 行输出什么？', exp:'IGCSE'},
+    {id:'jv_u1l2_t2', code:'', ask:'第 2 行输出什么？', exp:'2026'}]},
+
+  {t:'1.3 Variables & Types 变量与类型', tag:'V1 完整',
+   read:`<p>A <b>variable</b> is a named box in memory. Java insists you declare the box's <b>type</b> — what kind of thing it may hold — before using it:</p>`,
+   code:`int age = 16;           <span class="cm">// integer 整数</span>
+double gpa = 3.75;      <span class="cm">// decimal 小数</span>
+boolean passed = true;  <span class="cm">// true / false</span>
+String name = "Simon";  <span class="cm">// text — note the capital S</span>`,
+   read2:`<p>Names use <b>camelCase</b> by convention: <code>reactionTime</code>, <code>totalScore</code>. Types are enforced: putting <code>"hello"</code> into an <code>int</code> box is a compile error.</p>
+   <p>Two famous traps you must internalise now:</p>
+   <p><b>Trap 1 — integer division.</b> When both operands are int, Java throws away the remainder: <code>7 / 2</code> is <b>3</b>, not 3.5. To get the decimal answer, at least one side must be a double: <code>7 / 2.0</code> gives 3.5. The remainder itself has its own operator: <code>7 % 2</code> gives <b>1</b> (read "7 mod 2").</p>
+   <p><b>Trap 2 — the + chameleon.</b> Between numbers, <code>+</code> adds. If either side is a String, <code>+</code> glues text. Evaluation runs left to right: <code>"x" + 5 + 1</code> → "x5" then "x51". But <code>5 + 1 + "x"</code> → 6 then "6x". Same pieces, different order, different answer.</p>`,
+   cn:'整数除法砍掉小数部分（7/2=3）；% 取余数（7%2=1）；+ 遇到字符串就变成"拼接"，且从左到右依次计算——这两个坑是接下来 trace 题的核心。',
+   terms:[
+    {en:'variable',cn:'变量',d:'a named, typed box in memory'},
+    {en:'declaration',cn:'声明',d:'creating a variable with its type'},
+    {en:'integer division',cn:'整数除法',d:'int / int discards the remainder'},
+    {en:'concatenation',cn:'字符串拼接',d:'joining text with +'}],
+   traces:[
+    {id:'jv_u1l3_t1', code:`int a = 7;
+int b = 2;
+System.out.println(a / b);`, ask:'输出什么？', exp:'3'},
+    {id:'jv_u1l3_t2', code:`System.out.println(a % b);`, ask:'输出什么？', exp:'1'},
+    {id:'jv_u1l3_t3', code:`System.out.println(a / 2.0);`, ask:'输出什么？', exp:'3.5'},
+    {id:'jv_u1l3_t4', code:`int x = 5;
+System.out.println("x" + x + 1);`, ask:'输出什么？', exp:'x51'},
+    {id:'jv_u1l3_t5', code:`System.out.println(x + 1 + "x");`, ask:'输出什么？', exp:'6x'}],
+   quiz:[
+    {q:'Which declaration is correct Java?',
+     o:['string name = "Simon";','String name = "Simon";','name String = "Simon";','String name = Simon;'],a:1,
+     e:'String has a capital S, type comes first, and text needs double quotes.'},
+    {q:'int total = 9; int people = 4; What is total / people?',
+     o:['2.25','2','2.5','A compile error'],a:1,e:'int / int discards the remainder: 9/4 = 2.'}]},
+
+  {t:'1.4 Input & Output — 和程序对话', tag:'V1 完整',
+   read:`<p>Printing is half a conversation. To read what the user types, Java uses the <b>Scanner</b>:</p>`,
+   code:`import java.util.Scanner;   <span class="cm">// line 1 of the FILE, above the class</span>
+
+public class AgeBot {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Your name?");
+        String name = sc.nextLine();
+        System.out.println("Birth year?");
+        int year = sc.nextInt();
+        int age = 2026 - year;
+        System.out.println(name + ", you turn " + age + " in 2026.");
+    }
+}`,
+   read2:`<p><code>sc.nextLine()</code> reads a whole line of text; <code>sc.nextInt()</code> reads one integer. The last line shows + doing double duty: gluing text and numbers into one sentence.</p>
+   <p><b>IDE task（在编辑器里做，做完勾选周计划）:</b> type this program in yourself — no copy-paste; your fingers need the syntax — run it, then modify it to also ask which school subject the user likes most and include it in the final sentence.</p>`,
+   cn:'Scanner 是读取用户输入的工具：nextLine() 读一行文字，nextInt() 读一个整数。注意 import 语句写在文件最顶端、class 外面。',
+   terms:[
+    {en:'Scanner',cn:'扫描器（输入工具）',d:'reads what the user types'},
+    {en:'import',cn:'导入',d:'borrowing a tool from the Java library'}],
+   traces:[
+    {id:'jv_u1l4_t1', code:`<span class="cm">// 用户输入 name = "Lin", year = 2010</span>
+System.out.println(name + ", you turn " + (2026 - 2010) + " in 2026.");`, ask:'输出什么？（完整一行，注意逗号和空格）', exp:'Lin, you turn 16 in 2026.'}],
+   quiz:[
+    {q:'To read an integer the user types, you call:',
+     o:['sc.nextLine()','sc.nextInt()','System.out.println()','sc.readNumber()'],a:1,e:'nextInt() for integers; nextLine() for a line of text.'}]}
+ ]},
+ {t:'Unit 2 · 选择与循环', sub:'4 课 · if/else → while → for → 三个上机挑战',
+  lessons:[
+  {t:'2.1 if / else — 程序学会分叉', tag:'V1 完整',
+   read:`<p>Selection lets a program respond differently to different situations:</p>`,
+   code:`int score = 74;
+if (score >= 80) {
+    System.out.println("Distinction");
+} else if (score >= 60) {
+    System.out.println("Pass");
+} else {
+    System.out.println("Retry");
+}`,
+   read2:`<p>Conditions use comparison operators: <code>==</code> equal, <code>!=</code> not equal, <code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code>. Combine them with <code>&amp;&amp;</code> (AND), <code>||</code> (OR), <code>!</code> (NOT).</p>
+   <p><b>The most expensive one-character bug in programming:</b> <code>=</code> assigns; <code>==</code> compares. Writing <code>if (x = 5)</code> when you meant <code>if (x == 5)</code> has crashed real systems.</p>
+   <p><b>String trap:</b> comparing text with <code>==</code> checks whether two variables point at the same memory box, not whether the letters match. For letters, always use <code>name.equals("Simon")</code>.</p>`,
+   cn:'三个必须刻进肌肉记忆的点：= 是赋值、== 是比较；字符串比较用 .equals() 而不是 ==；else if 链从上往下找到第一个为真的分支就停。',
+   terms:[
+    {en:'condition',cn:'条件',d:'an expression that is true or false'},
+    {en:'comparison operator',cn:'比较运算符',d:'== != < > <= >='},
+    {en:'logical operator',cn:'逻辑运算符',d:'&& (and), || (or), ! (not)'}],
+   traces:[
+    {id:'jv_u2l1_t1', code:`int t = 35;
+if (t > 30 && t < 40) { System.out.println("warm"); }
+else { System.out.println("other"); }`, ask:'输出什么？', exp:'warm'},
+    {id:'jv_u2l1_t2', code:`int score = 60;
+if (score > 60) { System.out.println("A"); }
+else if (score >= 60) { System.out.println("B"); }
+else { System.out.println("C"); }`, ask:'输出什么？', exp:'B'}],
+   quiz:[
+    {q:'To check whether the String answer equals "yes", correct Java is:',
+     o:['if (answer == "yes")','if (answer = "yes")','if (answer.equals("yes"))','if (answer.same("yes"))'],a:2,
+     e:'String letter-comparison needs .equals(). == on Strings compares memory locations and fails unpredictably.'},
+    {q:'if (x = 5) instead of if (x == 5) is dangerous because:',
+     o:['It runs slower','= assigns instead of comparing — the logic silently changes','It deletes the variable','Java converts it automatically'],a:1,
+     e:'One missing character flips meaning from "compare" to "overwrite".'}]},
+
+  {t:'2.2 while — 当条件成立就重复', tag:'V1 完整',
+   read:`<p>A <b>while</b> loop repeats its body as long as its condition stays true:</p>`,
+   code:`int n = 1;
+while (n < 10) {
+    n = n * 2;
+}
+System.out.println(n);`,
+   read2:`<p>Trace it by hand with a <b>trace table</b> — the single most useful habit for beginners. Columns: each variable; rows: each pass through the loop. n: 1 → 2 → 4 → 8 → 16. At 16 the condition n &lt; 10 fails, the loop exits, 16 is printed. (Notice: the final value can <i>overshoot</i> the boundary — the check happens before each pass, not after.)</p>
+   <p><b>The infinite loop:</b> if the body never moves the condition toward false — e.g. you forget <code>n = n * 2;</code> — the loop runs forever and the program hangs. Every while loop needs something inside that pushes it toward its exit.</p>`,
+   cn:'手画 trace table（变量值逐圈记录）是初学者最重要的习惯——比盯着代码"想"准确十倍。循环体内必须有让条件趋向 false 的语句，否则死循环。',
+   terms:[
+    {en:'while loop',cn:'while 循环',d:'repeats while the condition is true'},
+    {en:'trace table',cn:'追踪表',d:'hand-tracking variable values pass by pass'},
+    {en:'infinite loop',cn:'死循环',d:'a loop whose condition never becomes false'}],
+   traces:[
+    {id:'jv_u2l2_t1', code:`int n = 1;
+while (n < 10) { n = n * 2; }
+System.out.println(n);`, ask:'输出什么？', exp:'16'},
+    {id:'jv_u2l2_t2', code:`int c = 0;
+int n = 40;
+while (n > 5) { n = n / 2; c = c + 1; }
+System.out.println(c);`, ask:'输出什么？（提示：整数除法，画 trace table）', exp:'3'}],
+   quiz:[
+    {q:'In the n=1, while(n<10){n=n*2;} loop, why does it print 16 and not 8?',
+     o:['Java rounds up','The condition is checked BEFORE each pass: 8 < 10 is still true, so one more doubling happens','It is a bug in Java','Because 16 is even'],a:1,
+     e:'8 passes the check, doubles to 16, and only then does 16 < 10 fail.'}]},
+
+  {t:'2.3 for — 计数循环与累加器', tag:'V1 完整',
+   read:`<p>When you know how many times to repeat, <b>for</b> packs the counter into one line:</p>`,
+   code:`for (int i = 1; i <= 4; i++) {
+    System.out.println(i);
+}
+<span class="cm">// start at i=1; keep going while i<=4; add 1 each pass</span>`,
+   read2:`<p>The most useful loop pattern in all of programming is the <b>accumulator</b>: a variable that collects a running result.</p>`,
+   code2:`int sum = 0;
+for (int i = 1; i <= 4; i++) {
+    sum = sum + i;
+}
+System.out.println(sum);   <span class="cm">// 0+1+2+3+4 = 10</span>`,
+   read3:`<p><b>The off-by-one trap:</b> <code>i &lt; 5</code> runs i = 0,1,2,3,4 (five passes); <code>i &lt;= 5</code> from 1 runs 1..5. Beginners constantly run loops one time too many or too few. Cure: trace table, every time, until it is instinct.</p>`,
+   cn:'累加器模式（sum += i）是以后一切统计、求和、计数代码的原型。差一错误（off-by-one）是初学者最高频 bug——i<5 和 i<=5 差一整圈。',
+   terms:[
+    {en:'for loop',cn:'for 循环',d:'counter-controlled repetition'},
+    {en:'accumulator',cn:'累加器',d:'a variable collecting a running total'},
+    {en:'off-by-one error',cn:'差一错误',d:'looping one time too many or too few'}],
+   traces:[
+    {id:'jv_u2l3_t1', code:`int s = 0;
+for (int i = 1; i <= 10; i++) { s += i; }
+System.out.println(s);`, ask:'输出什么？', exp:'55'},
+    {id:'jv_u2l3_t2', code:`int c = 0;
+for (int i = 0; i < 7; i++) {
+    if (i % 2 == 0) { c++; }
+}
+System.out.println(c);`, ask:'输出什么？（0 到 6 里有几个偶数？）', exp:'4'}],
+   quiz:[
+    {q:'for (int i = 0; i < 5; i++) runs how many times?',
+     o:['4','5','6','Forever'],a:1,e:'i = 0,1,2,3,4 — five passes. The boundary i<5 excludes 5 itself.'}]},
+
+  {t:'2.4 三个上机挑战 + 期末项目预告', tag:'V1 完整',
+   read:`<p>到 IDE 里独立完成。先自己写 20 分钟，卡死了再看提示，最后才看参考答案。每完成一个，到周计划里打勾。</p>
+   <p><b>Challenge 1 · 跳 4 报数</b>：打印 1 到 50，但跳过所有 4 的倍数。<br>
+   <b>Challenge 2 · 乘法表</b>：让用户输入一个数 n，打印 n 的乘法表（n×1 到 n×9，每行形如 <code>7 x 3 = 21</code>）。<br>
+   <b>Challenge 3 · 求和到一千</b>：从 1 开始累加 1+2+3+…，问：加到哪个数时总和第一次超过 1000？（答案是一个数，让程序告诉你。）</p>`,
+   sols:[
+    {t:'Challenge 1 提示与参考', c:`for (int i = 1; i <= 50; i++) {
+    if (i % 4 != 0) {
+        System.out.println(i);
+    }
+}`},
+    {t:'Challenge 2 提示与参考', c:`Scanner sc = new Scanner(System.in);
+int n = sc.nextInt();
+for (int i = 1; i <= 9; i++) {
+    System.out.println(n + " x " + i + " = " + (n * i));
+}`},
+    {t:'Challenge 3 提示与参考', c:`int sum = 0;
+int i = 0;
+while (sum <= 1000) {
+    i++;
+    sum += i;
+}
+System.out.println(i);   <span class="cm">// 45 (sum reaches 1035)</span>`}],
+   read2:`<p><b>期末项目预告 · Reaction Time Tester（第 6 周起，v2 提供完整脚手架）：</b>用 Java 写一个心理学反应时测验——程序随机等待 2–5 秒后打印 "GO!"，用户立刻按回车，程序用 <code>System.currentTimeMillis()</code> 计算反应毫秒数，重复 5 轮后输出平均值。这个项目把 Unit 1–2 的全部技能 + 心理学研究方法（操作化定义、重复测量取均值）焊在一起——你将亲手造出一台心理学实验仪器。</p>`,
+   cn:'三个挑战分别训练：循环+条件过滤、输入+格式化输出、while+累加器。这是 Unit 1-2 的综合验收。',
+   quiz:[
+    {q:'Challenge 3 should use while rather than a fixed-count for loop because:',
+     o:['while loops are faster','You do not know in advance how many passes are needed — the exit depends on a condition (sum > 1000)','for loops cannot add numbers','The teacher said so'],a:1,
+     e:'Unknown repetition count + condition-based exit = the natural territory of while.'}]}
+ ]},
+ {t:'Unit 3 · 方法与数组（V2 推出）', sub:'把代码打包成可复用的方法 · 用数组存一组数据 —— 根据你 Unit 1–2 的 trace 正确率定制', lessons:[]},
+ {t:'Unit 4 · 面向对象初步（V2 推出）', sub:'类与对象的直觉 · 为期末项目和 IB 新大纲的 OOP 核心内容铺路', lessons:[]}
+]};
+/* ---------- 数学诊断 ---------- */
+CONTENT.math = {
+ vt:'数学诊断 Mathematics Diagnostic', eyebrow:'MODULE 03 · IGCSE Extended · 30 题',
+ lead:'规则：纸上作答，限时 90 分钟（Part 1 不用计算器 25 分钟，Part 2 可用 65 分钟）。做完一题点"显示答案与详解"对照，然后诚实地四分类。分类数据比对错本身更重要——它决定 v2 的数学补弱包给你配什么。C/D 类题目会自动进入错题本，3 天后和 7 天后重现。',
+ legend:'四分类：A 完全会做 · B 做对但慢 · C 卡住但有思路 · D 完全不会。"不会做"就标 D，比乱猜有价值。',
+ parts:[
+ {t:'Part 1 · 不用计算器（Q1–Q10 · 25 分钟）', items:[
+  {id:'m1', topic:'代数 · 指数律', q:'Simplify: (3x<sup>2</sup>y)<sup>3</sup> × (2x<sup>−1</sup>y<sup>2</sup>)<sup>2</sup>',
+   sol:'(3x<sup>2</sup>y)<sup>3</sup> = 27x<sup>6</sup>y<sup>3</sup>；(2x<sup>−1</sup>y<sup>2</sup>)<sup>2</sup> = 4x<sup>−2</sup>y<sup>4</sup>。相乘：27×4 = 108，x<sup>6−2</sup> = x<sup>4</sup>，y<sup>3+4</sup> = y<sup>7</sup>。<b>答案：108x<sup>4</sup>y<sup>7</sup></b>'},
+  {id:'m2', topic:'代数 · 二次方程', q:'Solve: 2x<sup>2</sup> − 5x − 3 = 0',
+   sol:'因式分解：(2x + 1)(x − 3) = 0。<b>x = −1/2 或 x = 3</b>。检验：2(9)−15−3=0 ✓'},
+  {id:'m3', topic:'数 · 根式化简', q:'Simplify: √48 + √27 − √12',
+   sol:'√48 = 4√3，√27 = 3√3，√12 = 2√3。4√3 + 3√3 − 2√3 = <b>5√3</b>'},
+  {id:'m4', topic:'代数 · 方程组', q:'Solve the simultaneous equations:<br>2x + 3y = 7<br>3x − y = 5',
+   sol:'由第二式 y = 3x − 5，代入第一式：2x + 9x − 15 = 7 → 11x = 22 → x = 2，y = 1。<b>x = 2, y = 1</b>'},
+  {id:'m5', topic:'代数 · 不等式', q:'Solve and represent on a number line: 2(x − 3) &lt; 4x + 5',
+   sol:'2x − 6 &lt; 4x + 5 → −11 &lt; 2x → <b>x &gt; −5.5</b>。数轴上 −5.5 处空心圆，向右涂色。'},
+  {id:'m6', topic:'代数 · 分式', q:'Express as a single fraction in simplest form: 3/(x−1) − 2/(x+2)',
+   sol:'公分母 (x−1)(x+2)：[3(x+2) − 2(x−1)] / [(x−1)(x+2)] = (3x+6−2x+2)/[(x−1)(x+2)] = <b>(x+8) / [(x−1)(x+2)]</b>'},
+  {id:'m7', topic:'数 · 比例', q:'If a : b = 3 : 4 and b : c = 2 : 5, find a : b : c in simplest form.',
+   sol:'把 b 统一：b:c = 2:5 = 4:10。所以 <b>a : b : c = 3 : 4 : 10</b>'},
+  {id:'m8', topic:'代数 · 指数方程', q:'Solve for x: 2<sup>x+1</sup> = 32',
+   sol:'32 = 2<sup>5</sup>，所以 x + 1 = 5 → <b>x = 4</b>'},
+  {id:'m9', topic:'代数 · 因式分解', q:'Factorise completely: 6x<sup>2</sup> − 13x − 5',
+   sol:'找乘积 6×(−5) = −30、和为 −13 的两数：−15 和 +2。拆项：6x<sup>2</sup> − 15x + 2x − 5 = 3x(2x−5) + 1(2x−5) = <b>(3x+1)(2x−5)</b>'},
+  {id:'m10', topic:'数 · 循环小数', q:'Express 0.272727… (recurring) as a fraction in simplest form.',
+   sol:'设 x = 0.2727…，则 100x = 27.2727…。相减：99x = 27 → x = 27/99 = <b>3/11</b>'}]},
+ {t:'Part 2 · 可用计算器（Q11–Q30 · 65 分钟）', items:[
+  {id:'m11', topic:'函数', q:'Given f(x) = 2x − 3 and g(x) = x<sup>2</sup>, find: (a) fg(2) (b) gf(2) (c) f<sup>−1</sup>(x)',
+   sol:'(a) g(2)=4，f(4)=5 → <b>fg(2)=5</b>。(b) f(2)=1，g(1)=1 → <b>gf(2)=1</b>。(c) y=2x−3 → x=(y+3)/2 → <b>f<sup>−1</sup>(x)=(x+3)/2</b>。注意 fg(2)≠gf(2)——复合顺序重要。'},
+  {id:'m12', topic:'数列', q:'U<sub>n</sub> = 3n<sup>2</sup> − 2n + 1. Find: (a) U<sub>10</sub> (b) the value of n when U<sub>n</sub> = 81',
+   sol:'(a) 300−20+1 = <b>281</b>。(b) 3n<sup>2</sup>−2n−80=0，求根公式 n=(2±√964)/6≈5.5，非整数。检验 U<sub>5</sub>=66，U<sub>6</sub>=97。<b>结论：不存在整数 n 使 U<sub>n</sub>=81。</b> 这题考"敢不敢说无解"——题目不一定有答案，检验意识是 Extended 高分的分水岭。'},
+  {id:'m13', topic:'数列 · 等比', q:'Geometric sequence: first term 4, common ratio 3. Find (a) the 6th term (b) the sum of the first 6 terms.',
+   sol:'(a) U<sub>6</sub> = 4×3<sup>5</sup> = <b>972</b>。(b) S<sub>6</sub> = 4(3<sup>6</sup>−1)/(3−1) = 4×728/2 = <b>1456</b>'},
+  {id:'m14', topic:'坐标几何', q:'Find the equation of the line through (2, 3) and (5, 12), in the form y = mx + c.',
+   sol:'m = (12−3)/(5−2) = 3。y − 3 = 3(x−2) → <b>y = 3x − 3</b>'},
+  {id:'m15', topic:'坐标几何 · 垂直', q:'L₁: y = 2x − 3. L₂ is perpendicular to L₁ and passes through (4, 1). Find the equation of L₂.',
+   sol:'垂直斜率 = −1/2。y − 1 = −½(x − 4) → <b>y = −x/2 + 3</b>'},
+  {id:'m16', topic:'几何 · 勾股', q:'A triangle has sides 5, 12, 13 cm. (a) Show it is right-angled. (b) Find its area.',
+   sol:'(a) 5²+12² = 169 = 13² ✓ 满足勾股逆定理。(b) 两直角边为底高：½×5×12 = <b>30 cm²</b>'},
+  {id:'m17', topic:'几何 · 圆', q:'A circle has radius 7 cm. Find (in terms of π): (a) area (b) circumference (c) area of a 60° sector.',
+   sol:'(a) <b>49π cm²</b> (b) <b>14π cm</b> (c) 60/360 × 49π = <b>49π/6 cm²</b>'},
+  {id:'m18', topic:'几何 · 相似', q:'Two similar triangles have area ratio 4 : 9. The smaller has perimeter 20 cm. Find the larger\u2019s perimeter.',
+   sol:'面积比 4:9 → 长度比 2:3（开根号）。周长是长度：20 × 3/2 = <b>30 cm</b>。面积比→长度比要开方，这是高频失分点。'},
+  {id:'m19', topic:'几何 · 立体', q:'A cuboid is 8 × 6 × 4 cm. Find the length of its longest (space) diagonal.',
+   sol:'d = √(8²+6²+4²) = √116 = <b>2√29 ≈ 10.77 cm</b>'},
+  {id:'m20', topic:'几何 · 圆锥', q:'A cone has base radius 3 cm and slant height 5 cm. Find (a) the perpendicular height (b) total surface area in terms of π.',
+   sol:'(a) h = √(5²−3²) = <b>4 cm</b>。(b) πr² + πrl = 9π + 15π = <b>24π cm²</b>'},
+  {id:'m21', topic:'几何 · 正多边形', q:'A regular hexagon has side 6 cm. Find its area in the form a√b.',
+   sol:'六个等边三角形：6 × (√3/4)×36 = 6×9√3 = <b>54√3 cm²</b>'},
+  {id:'m22', topic:'三角 · 余弦定理', q:'In triangle ABC: angle A = 50°, b = 8, c = 10. Use the cosine rule to find a (1 d.p.).',
+   sol:'a² = 64+100−160cos50° ≈ 164−102.85 = 61.15 → <b>a ≈ 7.8 cm</b>'},
+  {id:'m23', topic:'三角 · 恒等', q:'Given sin θ = 3/5 and θ acute, find the exact values of cos θ and tan θ.',
+   sol:'3-4-5 三角形：<b>cos θ = 4/5，tan θ = 3/4</b>'},
+  {id:'m24', topic:'三角 · 方位角', q:'A ship sails 8 km on a bearing of 060° from A to B, then 6 km on a bearing of 150° to C. Find the distance AC (1 d.p.).',
+   sol:'在 B 处：从 B 回望 A 是 240°，去 C 是 150°，夹角 = 90°。直角三角形：AC = √(64+36) = <b>10.0 km</b>。方位角图一定要画——这题不画图几乎必错。'},
+  {id:'m25', topic:'统计 · 描述', q:'Data: 4, 7, 9, 11, 13, 15, 18. Find (a) mean (b) median (c) range (d) IQR.',
+   sol:'(a) 77/7 = <b>11</b> (b) <b>11</b> (c) <b>14</b> (d) Q1=7, Q3=15 → <b>IQR = 8</b>'},
+  {id:'m26', topic:'概率', q:'Two fair dice are rolled. Find: (a) P(sum = 7) (b) P(both even) (c) P(at least one six).',
+   sol:'(a) 6/36 = <b>1/6</b> (b) 9/36 = <b>1/4</b> (c) 1 − (5/6)² = <b>11/36</b>。"至少一个"用补集是标准动作。'},
+  {id:'m27', topic:'概率 · 无放回', q:'A bag has 3 red and 5 blue marbles. Two are drawn without replacement. Find P(both red) and P(one of each).',
+   sol:'P(两红) = 3/8 × 2/7 = <b>3/28</b>。P(一红一蓝) = 2 × (3/8 × 5/7) = <b>15/28</b>。别忘了"一红一蓝"有两种顺序。'},
+  {id:'m28', topic:'统计 · 估计均值', q:'Frequency table: scores 0–20 (f=3), 20–40 (f=7), 40–60 (f=12), 60–80 (f=15), 80–100 (f=8). Estimate the mean.',
+   sol:'组中值 10,30,50,70,90。Σfx = 30+210+600+1050+720 = 2610，Σf = 45。<b>估计均值 = 58</b>'},
+  {id:'m29', topic:'应用 · 复利', q:'£5,000 is invested at 4% p.a. compound interest. (a) Value after 6 years? (b) How many whole years for it to exceed £8,000?',
+   sol:'(a) 5000 × 1.04⁶ ≈ <b>£6,326.60</b>。(b) 1.04ⁿ &gt; 1.6 → n &gt; log1.6/log1.04 ≈ 12.0 → <b>12 年</b>'},
+  {id:'m30', topic:'应用 · 体积', q:'A cylindrical tank: radius 1.5 m, height 3 m. Water flows in at 0.05 m³/min. (a) Time to fill (hours, 1 d.p.)? (b) If 40% full, what mass of water in kg? (1 m³ = 1000 kg)',
+   sol:'V = π×1.5²×3 = 6.75π ≈ 21.21 m³。(a) 21.21/0.05 = 424.1 min ≈ <b>7.1 小时</b>。(b) 0.4×21.21×1000 ≈ <b>8,482 kg</b>'}]}
+],
+ outline:'<b>G9 复习包与 G10 衔接预习（v2 推出）：</b>根据你的四分类数据定制——C/D 类集中的专题（代数？三角？概率？）将获得完整的"概念重讲 + 阶梯题组 + 限时小测"，A/B 类专题只配维持题。G10 衔接：二次函数与图像变换、指数与对数、三角进阶、集合与函数语言。'};
+
+/* ---------- 经济 ---------- */
+CONTENT.econ = {
+ vt:'经济学 · 优势放大器 Economics', eyebrow:'MODULE 04 · 深做 · IGCSE 0455 思维内核 + 四步案例分析',
+ lead:'你的经济是 A，G10 又选了它——所以这个模块的任务不是补差，而是把 A 变成"结构性的 A"：Unit 1 给你三件思维工具，Unit 2 教你市场失灵分析和一个可终身复用的四步案例框架。课文是英文原文 + 中文导读，因为 IGCSE/IB 考的就是用英文做经济论证——这个模块同时在给你的写作模块喂弹药（2.1 课直接对接 W2 糖税作文）。学完 Unit 1–2，再做底部的 10 题限时自测和迷你案例分析。',
+ units:[
+  {t:'Unit 1 · 经济学家的三件思维工具', sub:'机会成本 · 激励 · 供需均衡——0455 后面所有章节都在重复使用这三件工具。3 课 ≈ 3 × 40 分钟，排在 Week 2。', lessons:[
+   {t:'1.1 稀缺与机会成本 Scarcity & Opportunity Cost', tag:'0455 §1 地基',
+    read:'Economics begins with one blunt fact: human wants are unlimited, but resources — time, money, land, attention — are not. This is <b>scarcity</b>, and it forces every person, firm and government to choose. The true cost of any choice is not the money you spend; it is the <b>opportunity cost</b>: the value of the next best alternative you gave up. If you spend Saturday afternoon on Java practice instead of basketball or a film, the opportunity cost is whichever ONE of those two you value more — not both added together. Governments face the same arithmetic: a billion yuan spent on a metro line is a billion yuan not spent on hospitals. Economists draw the menu of possible combinations as a <b>production possibility curve (PPC)</b>: points inside the curve mean wasted resources, points on the curve mean full efficiency, and points outside are unattainable today. Growth — better technology, more capital — pushes the whole curve outward.',
+    cn:'中文导读：机会成本 ≠ 花掉的钱，而是"被放弃的次优选项的价值"。考试第一大坑：把所有放弃的选项加总（错），只算次优的那一个（对）。第二大坑：PPC 内部的点不是"不可能"，而是"资源闲置或低效"。',
+    terms:[{en:'scarcity',cn:'稀缺性',d:'limited resources versus unlimited wants'},{en:'opportunity cost',cn:'机会成本',d:'the value of the next best alternative forgone'},{en:'PPC',cn:'生产可能性曲线',d:'all attainable output combinations at full efficiency'}],
+    quiz:[
+     {q:'A student gives up a concert ticket she values at \u00a5350 (price \u00a5200) and a sleep-in she values at \u00a550, in order to revise. Her opportunity cost of revising is:',
+      o:['\u00a5200','\u00a5350','\u00a5400','\u00a5600'],a:1,
+      e:'机会成本 = 次优选项的主观价值（\u00a5350），不是票价（\u00a5200），更不是所有放弃项相加（\u00a5400/\u00a5600 都是陷阱选项）。'},
+     {q:'Which statement about scarcity is FALSE?',
+      o:['It applies to rich countries as well as poor ones','It forces choices and creates opportunity costs','It would disappear if all goods were made free','Time is a scarce resource even for billionaires'],a:2,
+      e:'免费 ≠ 不稀缺：资源总量有限，价格归零只会让短缺以排队、抢购等形式重新出现。稀缺对任何收入水平都成立。'}],
+    reflect:{id:'ec_r11',p:'写下你本周做过的一个真实选择，并用"次优选项"的语言写出它的机会成本（中英文皆可，至少两句）。'}},
+   {t:'1.2 激励与边际思维 Incentives & the Margin', tag:'连接心理学 Unit 0',
+    read:'People respond to <b>incentives</b> — rewards and penalties that change the costs and benefits of a choice. Taxes, subsidies, fines, grades and praise are all incentives. But incentives can misfire. In a famous study, day-care centres in Israel began fining parents who arrived late to collect their children. Lateness <b>increased</b>: the fine turned a moral duty into a cheap price that parents were happy to pay. Economists call this <b>crowding out</b> — an external reward or penalty can weaken internal motivation. You have met this idea before: it is the economics twin of self-determination theory in your psychology module. The second tool is <b>thinking at the margin</b>. Real decisions are rarely all-or-nothing; they are one-more-unit questions. Should you study a fourth hour tonight? Compare the <b>marginal benefit</b> of that single hour with its <b>marginal cost</b> — lost sleep, falling focus. The rational rule: continue while MB exceeds MC; stop where they meet. The hours already studied are gone and play no part in the decision about the next one.',
+    cn:'中文导读：托儿所罚款实验是"激励反噬"的经典——罚款给迟到标了价，道德义务变成了可购买的服务。这正是你心理学 0.4 课（自我决定理论）的经济学镜像，也是这套暑期系统不设打卡奖金的原因。边际思维：别问"要不要学"，问"再学一小时值不值"。',
+    terms:[{en:'incentive',cn:'激励',d:'a reward or penalty that shapes behaviour'},{en:'marginal benefit / cost',cn:'边际收益 / 边际成本',d:'the extra benefit or cost of one more unit'},{en:'crowding out (motivation)',cn:'动机挤出',d:'external rewards weakening intrinsic motivation'}],
+    quiz:[
+     {q:'The day-care fine increased lateness because:',
+      o:['The fine was too large','Parents did not understand the rule','A price replaced a moral obligation, making lateness feel purchasable','Day-care quality fell'],a:2,
+      e:'罚款让迟到从"亏欠老师"变成"付费服务"——外在激励挤出了内在（道德）动机。'},
+     {q:'You have already studied for 3 hours. Deciding whether to study a 4th hour, the rational comparison is:',
+      o:['Total benefit of 4 hours versus total cost of 4 hours','Marginal benefit of the 4th hour versus its marginal cost','Average benefit per hour versus the price of tutoring','Whether your friends are still studying'],a:1,
+      e:'边际决策只看"下一单位"：第 4 小时自己的 MB 与 MC。前三小时已经发生，与这个决定无关。'}],
+    reflect:{id:'ec_r12',p:'用 MB/MC 的语言写两句：你每天打算学到几点停？为什么那大约是你的 MB≈MC 点？'}},
+   {t:'1.3 供需与价格机制 Demand, Supply & the Price Mechanism', tag:'0455 §2 核心',
+    read:'Markets coordinate millions of strangers through one instrument: <b>price</b>. The <b>demand</b> curve slopes downward — at higher prices, buyers want less. The <b>supply</b> curve slopes upward — at higher prices, sellers offer more. Where they cross is <b>equilibrium</b>: no shortage, no surplus, the market clears. Two moves must never be confused. A change in the price of the good itself causes a <b>movement along</b> a curve. A change in anything else — incomes, tastes, weather, the price of substitutes, production costs — <b>shifts the whole curve</b>. A Guangzhou heatwave shifts the demand for iced tea to the right; a cheaper sugar harvest shifts supply to the right. The third tool is <b>price elasticity of demand (PED)</b>: how strongly quantity responds to price, measured as the percentage change in quantity divided by the percentage change in price. Goods with close substitutes are elastic; necessities and addictive goods are inelastic. Elasticity decides who really pays a tax and whether the tax changes behaviour at all — which is exactly the battlefield of Unit 2.',
+    cn:'中文导读：全卷最贵的一个区分——价格变 → 沿线滑动；非价格因素变 → 整条线平移，写错一次扣一次。弹性 PED = %ΔQ ÷ %ΔP：大于 1 有弹性，小于 1 缺乏弹性。它是糖税之战的胜负手，Unit 2 和你的 W2 作文都押在它身上。',
+    terms:[{en:'equilibrium',cn:'均衡',d:'quantity supplied equals quantity demanded'},{en:'shift vs movement',cn:'平移 vs 沿线移动',d:'non-price factors shift the curve; own price moves along it'},{en:'PED',cn:'需求价格弹性',d:'%change in quantity demanded \u00f7 %change in price'}],
+    quiz:[
+     {q:'A heatwave hits Guangzhou. In the market for iced lemon tea this causes:',
+      o:['A movement along the demand curve','The demand curve shifts right','The supply curve shifts right','The equilibrium price falls'],a:1,
+      e:'天气是非价格因素 → 整条需求曲线右移 → 均衡价与均衡量同升。若答"沿线移动"即混淆了两类变动。'},
+     {q:'Bubble tea rises in price by 10% and quantity demanded falls by 25%. PED is:',
+      o:['0.4 — inelastic','2.5 — elastic','1.0 — unitary','It cannot be calculated'],a:1,
+      e:'PED = 25% \u00f7 10% = 2.5 > 1，有弹性——完全符合"替代品众多"的预测。'},
+     {q:'Which pairing of good and elasticity is correct?',
+      o:['Salt \u2192 elastic','Insulin \u2192 elastic','One specific milk-tea brand \u2192 elastic','Petrol for next week \u2192 elastic'],a:2,
+      e:'品牌奶茶随时可换隔壁家 → 高弹性；盐、胰岛素、短期内的汽油缺乏替代 → 缺乏弹性。'}]}
+  ]},
+  {t:'Unit 2 · 市场失灵与政府之手', sub:'IGCSE Paper 2 高频考区，也是你 W2 糖税作文的双向弹药库。2 课 ≈ 2 × 45 分钟，排在 Week 3。', lessons:[
+   {t:'2.1 外部性与糖税案例 Externalities & the Sugar Tax', tag:'直连写作 W2',
+    read:'A market is efficient only when the price captures <b>all</b> the costs of a product. Sugary drinks fail that test: heavy consumption raises public health spending and lowers productivity — costs paid by third parties, not by the drinker at the till. That gap is a <b>negative externality</b>: social cost exceeds private cost, so a free market produces and consumes too much. The textbook remedy is a corrective (<b>Pigouvian</b>) tax: make the price tell the truth by adding the external cost onto it. Evidence exists on both sides. Mexico taxed sugary drinks in 2014; purchases fell by roughly 6% in the first year, with larger falls among low-income households. The UK levy of 2018 was tiered by sugar content, so manufacturers reformulated — the average sugar in taxed drinks fell by more than 40%. There the incentive worked on producers, not only on consumers. The counter-case: such taxes are <b>regressive</b>, taking a larger share of income from the poor; and if demand is <b>inelastic</b>, consumption barely falls while the government simply collects revenue. Whether the policy is health protection or mere taxation depends on elasticity, on available substitutes, and on where the revenue goes.',
+    cn:'中文导读：这一课就是 W2 糖税作文的弹药库——支持方：外部性逻辑 + 墨西哥/英国证据；反对方：累退性 + 弹性质疑。Band 7 的作文不是站队站得狠，而是先承认对方最强论点、再用条件限定去反驳。英国案例的精妙处：分级税率把激励打在了厂商身上（减糖配方），绕开了"消费者不降量"的弹性难题——写作文时这是一张好牌。',
+    terms:[{en:'negative externality',cn:'负外部性',d:'a cost imposed on third parties; social cost exceeds private cost'},{en:'Pigouvian tax',cn:'庇古税（矫正税）',d:'a tax set equal to the external cost, making the price tell the truth'},{en:'regressive',cn:'累退的',d:'taking a larger income share from poorer households'}],
+    quiz:[
+     {q:'A negative externality exists when:',
+      o:['A firm makes a loss','Social cost exceeds private cost','Prices rise faster than wages','The government bans a product'],a:1,
+      e:'第三方承担了未计入价格的成本 → 市场过度生产与消费 → 这是矫正税的全部理论依据。'},
+     {q:'The distinctive design of the UK 2018 levy was that it:',
+      o:['Taxed all drinks at one flat rate','Was paid only by consumers','Was tiered by sugar content, pushing manufacturers to reformulate','Banned advertising of soft drinks'],a:2,
+      e:'分级税率让"减糖配方"成为厂商的省钱选项——激励作用于生产端，受税饮料平均含糖量下降逾四成。'},
+     {q:'If demand for sugary drinks proves highly INELASTIC, a sugar tax will mainly:',
+      o:['Cut consumption sharply','Raise government revenue while consumption changes little','Bankrupt the producers','Lower the equilibrium price'],a:1,
+      e:'缺乏弹性 → 销量几乎不动、税负主要落在消费者头上 → "健康政策"退化成"财政政策"。这是反方最硬的一拳，作文里要敢用。'}]},
+   {t:'2.2 四步案例分析框架 The Four-Step Case Framework', tag:'Paper 2 武器',
+    read:'IGCSE data-response questions reward a repeatable method, not inspiration. <b>Step 1 — Define.</b> Pin every key term in one precise sentence each; definition marks are the cheapest marks on the paper. <b>Step 2 — Mechanism.</b> Spell out the causal chain link by link: tax \u2192 production cost rises \u2192 supply shifts left \u2192 price rises \u2192 quantity demanded falls — <i>by how much depends on elasticity</i>. Arrows in your plan, full sentences in your answer; jumping from cause straight to final result loses every analysis mark in between. <b>Step 3 — Weigh.</b> Give the strongest argument for AND the strongest argument against, each backed by data from the case or by a diagram — adjectives are not evidence. <b>Step 4 — Conclude with a condition.</b> A flat yes or no caps your grade. The skill being tested is judgement: <i>The tax will improve health outcomes IF demand proves elastic AND the revenue is ring-fenced for health programmes.</i> Notice the skeleton: it is your EAP essay structure wearing an economics uniform — a conditioned conclusion is a thesis; a mechanism is a warrant.',
+    cn:'中文导读：第 4 步"带条件下结论"是 A 与 A* 的分水岭——"It depends on X" 不是软弱，恰恰是题目在考的判断力（前提是解释清楚为什么取决于 X）。注意这套框架与写作模块的 claim–evidence–warrant 是同一块肌肉：两门课在互相喂招。下面的拥堵费案例就用这四步写。',
+    terms:[{en:'causal chain',cn:'因果链 / 机制',d:'each link from cause to effect written out explicitly'},{en:'evaluation',cn:'评价权衡',d:'weighing the strongest case for and against, with evidence'},{en:'conditioned conclusion',cn:'条件化结论',d:'a judgement that states the IF on which it depends'}],
+    quiz:[
+     {q:'In a data-response conclusion, writing "It depends on the price elasticity of demand" is:',
+      o:['A sign of indecision that loses marks','The evaluative judgement the question is testing — provided the condition is justified','Acceptable only in IB, not IGCSE','A way to avoid drawing a diagram'],a:1,
+      e:'条件化结论正是评价分的来源；关键在于解释为什么结果取决于这个条件，而不是一句话敷衍。'},
+     {q:'Step 2 (Mechanism) mainly requires you to:',
+      o:['List as many effects as possible','Write out every link in the causal chain from policy to outcome','Quote the textbook definition again','State your own opinion early'],a:1,
+      e:'链条每一环都要落在纸上——跳环 = 丢掉中间全部分析分。'}]}
+  ]},
+  {t:'Unit 3 · 贸易、发展与制度', sub:'国际贸易与汇率入门 + Why Nations Fail 制度经济学案例线——v2 按你 Unit 1–2 的表现与 Week 5 报告解锁。', lessons:[]}
+ ],
+ quiz:[
+  {q:'Scarcity in economics means:',
+   o:['Some goods are expensive','Resources are limited while wants are unlimited','Poor countries lack money','Shops sometimes run out of stock'],a:1,
+   e:'稀缺性是经济学的第一公理：有限资源 vs 无限欲望——所以一切选择都有代价。'},
+  {q:'You choose to watch a film instead of working a shift that pays \u00a5120. The opportunity cost of the film is:',
+   o:['The price of the cinema ticket','\u00a5120 plus the ticket price','The \u00a5120 you gave up — the value of the next best alternative','Nothing, because you enjoyed the film'],a:2,
+   e:'机会成本 = 放弃的次优选择的价值。票价是显性成本，\u00a5120 是机会成本的核心。（严格说总成本是两者之和，但机会成本概念考查的是被放弃的 \u00a5120。）'},
+  {q:'The law of demand states that, ceteris paribus:',
+   o:['Higher price \u2192 lower quantity demanded','Higher price \u2192 higher quantity demanded','Price and demand are unrelated','Demand always grows over time'],a:0,
+   e:'其他条件不变，价格升、需求量降——需求曲线向右下方倾斜的原因。注意"需求量变动"（沿曲线移动）≠"需求变动"（整条曲线平移）。'},
+  {q:'A new technology cuts the cost of producing solar panels. On a supply-and-demand diagram this causes:',
+   o:['Demand curve shifts right','Supply curve shifts right','Movement along the supply curve','Supply curve shifts left'],a:1,
+   e:'生产成本下降 → 每个价格水平下厂商愿意供给更多 → 供给曲线整体右移 → 均衡价格降、均衡数量升。'},
+  {q:'Market equilibrium is the point where:',
+   o:['Government sets the price','Supply equals demand','Profit is maximised','Price stops changing forever'],a:1,
+   e:'供给量 = 需求量，市场出清。高于均衡价产生过剩（surplus），低于均衡价产生短缺（shortage）。'},
+  {q:'A government sets a maximum price (price ceiling) for apartments BELOW the equilibrium rent. The predictable result is:',
+   o:['More apartments become available','A shortage — quantity demanded exceeds quantity supplied','Landlords build more housing','Nothing changes'],a:1,
+   e:'低于均衡价的限价 → 需求量↑、供给量↓ → 短缺。这是政府干预产生意外后果的经典案例（排队、黑市、质量下降）。'},
+  {q:'Demand for which good is likely to be most price-ELASTIC?',
+   o:['Insulin for a diabetic patient','Salt','A specific brand of bubble tea with many nearby competitors','Petrol for car commuters in the short run'],a:2,
+   e:'替代品越多、越非必需，需求越有弹性。胰岛素和盐缺乏替代品 → 缺乏弹性。品牌奶茶随时可换隔壁家 → 高弹性。'},
+  {q:'A point INSIDE a production possibility curve (PPC) represents:',
+   o:['Unattainable output','Maximum efficiency','Unemployed or inefficiently used resources','Economic growth'],a:2,
+   e:'PPC 内部 = 资源闲置或低效配置；曲线上 = 充分利用；曲线外 = 当前不可达；曲线外移 = 经济增长。'},
+  {q:'Inflation is best defined as:',
+   o:['Any price increase for any product','A sustained rise in the general price level','Rising wages','The economy growing too fast'],a:1,
+   e:'通胀是"总体物价水平的持续上升"——单一商品涨价不是通胀。常用 CPI 衡量。'},
+  {q:'A government taxes sugary drinks to cut consumption. The tax will reduce consumption MOST if demand for sugary drinks is:',
+   o:['Perfectly inelastic','Inelastic','Elastic','Unrelated to price'],a:2,
+   e:'弹性越大，价格上升引起的消费量下降越大。这正是本周写作任务 W2（糖税作文）的核心经济论据——把这题的逻辑写进你的作文。'}],
+ caseTask:{id:'ec_case1', min:150,
+  title:'迷你案例分析 · 广州高峰拥堵费（150–200 词英文，用 2.2 课的四步框架）',
+  prompt:'<p><b>案例材料：</b>广州市考虑在工作日早晚高峰，对进入核心区的机动车征收 \u00a515 拥堵费。已知：① 核心区高峰平均车速约 18 km/h；② 伦敦 2003 年开征类似费用后，首年进入收费区的车流下降约 15%；③ 网约车与出租车行业反对，称成本将转嫁给乘客；④ 地铁与公交已覆盖核心区约九成区域。</p><p><b>任务：</b>Step 1 先各用一句话定义 congestion 与 negative externality；Step 2 写出收费的完整因果链；Step 3 用材料 ①–④ 中至少一条做证据，给出最强反方意见并回应；Step 4 结论必须以 IF 条件句收束。自评量表按 4–9 当一般刻度用即可。</p>',
+  checklist:[
+   {id:'ec_ck1',t:'Step 1：一句话精确定义了 negative externality（社会成本 > 私人成本）'},
+   {id:'ec_ck2',t:'Step 2：机制链条至少写满三环（收费 \u2192 出行成本\u2191 \u2192 \u2026 \u2192 车流/车速变化）'},
+   {id:'ec_ck3',t:'Step 3：写出了最强反对意见（累退性 / 成本转嫁），并引用了材料 ①–④ 中至少一条'},
+   {id:'ec_ck4',t:'Step 4：结论以 IF 条件句收束（如 IF 公共交通能承接转移需求\u2026）'},
+   {id:'ec_ck5',t:'全文 150–200 词，全英文'}],
+  rubric:[{k:'定义精确度',id:'ec_rb1'},{k:'机制链完整度',id:'ec_rb2'},{k:'双向权衡',id:'ec_rb3'},{k:'条件化结论',id:'ec_rb4'}]},
+ outline:'<b>学习顺序：</b>Unit 1 三课（Week 2）\u2192 Unit 2 两课（Week 3，赶在糖税作文之前）\u2192 10 题限时自测 + 拥堵费案例（Week 4，与糖税作文同周互为弹药）。<b>v2 预告：</b>Unit 3 把 Why Nations Fail 的制度分析接进来——为什么有的国家富、有的国家穷，答案藏在激励结构里，正是 1.2 课的国家级放大版。'};
+
+/* ---------- 理化维持包 ---------- */
+CONTENT.sci = {
+ vt:'理化 · G9 全覆盖题库 Science Bank', eyebrow:'MODULE 05 · 诊断 + 维持 · 物理 15 + 化学 15',
+ lead:'物理 C 是你成绩单上唯一的真实弱科，化学 B 也需要底盘。本题库按 IGCSE 0625 / 0620 第一年（G9）核心考点全覆盖出 30 题，双重用途：第一遍是诊断——W3 做物理、W4 做化学，各限时 45 分钟、做完再统一读解析；之后是维持——错题自动进错题本，按 3 → 7 → 14 天重现。不论 G10 课表最终是否有理化必修，这层底盘都不亏；若开学确认必修，v2 会依你的错题分布开专项补弱包。',
+ sections:[
+  {t:'物理 · 15 题', pre:'scp', sub:'运动与图像 · 力与牛顿定律 · 密度与压强 · 功 / 能 / 功率 / 效率 · 热学 —— 限时 45 分钟，先做完再看解析', quiz:[
+   {q:'<span class="anno">运动</span>A cyclist covers 120 m in 16 s, then rests for 4 s. Her average speed over the whole 20 s is:',
+    o:['7.5 m/s','6 m/s','6.25 m/s','24 m/s'],a:1,
+    e:'平均速度 = 总路程 ÷ 总时间（含休息）= 120 ÷ 20 = 6 m/s。最常见错法：只除以骑行的 16 s 得 7.5——"平均"二字指向全程。'},
+   {q:'<span class="anno">运动图像</span>On a distance\u2013time graph, a straight line sloping upward shows that the object is:',
+    o:['Accelerating','Moving at constant speed','At rest','Decelerating'],a:1,
+    e:'d\u2013t 图的斜率 = 速度。直线 = 斜率不变 = 匀速；加速应是越来越陡的曲线；水平线才是静止。'},
+   {q:'<span class="anno">运动图像</span>On a speed\u2013time graph, the area under the line represents:',
+    o:['Acceleration','Distance travelled','Resultant force','Average speed'],a:1,
+    e:'v\u2013t 图：斜率 = 加速度，面积 = 路程。与 d\u2013t 图的"斜率 = 速度"必须分开记——两图混用是 G9 物理第一大失分点。'},
+   {q:'<span class="anno">力</span>An astronaut flies from Earth to the Moon. Which row is correct?',
+    o:['Mass decreases, weight decreases','Mass unchanged, weight decreases','Mass unchanged, weight unchanged','Mass decreases, weight unchanged'],a:1,
+    e:'质量 = 物质的多少（kg），处处不变；重量 = 重力 W = mg（N），随 g 改变。月球 g \u2248 1.6 N/kg，约为地球的 1/6。'},
+   {q:'<span class="anno">力</span>A resultant force of 12 N acts on a 4 kg trolley. Its acceleration is:',
+    o:['48 m/s\u00b2','3 m/s\u00b2','0.33 m/s\u00b2','8 m/s\u00b2'],a:1,
+    e:'a = F \u00f7 m = 12 \u00f7 4 = 3 m/s\u00b2。注意公式里的 F 是合力——若题目给了摩擦力，要先求合力再代入。'},
+   {q:'<span class="anno">力</span>A skydiver falls at constant terminal velocity. The resultant force on her is:',
+    o:['Equal to her weight, downward','Zero','Upward and increasing','Equal to air resistance, upward'],a:1,
+    e:'匀速 = 合力为零（牛顿第一定律）：空气阻力恰好等于重力。不是"没有力"，而是两力平衡——"合力为零"与"无力"是两回事。'},
+   {q:'<span class="anno">密度</span>A metal block has mass 540 g and volume 200 cm\u00b3. Its density is:',
+    o:['2.7 g/cm\u00b3','0.37 g/cm\u00b3','108,000 g/cm\u00b3','740 g/cm\u00b3'],a:0,
+    e:'\u03c1 = m \u00f7 V = 540 \u00f7 200 = 2.7 g/cm\u00b3（恰是铝的密度）。判浮沉：大于水的 1 g/cm\u00b3 \u2192 沉。'},
+   {q:'<span class="anno">压强</span>Snowshoes stop you sinking into deep snow because they:',
+    o:['Reduce your weight','Increase the contact area, reducing the pressure','Increase the pressure on the snow','Make the snow harder'],a:1,
+    e:'P = F \u00f7 A：重力不变、受力面积增大 \u2192 压强减小。反向应用：刀刃磨锋利 = 减小面积、增大压强。'},
+   {q:'<span class="anno">压强</span>Which change increases the pressure at the bottom of a tank of water?',
+    o:['Using a wider tank with the same depth','Increasing the depth of the water','Replacing the water with oil of lower density','Pouring the same water into a wider tank'],a:1,
+    e:'P = \u03c1gh：液体压强只取决于密度、g 和深度，与容器形状、液体总量无关——帕斯卡裂桶实验反直觉的全部原因。'},
+   {q:'<span class="anno">功与能</span>You lift a 30 N box vertically through 2 m. The work done against gravity is:',
+    o:['15 J','60 J','32 J','600 J'],a:1,
+    e:'W = F \u00d7 s = 30 \u00d7 2 = 60 J。延伸：水平匀速提着箱子走，竖直方向不做功——力与位移垂直时 W = 0。'},
+   {q:'<span class="anno">功与能</span>A ball is dropped from rest (ignore air resistance). Just before landing, its kinetic energy is:',
+    o:['Greater than the GPE it lost','Equal to the GPE it lost','Less than the GPE it lost','Zero'],a:1,
+    e:'能量守恒：失去的重力势能全部转为动能。若考虑空气阻力，部分能量转为热能、KE 将小于失去的 GPE——纸质诊断包 Q7 的陷阱正是违反这条守恒。'},
+   {q:'<span class="anno">功与能</span>A motor does 600 J of useful work in 20 s. Its useful power output is:',
+    o:['12,000 W','30 W','620 W','0.03 W'],a:1,
+    e:'P = W \u00f7 t = 600 \u00f7 20 = 30 W。功率衡量做功的快慢，不是做功的多少。'},
+   {q:'<span class="anno">功与能</span>An electric motor takes in 200 J of energy and delivers 80 J of useful work. Its efficiency is:',
+    o:['40%','60%','250%','80%'],a:0,
+    e:'效率 = 有用输出 \u00f7 总输入 \u00d7 100% = 80 \u00f7 200 = 40%。其余 120 J 以热和声耗散。效率永远小于 100%——任何声称超过的装置都违反能量守恒。'},
+   {q:'<span class="anno">热学</span>Heat from the Sun reaches Earth mainly by:',
+    o:['Conduction','Convection','Radiation','Evaporation'],a:2,
+    e:'日地之间是真空，无介质 \u2192 传导与对流都不可能，只剩辐射。对照：金属勺柄变热 = 传导；暖气使房间空气循环 = 对流。'},
+   {q:'<span class="anno">热学</span>Evaporation cools a liquid because:',
+    o:['The liquid absorbs cold from the air','The most energetic molecules escape, lowering the average kinetic energy of the rest','All molecules slow down equally','The liquid contracts'],a:1,
+    e:'逃逸的是动能最高的分子 \u2192 剩余分子的平均动能下降 \u2192 温度（平均动能的宏观体现）降低。出汗散热、酒精擦拭降温同理。"吸收冷"在物理上不存在——只有热的转移。'}]},
+  {t:'化学 · 15 题', pre:'scc', sub:'粒子与物态 · 分离提纯 · 原子结构 · 周期表 · 化学键 · 酸碱与方程式 —— 限时 45 分钟，先做完再看解析', quiz:[
+   {q:'<span class="anno">粒子模型</span>Which best describes the particles in a gas?',
+    o:['Close together, vibrating about fixed positions','Close together, sliding past each other','Far apart, moving rapidly and randomly','Far apart, stationary'],a:2,
+    e:'固体：紧密、绕固定位置振动；液体：紧密、可滑动；气体：远离、快速随机运动、粒子间作用力可忽略。'},
+   {q:'<span class="anno">粒子模型</span>In the classic tube experiment, ammonia (M<sub>r</sub> = 17) and hydrogen chloride (M<sub>r</sub> = 36.5) meet and form a white ring of NH<sub>4</sub>Cl. The ring forms nearer the HCl end because:',
+    o:['HCl is more reactive','NH<sub>3</sub> molecules are lighter and diffuse faster','HCl diffuses faster','The tube is tilted'],a:1,
+    e:'分子越轻扩散越快：NH\u2083 跑得更远，白环偏向 HCl 一端。扩散速率与分子质量负相关、与温度正相关。'},
+   {q:'<span class="anno">物态变化</span>While a pure solid is melting, its temperature stays constant because the energy supplied is used to:',
+    o:['Raise the kinetic energy of the particles','Overcome the forces between particles','Heat the container','Shrink the particles'],a:1,
+    e:'熔化平台期：吸收的能量用于克服粒子间作用力（势能增加），平均动能不变 \u2192 温度不变。温度只反映平均动能。'},
+   {q:'<span class="anno">分离提纯</span>To obtain pure water from seawater, the correct technique is:',
+    o:['Filtration','Crystallisation','Simple distillation','Chromatography'],a:2,
+    e:'盐已溶解，过滤无效；结晶得到的是盐而不是水；蒸馏 = 蒸发 + 冷凝，收集的才是纯水。要盐用结晶、要水用蒸馏——看你要的是哪一边。'},
+   {q:'<span class="anno">分离提纯</span>In paper chromatography, the dye that travels furthest up the paper is the one that is:',
+    o:['Most soluble in the solvent','Heaviest','Most strongly attracted to the paper','Added last'],a:0,
+    e:'色谱 = 溶解性与吸附性的竞争：越易溶于流动相、越不吸附于纸 \u2192 跑得越远。R<sub>f</sub> = 溶质距离 \u00f7 溶剂前沿距离，恒小于 1。'},
+   {q:'<span class="anno">原子结构</span>An atom has 11 protons and 12 neutrons. Its nucleon (mass) number is:',
+    o:['11','12','23','1'],a:2,
+    e:'质量数 = 质子 + 中子 = 23；原子序数 = 质子数 = 11（这是钠-23）。中性原子：电子数 = 质子数。'},
+   {q:'<span class="anno">原子结构</span>Isotopes of the same element have:',
+    o:['The same number of neutrons but different protons','The same number of protons but different neutrons','Different numbers of electrons','Different chemical properties'],a:1,
+    e:'同位素：质子相同（同种元素）、中子不同（质量不同）。电子排布相同 \u2192 化学性质相同。如 Cl-35 与 Cl-37。'},
+   {q:'<span class="anno">原子结构</span>The electronic configuration of magnesium (atomic number 12) is:',
+    o:['2, 8, 2','2, 10','2, 8, 1','8, 2, 2'],a:0,
+    e:'按 2、8、8 规则填壳层：12 = 2 + 8 + 2。最外层 2 个电子 \u2192 第 II 族 \u2192 易失去 2 个电子形成 Mg<sup>2+</sup>。'},
+   {q:'<span class="anno">周期表</span>Elements in the same GROUP of the periodic table have:',
+    o:['The same number of electron shells','The same number of outer-shell electrons','The same atomic mass','The same number of neutrons'],a:1,
+    e:'族（纵列）= 最外层电子数相同 \u2192 化学性质相似；周期（横行）= 电子层数相同。化学性质由最外层电子决定。'},
+   {q:'<span class="anno">周期表</span>Going DOWN Group I (Li \u2192 Na \u2192 K), reactivity:',
+    o:['Decreases','Stays the same','Increases','First increases then decreases'],a:2,
+    e:'越往下最外层电子离核越远、越易失去 \u2192 反应性递增（钾遇水有紫焰，比钠剧烈）。注意第 VII 族卤素趋势相反：向下递减——得电子越来越难。'},
+   {q:'<span class="anno">化学键</span>When sodium reacts with chlorine, each sodium atom:',
+    o:['Gains one electron','Loses one electron to form Na<sup>+</sup>','Shares a pair of electrons','Loses two electrons'],a:1,
+    e:'金属失电子 \u2192 阳离子；非金属得电子 \u2192 阴离子；正负静电吸引 = 离子键。离子化合物高熔点，熔融态或水溶液能导电（离子可自由移动）。'},
+   {q:'<span class="anno">化学键</span>A covalent bond is best described as:',
+    o:['A transfer of electrons','A shared pair of electrons between non-metal atoms','An attraction between oppositely charged ions','A sea of free electrons'],a:1,
+    e:'共价 = 非金属间共享电子对；离子键 = 电子转移；金属键 = 自由电子海。高频陷阱：简单分子（如 H\u2082O）沸点低，是因为分子间作用力弱，不是共价键本身弱。'},
+   {q:'<span class="anno">酸碱</span>A solution turns universal indicator red. Its pH is most likely:',
+    o:['1','7','9','14'],a:0,
+    e:'红 \u2248 pH 1\u20133 强酸性；绿 = 7 中性；蓝紫 = 碱性。pH 每差 1，H<sup>+</sup> 浓度差 10 倍——pH 1 比 pH 3 酸 100 倍。'},
+   {q:'<span class="anno">酸碱</span>The products of hydrochloric acid reacting with sodium hydroxide are:',
+    o:['Sodium chloride and hydrogen','Sodium chloride and water','Sodium oxide and water','Chlorine and water'],a:1,
+    e:'酸 + 碱 \u2192 盐 + 水。离子本质：H<sup>+</sup> + OH<sup>\u2212</sup> \u2192 H\u2082O。应用：胃药中和胃酸、石灰改良酸性土壤。'},
+   {q:'<span class="anno">方程式</span>Balance the equation: __ Mg + O<sub>2</sub> \u2192 __ MgO. The missing coefficients are:',
+    o:['1 and 1','2 and 2','1 and 2','2 and 1'],a:1,
+    e:'2Mg + O\u2082 \u2192 2MgO。配平的依据是质量守恒：两边 Mg 各 2、O 各 2。顺序：先配金属、再配氧，最后整体复查。'}]}
+ ],
+ outline:'<b>使用法：</b>W3 做物理 15 题、W4 做化学 15 题，每轮限时 45 分钟，先全部做完、再统一读解析；错题自动进错题本按 3 \u2192 7 \u2192 14 天重现。<b>触发条件：</b>若物理错题 \u2265 6 题（40%），Week 5 报告会让 v2 把"物理专项补弱包"自动排进 W6——与数学诊断同款机制。'};
+
+/* ---------- 英语 · 写作 ---------- */
+CONTENT.writing = {
+ vt:'英语 · 学术写作 Academic Writing', eyebrow:'MODULE 06 · EAP 5.0 → 6.5 · 全暑假的最高优先级',
+ lead:'你的 EAP 写作是 5.0，而阅读听力都在 6.5 —— 这意味着问题不在英语，在"议论文的工程结构"。本模块每周一课 + 一篇作文：W1 拆解论证的零件，W2 学会把零件焊接起来。写作题目全部用心理学和经济学议题——你刚学的内容直接变成弹药。',
+ weeks:[
+ {t:'Week 1 · 论证的解剖学 The Anatomy of an Argument', sub:'读懂零件 → 识别零件 → 自己组装（约 90 分钟 + 作文 40 分钟）',
+  read:`<p>An academic essay is not "your thoughts written down". It is a machine with five standard parts, and examiners are paid to check whether each part exists:</p>
+  <p>① <b>Thesis</b> — your position in one sentence, usually the last sentence of the introduction. A real thesis is <i>arguable</i> (someone could disagree) and <i>previews your reasons</i>.<br>
+  ② <b>Claim / topic sentence</b> — the first sentence of each body paragraph. One paragraph, one claim. If a paragraph makes two points, it is two paragraphs wearing a coat.<br>
+  ③ <b>Evidence</b> — a study, a statistic, an example, a historical case. Claims without evidence are just opinions with confidence.<br>
+  ④ <b>Reasoning</b> — the sentence that explains <i>why</i> the evidence proves the claim. Beginners skip this and lose the most marks here.<br>
+  ⑤ <b>Concession + response</b> — admit the strongest opposing point, then show why your position survives it. This is what separates Band 6.5 from Band 5.</p>`,
+  cn:'五个零件：论点句（可争议+预告理由）、段首主张句（一段一主张）、证据、推理（解释证据为何证明主张——最容易丢分的一环）、让步与回应（先承认对方最强的点，再说明为何你的立场依然成立）。',
+  terms:[
+   {en:'thesis statement',cn:'中心论点句',d:'one arguable sentence stating your position'},
+   {en:'topic sentence',cn:'段首主张句',d:'first sentence carrying the paragraph\u2019s single claim'},
+   {en:'evidence',cn:'证据',d:'study, statistic, example or case supporting a claim'},
+   {en:'reasoning',cn:'推理衔接',d:'explains why the evidence proves the claim'},
+   {en:'concession',cn:'让步',d:'acknowledging the opposing view before answering it'}],
+  model:{title:'范文拆解（约 260 词）· 题目：Some people believe that economic growth should be the main goal of governments, even if the environment suffers. To what extent do you agree?',
+  html:`<p><span class="anno">背景</span>Governments everywhere promise their citizens a richer future, and for decades "growth first" has been the default answer. <span class="anno">Thesis</span>While growth matters enormously, I will argue that sacrificing the environment for growth is self-defeating, because environmental damage eventually destroys the very conditions on which growth depends.</p>
+  <p><span class="anno">让步主张</span>Supporters of growth-first policies make a serious point. <span class="anno">证据</span>Industrialisation has lifted hundreds of millions of people out of poverty over the last four decades, funding the schools, hospitals and pensions that citizens demand. <span class="anno">推理</span>For a poor country, a factory that pollutes may still beat no factory at all, because income buys options that poverty denies.</p>
+  <p><span class="anno">反驳主张</span>However, environmental costs are not separate from the economy; they are economic costs in disguise. <span class="anno">证据</span>Air pollution raises healthcare spending and cuts workers\u2019 productivity, while a changing climate damages the farms and coastal cities that economies depend on. <span class="anno">推理</span>A government that ignores these costs is not avoiding payment — it is mailing the bill to its own future taxpayers, with interest.</p>
+  <p><span class="anno">评估</span>The real question is therefore not growth <i>or</i> environment, but what kind of growth. <span class="anno">证据</span>Tools such as carbon pricing use market incentives to make polluters pay the true cost of their actions, steering investment toward cleaner technology. <span class="anno">结论</span>In the long run, the only growth worth having is growth the environment can survive.</p>`},
+  fnq:[
+   {q:'"While growth matters enormously, I will argue that sacrificing the environment for growth is self-defeating, because..." — this sentence functions as the:',
+    o:['Evidence','Thesis statement','Concession','Conclusion'],a:1,
+    e:'立场（反对牺牲环境）+ 可争议 + 预告理由（because...）——标准 thesis，落在引言段末句。'},
+   {q:'"Industrialisation has lifted hundreds of millions of people out of poverty..." functions as:',
+    o:['The writer\u2019s thesis','Evidence supporting the opposing view','A linking device','Reasoning'],a:1,
+    e:'这是给"对方"的证据——让步段先把反方最强的弹药亮出来，文章才有可信度。'},
+   {q:'"Supporters of growth-first policies make a serious point." is a:',
+    o:['Concession (topic sentence of the concession paragraph)','Statistic','Thesis','Counter-example'],a:0,
+    e:'承认对方观点的段首主张句。注意它不削弱作者立场——它为后面的 However 蓄力。'},
+   {q:'"A government that ignores these costs is not avoiding payment — it is mailing the bill to its own future taxpayers." functions as:',
+    o:['New evidence','Reasoning that explains why the evidence matters','A concession','Background information'],a:1,
+    e:'它不引入新事实，而是解释前一句证据（医疗成本、气候损失）为什么证明主张——这就是最容易被初学者跳过的"推理"零件。'},
+   {q:'Why does the conclusion NOT simply repeat the thesis word-for-word?',
+    o:['The writer forgot the thesis','Repetition is grammatically wrong','A conclusion should restate the position in fresh words and leave a final idea, not photocopy the introduction','Conclusions must introduce three new arguments'],a:2,
+    e:'换措辞重申 + 留下收束句（"the only growth worth having..."）。结论里出现全新论点是失分项。'}],
+  sgq:[
+   {q:'题目：Should homework be abolished? 下面哪个是最强的 thesis？',
+    o:['Homework is a very interesting topic with many different sides.','This essay will discuss homework.','Although homework can reinforce learning, schools should cap it at one hour per night, because beyond that point it damages sleep and motivation without improving results.','Homework is bad.'],a:2,
+    e:'强 thesis = 让步 + 明确立场 + 预告理由（sleep / motivation / results）。A 和 B 没有立场，D 有立场没有理由。'},
+   {q:'"Many people have different opinions about social media." 这个句子作为 thesis 的致命问题是：',
+    o:['语法错误','太长','它陈述了一个无人会反对的事实——没有立场，不可争议','用词太简单'],a:2,
+    e:'Thesis 必须是"有人会反对"的判断。人人同意的句子不是论点，是天气预报。'},
+   {q:'题目：Should governments tax sugary drinks? 最强的 thesis 是：',
+    o:['Sugar taxes.','Sugar taxes exist in many countries such as Mexico.','I will talk about sugar taxes and give my opinion at the end.','Governments should tax sugary drinks, because price is the single most reliable lever on teenage consumption — provided the revenue funds public health.'],a:3,
+    e:'立场 + 理由（价格杠杆）+ 限定条件（provided...）。带限定条件的立场是 Band 7 的气味。把观点留到最后揭晓（选项 C）是中文作文习惯，英文议论文开头亮牌。'}],
+  task:{id:'wr_w1_essay', min:250,
+   title:'Week 1 作文 · "Schools should teach students how to learn (memory, revision methods, time management) as a compulsory subject. To what extent do you agree or disagree?"',
+   prompt:`<p>要求：≥250 词，4–5 段，按本课的五零件组装。<b>证据弹药就在隔壁</b>——心理学 Unit 0 给了你 Roediger &amp; Karpicke 的测试效应、艾宾浩斯遗忘曲线、睡眠剥夺研究：至少用其中两个当 evidence。写完做下面的自查清单，再用四项 rubric 给自己打分。</p>`,
+   checklist:[
+    {id:'wr_w1_c1',t:'引言段末句是清晰的 thesis：立场 + 理由预告，可争议'},
+    {id:'wr_w1_c2',t:'每个主体段第一句是 topic sentence，且一段只讲一个主张'},
+    {id:'wr_w1_c3',t:'每个主张后面有 evidence（用了至少两个 Unit 0 的研究）'},
+    {id:'wr_w1_c4',t:'每条证据后有 reasoning：解释它为什么证明主张'},
+    {id:'wr_w1_c5',t:'有一段让步：承认反方最强的点并回应'},
+    {id:'wr_w1_c6',t:'结论换措辞重申立场，没有出现任何新论点'}],
+   rubric:[{id:'wr_w1_tr',k:'TR 任务回应（立场清晰、论证充分）'},{id:'wr_w1_cc',k:'CC 连贯衔接（分段、逻辑、连接词）'},{id:'wr_w1_lr',k:'LR 词汇资源（准确、多样、学术）'},{id:'wr_w1_gra',k:'GRA 语法广度与准确性'}]}},
+
+ {t:'Week 2 · 连贯与衔接 Cohesion: 让段落自己往前走', sub:'信息流 + 连接词 → 排序练习 → 填空 → 糖税作文（约 80 分钟 + 作文 45 分钟）',
+  read:`<p>Band 5 paragraphs are lists of true sentences. Band 6.5 paragraphs <b>flow</b> — each sentence picks up something from the previous one and adds something new. Two tools create flow:</p>
+  <p>① <b>Old-to-new information</b>: start a sentence with what the reader already knows, end with the new point. The end of one sentence loads the gun for the start of the next.<br>
+  ② <b>Linking devices</b> — but used like salt, not like soup. One linker per sentence maximum; "However," at the start of every sentence is a Band 5 fingerprint.</p>`,
+  cn:'高分段落的秘密不是高级词，是"旧信息开头、新信息结尾"的传球链 + 克制使用的连接词。每句最多一个连接词；满篇 However 是 5 分卷的指纹。',
+  linktable:`<table class="tb"><tr><th>功能</th><th>连接词</th><th>例</th></tr>
+  <tr><td>因果 Result</td><td>therefore, consequently, as a result</td><td>Demand is elastic; <b>as a result</b>, a price rise cuts consumption sharply.</td></tr>
+  <tr><td>对比 Contrast</td><td>however, whereas, by contrast, nevertheless</td><td>City A kept prices low, <b>whereas</b> City B taxed heavily.</td></tr>
+  <tr><td>让步 Concession</td><td>although, admittedly, despite</td><td><b>Although</b> the tax raises revenue, critics call it regressive.</td></tr>
+  <tr><td>举例 Example</td><td>for instance, such as, to illustrate</td><td>Several countries, <b>such as</b> Mexico, tax sugary drinks.</td></tr>
+  <tr><td>递进 Addition</td><td>furthermore, moreover, in addition</td><td><b>Furthermore</b>, the revenue can fund school sport.</td></tr></table>`,
+  ord:{id:'wr_w2_ord', lead:'下面五句来自同一个段落（糖税），已被打乱。按"旧信息→新信息"的传球逻辑点击排序：',
+   correct:[
+    'One policy that many governments have adopted is a tax on sugary drinks.',
+    'The logic is simple: a higher price discourages consumption, especially among teenagers, whose demand is relatively elastic.',
+    'Mexico, for instance, introduced such a tax in 2014 and saw purchases of taxed drinks fall measurably within a year.',
+    'However, critics argue that the tax is regressive, taking a larger share of income from poorer families.',
+    'On balance, the health benefits appear to outweigh this cost — provided the revenue is spent on public health.'],
+   show:[3,0,4,2,1]},
+  gaps:[
+   {q:'Mexico introduced a sugar tax in 2014; ____, purchases of taxed drinks fell within a year.',
+    o:['however','as a result','for instance','whereas'],a:1,e:'前因（征税）后果（购买下降）——因果连接。'},
+   {q:'____ the tax raises useful revenue, critics call it regressive.',
+    o:['Therefore','Furthermore','Although','Such as'],a:2,e:'先承认优点再转向批评 = 让步。'},
+   {q:'Several countries, ____ Mexico and the UK, now tax sugary drinks.',
+    o:['whereas','such as','consequently','nevertheless'],a:1,e:'举例。such as 后直接接名词，不接完整句。'},
+   {q:'City A saw little change; ____, consumption in City B dropped by a tenth.',
+    o:['by contrast','for instance','moreover','as a result'],a:0,e:'两个城市结果相反——对比。'},
+   {q:'Demand for sugary drinks among teenagers is elastic; ____, even a modest tax changes behaviour.',
+    o:['whereas','although','consequently','such as'],a:2,e:'弹性大 → 所以小幅征税也起效。这正是经济模块第 10 题的逻辑——写进你的作文。'}],
+  task:{id:'wr_w2_essay', min:280,
+   title:'Week 2 作文 · "Taxing sugary drinks is the most effective way for governments to improve public health. To what extent do you agree?"',
+   prompt:`<p>要求：≥280 词。这篇作文是一次三线会师：用<b>经济模块第 10 题</b>的弹性逻辑做核心论证，用<b>排序练习那段</b>做让步段的骨架（regressive 批评 + 回应），按 <b>W1 五零件</b>组装。注意：题目问的是 "the MOST effective" ——你可以同意征税有效但反对"最有效"（教育、标签、配方改革都是备选），这种限定立场往往最好写。</p>`,
+   checklist:[
+    {id:'wr_w2_c1',t:'Thesis 对 "most effective" 表了态（完全同意 / 有效但非最优 / 反对）'},
+    {id:'wr_w2_c2',t:'用了弹性（elasticity）作为经济学论证'},
+    {id:'wr_w2_c3',t:'让步段处理了 regressive（累退性）批评'},
+    {id:'wr_w2_c4',t:'每句最多一个连接词，且功能用对（查上面的表）'},
+    {id:'wr_w2_c5',t:'每段落遵守"旧信息开头、新信息结尾"'},
+    {id:'wr_w2_c6',t:'结论给出条件式收束（works if / provided that...）'}],
+   rubric:[{id:'wr_w2_tr',k:'TR 任务回应'},{id:'wr_w2_cc',k:'CC 连贯衔接'},{id:'wr_w2_lr',k:'LR 词汇资源'},{id:'wr_w2_gra',k:'GRA 语法广度与准确性'}]}}
+ ],
+ outline:'<b>W3–W6（v2 推出，按你 W1–W2 作文的自评 rubric 和反馈定制）：</b>W3 数据描述语言（IELTS Task 1 图表句式库）· W4 反驳段进阶（steelman 对方再拆解）· W5 引言与结论的工业标准 · W6 限时全真模考 + 终稿润色。把 W1、W2 的作文连同 rubric 自评一起导出发回，v2 的批改基准就从那里开始。'};
+
+/* ---------- 英语 · 词汇 ---------- */
+CONTENT.vocab = {
+ vt:'英语 · 学术词汇卡 Vocabulary', eyebrow:'MODULE 07 · 60 词 · Leitner 间隔盒',
+ lead:'四个学科各 15 词，全部是你 G10 五门课的高频学术词。规则（就是心理学 0.2 课的间隔效应）：认识 → 升盒（复习间隔 1→3→7→14 天），不认识 → 回 1 号盒。每天清空"今日到期"即可，一次 10 分钟。Box 5 = 已掌握。',
+ cats:{psy:'心理学',econ:'经济学',cs:'计算机',acad:'学术通用'},
+ words:[
+  {w:'cognition',p:'n.',d:'the mental processes of knowing and thinking',c:'认知',e:'Sleep loss measurably impairs cognition the next day.',cat:'psy'},
+  {w:'retrieval',p:'n.',d:'pulling information out of memory',c:'检索；提取',e:'Retrieval practice beats re-reading.',cat:'psy'},
+  {w:'encoding',p:'n.',d:'the initial forming of a memory',c:'编码',e:'A tired brain encodes new material poorly.',cat:'psy'},
+  {w:'consolidation',p:'n.',d:'the stabilising of memories during sleep',c:'记忆巩固',e:'Consolidation happens mostly in deep sleep.',cat:'psy'},
+  {w:'hypothesis',p:'n.',d:'a testable prediction',c:'假设',e:'A good hypothesis can be proven wrong.',cat:'psy'},
+  {w:'empirical',p:'adj.',d:'based on observation or experiment, not opinion',c:'实证的',e:'Psychology demands empirical evidence.',cat:'psy'},
+  {w:'stimulus',p:'n.',d:'anything that triggers a response',c:'刺激',e:'The light was the stimulus; the key-press was the response.',cat:'psy'},
+  {w:'perception',p:'n.',d:'how the brain interprets sensory input',c:'知觉',e:'Perception is interpretation, not photography.',cat:'psy'},
+  {w:'motivation',p:'n.',d:'the drive behind behaviour',c:'动机',e:'Intrinsic motivation outlasts rewards.',cat:'psy'},
+  {w:'intrinsic',p:'adj.',d:'coming from inside; done for its own sake',c:'内在的',e:'His interest in psychology is intrinsic.',cat:'psy'},
+  {w:'reinforcement',p:'n.',d:'a consequence that makes behaviour more likely',c:'强化',e:'Praise acts as positive reinforcement.',cat:'psy'},
+  {w:'bias',p:'n.',d:'a systematic lean away from accuracy',c:'偏差；偏见',e:'Leading questions introduce bias.',cat:'psy'},
+  {w:'sample',p:'n.',d:'the group actually studied',c:'样本',e:'A sample of 45 students took part.',cat:'psy'},
+  {w:'replication',p:'n.',d:'repeating a study to check its result',c:'重复验证',e:'The effect survived replication.',cat:'psy'},
+  {w:'falsifiable',p:'adj.',d:'capable of being proven wrong by evidence',c:'可证伪的',e:'A claim no evidence could disprove is not falsifiable.',cat:'psy'},
+  {w:'scarcity',p:'n.',d:'limited resources versus unlimited wants',c:'稀缺性',e:'Scarcity is why every choice has a cost.',cat:'econ'},
+  {w:'incentive',p:'n.',d:'a reward or penalty that shapes behaviour',c:'激励',e:'A tax is a negative incentive.',cat:'econ'},
+  {w:'opportunity cost',p:'n.',d:'the value of the next best alternative given up',c:'机会成本',e:'The opportunity cost of the film was the \u00a5120 shift.',cat:'econ'},
+  {w:'equilibrium',p:'n.',d:'the point where supply equals demand',c:'均衡',e:'The market cleared at equilibrium.',cat:'econ'},
+  {w:'elasticity',p:'n.',d:'how strongly quantity responds to price',c:'弹性',e:'Teen demand for soda shows high elasticity.',cat:'econ'},
+  {w:'subsidy',p:'n.',d:'a government payment that lowers a price',c:'补贴',e:'Solar power grew on subsidies.',cat:'econ'},
+  {w:'inflation',p:'n.',d:'a sustained rise in the general price level',c:'通货膨胀',e:'Inflation erodes savings quietly.',cat:'econ'},
+  {w:'monopoly',p:'n.',d:'a market with a single seller',c:'垄断',e:'A monopoly faces no price competition.',cat:'econ'},
+  {w:'externality',p:'n.',d:'a cost or benefit landing on third parties',c:'外部性',e:'Pollution is a negative externality.',cat:'econ'},
+  {w:'regressive',p:'adj.',d:'taking a larger income share from the poor',c:'累退的',e:'Critics call sugar taxes regressive.',cat:'econ'},
+  {w:'revenue',p:'n.',d:'money received, e.g. by firms or governments',c:'收入；岁入',e:'The tax revenue funded school sport.',cat:'econ'},
+  {w:'consumption',p:'n.',d:'spending by households on goods and services',c:'消费',e:'Consumption fell after the price rise.',cat:'econ'},
+  {w:'allocate',p:'v.',d:'to distribute resources among uses',c:'配置；分配',e:'Markets allocate goods through prices.',cat:'econ'},
+  {w:'surplus',p:'n.',d:'an excess of supply over demand',c:'过剩；盈余',e:'A price floor creates a surplus.',cat:'econ'},
+  {w:'intervention',p:'n.',d:'government action in a market',c:'干预',e:'Rent control is a classic intervention.',cat:'econ'},
+  {w:'algorithm',p:'n.',d:'a finite, exact, ordered set of steps',c:'算法',e:'Write the algorithm before the code.',cat:'cs'},
+  {w:'iteration',p:'n.',d:'repeating steps while a condition holds',c:'迭代；循环',e:'The loop performs five iterations.',cat:'cs'},
+  {w:'syntax',p:'n.',d:'the grammar rules of a language',c:'语法',e:'A missing semicolon is a syntax error.',cat:'cs'},
+  {w:'compile',p:'v.',d:'to translate source code into runnable form',c:'编译',e:'Java compiles before it runs.',cat:'cs'},
+  {w:'debug',p:'v.',d:'to find and fix errors in code',c:'调试',e:'A trace table helps you debug by hand.',cat:'cs'},
+  {w:'parameter',p:'n.',d:'an input a method receives',c:'参数',e:'The method takes one integer parameter.',cat:'cs'},
+  {w:'integer',p:'n.',d:'a whole number type',c:'整数',e:'7 / 2 in integers gives 3.',cat:'cs'},
+  {w:'boolean',p:'n.',d:'a true/false value',c:'布尔值',e:'The condition returns a boolean.',cat:'cs'},
+  {w:'string',p:'n.',d:'a sequence of text characters',c:'字符串',e:'"Hello" is a string in double quotes.',cat:'cs'},
+  {w:'variable',p:'n.',d:'a named, typed box holding a value',c:'变量',e:'Store the score in a variable.',cat:'cs'},
+  {w:'condition',p:'n.',d:'a boolean test controlling a branch or loop',c:'条件',e:'The loop exits when the condition fails.',cat:'cs'},
+  {w:'array',p:'n.',d:'a fixed-length numbered collection',c:'数组',e:'Unit 3 stores scores in an array.',cat:'cs'},
+  {w:'execute',p:'v.',d:'to run instructions',c:'执行',e:'The program executes line by line.',cat:'cs'},
+  {w:'output',p:'n.',d:'what a program prints or returns',c:'输出',e:'Predict the output before running.',cat:'cs'},
+  {w:'increment',p:'v.',d:'to increase a value, usually by one',c:'递增',e:'i++ increments the counter.',cat:'cs'},
+  {w:'analyse',p:'v.',d:'to break something into parts to understand it',c:'分析',e:'Analyse the data before concluding.',cat:'acad'},
+  {w:'evaluate',p:'v.',d:'to judge strengths and weaknesses against criteria',c:'评估',e:'Evaluate the policy\u2019s long-term effects.',cat:'acad'},
+  {w:'justify',p:'v.',d:'to give reasons supporting a position',c:'论证；证成',e:'Justify your answer with evidence.',cat:'acad'},
+  {w:'significant',p:'adj.',d:'large or meaningful enough to matter',c:'显著的',e:'The difference was statistically significant.',cat:'acad'},
+  {w:'assumption',p:'n.',d:'something taken as true without proof',c:'假定；前提',e:'The model rests on a hidden assumption.',cat:'acad'},
+  {w:'criterion',p:'n.',d:'a standard used for judging (pl. criteria)',c:'标准',e:'Cost is only one criterion.',cat:'acad'},
+  {w:'implication',p:'n.',d:'a consequence that follows from something',c:'含义；推论',e:'Consider the policy\u2019s implications for the poor.',cat:'acad'},
+  {w:'framework',p:'n.',d:'a structured way of approaching a problem',c:'框架',e:'Use the four-step framework for case studies.',cat:'acad'},
+  {w:'contrast',p:'v.',d:'to set two things against each other to show difference',c:'对比',e:'Contrast the two groups\u2019 results.',cat:'acad'},
+  {w:'infer',p:'v.',d:'to conclude from evidence rather than direct statement',c:'推断',e:'What can you infer from the graph?',cat:'acad'},
+  {w:'synthesise',p:'v.',d:'to combine sources or ideas into a whole',c:'综合',e:'Synthesise the studies into one argument.',cat:'acad'},
+  {w:'coherent',p:'adj.',d:'logically connected and consistent',c:'连贯的',e:'A coherent essay flows from old to new.',cat:'acad'},
+  {w:'valid',p:'adj.',d:'logically sound; measuring what it claims to',c:'有效的',e:'Is the conclusion valid given the premises?',cat:'acad'},
+  {w:'constraint',p:'n.',d:'a limit on what is possible',c:'约束',e:'Budget is the binding constraint.',cat:'acad'},
+  {w:'derive',p:'v.',d:'to obtain something from a source by reasoning',c:'推导',e:'Derive the formula from first principles.',cat:'acad'}]};
+
+/* ---------- 英语 · 听力 ---------- */
+CONTENT.listen = {
+ vt:'英语 · 听写实验室 Listening Lab', eyebrow:'MODULE 08 · 浏览器离线语音 · 词级判分',
+ lead:'用电脑自带的英文语音做听写——Edge 浏览器的语音最自然（Microsoft Natural 系列），Chrome 次之。流程：选语速 → 播放（可重听 2 次）→ 把听到的整句打进框里 → 检查，绿色 = 听对的词，红色 = 漏掉的词。十句难度递增，句子内容全部来自心理学和经济学模块——听力同时是复习。',
+ sentences:[
+  {id:'ls_s1',lv:'★',text:'Memory improves when you test yourself.'},
+  {id:'ls_s2',lv:'★',text:'Sleep helps the brain store new information.'},
+  {id:'ls_s3',lv:'★',text:'Spaced practice works better than cramming.'},
+  {id:'ls_s4',lv:'★★',text:'Prices rise when demand is greater than supply.'},
+  {id:'ls_s5',lv:'★★',text:'An incentive is a reward or penalty that changes behaviour.'},
+  {id:'ls_s6',lv:'★★',text:'The students who took practice tests remembered far more one week later.'},
+  {id:'ls_s7',lv:'★★★',text:'Correlation between two variables does not prove that one causes the other.'},
+  {id:'ls_s8',lv:'★★★',text:'Governments often use taxes to discourage harmful consumption.'},
+  {id:'ls_s9',lv:'★★★',text:'In the experiment, the independent variable was the amount of study time.'},
+  {id:'ls_s10',lv:'★★★',text:'Researchers must control other factors before they can claim a causal relationship.'}],
+ passage:{id:'ls_p1', title:'段落听力 · The Testing Effect（约 95 词，先听两遍再做题）',
+  text:'In 2006, two psychologists asked college students to learn a short science passage. One group read it four times. The other group read it once, and then took three practice tests. Five minutes later, the re-readers looked stronger. But one week later, the result had reversed: the testing group remembered far more. This result, known as the testing effect, has been repeated many times since. Pulling information out of memory strengthens it, much as exercise strengthens a muscle. The lesson for students is simple: close the book and test yourself, even when it feels harder.',
+  qs:[
+   {q:'Which group remembered more after one week?',
+    o:['The group that re-read four times','The group that took three practice tests','Both groups equally','The passage does not say'],a:1,e:'五分钟后重读组领先，一周后反转——测试组记得更多。'},
+   {q:'According to the passage, retrieval strengthens memory much as:',
+    o:['Sleep strengthens the body','Exercise strengthens a muscle','Reading strengthens the eyes','Sugar strengthens energy'],a:1,e:'原文比喻：much as exercise strengthens a muscle。'},
+   {q:'The final advice is to self-test:',
+    o:['Only before exams','Only when it feels easy','Even when it feels harder than rereading','Instead of sleeping'],a:2,e:'even when it feels harder——合意困难。'}]}};
+
+/* ---------- 9 周计划器 ---------- */
+CONTENT.planner = {
+ vt:'9 周计划器 Summer Planner', eyebrow:'MODULE 09 · 假设 7 月初开始 · 每天 ≤5.5 小时 · 每周休 2 天',
+ lead:'每周的任务在这里打勾。W1–W5 已定（对应仪表盘上的进度点轨）；W6–W9 是空槽——第 5 周导出学习报告发回后，v2 按真实数据填满。规则提醒：任务做完就勾，别攒着；周日晚上看一眼下周卡片。',
+ weeks:[
+  {w:1,title:'Week 1 · 诊断与点火',sub:'目标：摸清数学底牌 + 学会"怎么学" + 第一篇作文',items:[
+   {id:'pl_w1_1',t:'数学：完成 30 题诊断并全部四分类（90 分钟限时 + 对答案 60 分钟）'},
+   {id:'pl_w1_2',t:'心理学：Unit 0 课 0.1–0.2（测试效应 + 间隔），做完自测和反思框'},
+   {id:'pl_w1_3',t:'写作：Week 1 课程 + 范文拆解 + 全部识别题'},
+   {id:'pl_w1_4',t:'写作：完成 W1 作文（≥250 词）+ 自查清单 + rubric 自评'},
+   {id:'pl_w1_5',t:'Java：课 1.1–1.2（计算思维 + Hello 程序解剖）'},
+   {id:'pl_w1_6',t:'词汇：开始 Leitner，过完前 20 个新词'},
+   {id:'pl_w1_7',t:'听力：句子 1–4 听写'}]},
+  {w:2,title:'Week 2 · 环境与节奏',sub:'目标：Java 真正跑起来 + 心理学进入研究方法',items:[
+   {id:'pl_w2_1',t:'Java：安装 JDK，跑通自己的第一个程序（课件 setup 三步）'},
+   {id:'pl_w2_2',t:'Java：课 1.3–1.4（变量与类型 + 输入输出），trace 题全做'},
+   {id:'pl_w2_3',t:'心理学：课 0.3–0.4 完成 Unit 0 + 课 1.1'},
+   {id:'pl_w2_4',t:'经济：Unit 1 三课（机会成本 / 激励 / 供需），自测和反思框做完'},
+   {id:'pl_w2_5',t:'词汇：剩余 40 词全部入盒，每天清"今日到期"'},
+   {id:'pl_w2_6',t:'听力：句子 5–7 听写'},
+   {id:'pl_w2_7',t:'数学：错题本里 3 天到期的 C/D 题重做第一轮'}]},
+  {w:3,title:'Week 3 · 第二篇作文与循环',sub:'目标：衔接词成肌肉 + Java 进入循环',items:[
+   {id:'pl_w3_1',t:'写作：Week 2 课程 + 排序练习 + 连接词填空'},
+   {id:'pl_w3_2',t:'心理学：课 1.2–1.3 完成 Unit 1（含 mini 研究设计任务）'},
+   {id:'pl_w3_3',t:'Java：课 2.1–2.2（if/else + while），trace 题全做'},
+   {id:'pl_w3_4',t:'听力：句子 8–10 + 段落听力做完'},
+   {id:'pl_w3_5',t:'数学：7 天到期错题第二轮重做'},
+   {id:'pl_w3_6',t:'词汇：每日清零，目标过半词汇进 Box 3'},
+   {id:'pl_w3_7',t:'经济：Unit 2 两课（外部性糖税 + 四步框架）——给下周糖税作文备弹药'},
+   {id:'pl_w3_8',t:'理化：物理 15 题一轮（限时 45 分钟）——C 科先诊断，错题进错题本'}]},
+  {w:4,title:'Week 4 · 综合验收',sub:'目标：糖税作文（三线会师）+ Java 挑战',items:[
+   {id:'pl_w4_1',t:'写作：完成 W2 糖税作文（≥280 词）+ 清单 + rubric 自评'},
+   {id:'pl_w4_2',t:'Java：课 2.3（for 循环）+ 三个上机挑战（先自己写 20 分钟再看答案）'},
+   {id:'pl_w4_3',t:'理化：化学 15 题一轮（限时 45 分钟）'},
+   {id:'pl_w4_4',t:'心理学：把 Unit 0–1 所有反思框补全，重做错过的自测题'},
+   {id:'pl_w4_5',t:'听力：把得分 <80% 的句子重听重写'},
+   {id:'pl_w4_6',t:'经济：10 题限时自测（15 分钟）+ 迷你案例分析（拥堵费，150–200 词）'}]},
+  {w:5,title:'Week 5 · 中期周：清零与回传',sub:'目标：错题清零 + 导出报告 → v2',items:[
+   {id:'pl_w5_1',t:'错题本：全部到期项复习完毕（仪表盘上无红色到期）'},
+   {id:'pl_w5_2',t:'仪表盘：点「导出学习报告」，把 JSON 文件发给爸爸 → Claude'},
+   {id:'pl_w5_3',t:'自由阅读：Why Nations Fail 或任一本经济读物，不做笔记，纯读'},
+   {id:'pl_w5_4',t:'休整：本周学习减半，运动和睡眠优先'}]},
+  {w:6,future:true,title:'Week 6 · 由 v2 定制',sub:'数学补弱包（按四分类数据）+ Java Unit 3 + 写作 W3 + 期末项目启动'},
+  {w:7,future:true,title:'Week 7 · 由 v2 定制',sub:'Java Unit 3–4 + 写作 W4 + 心理 Unit 2 + 经济案例分析第一轮'},
+  {w:8,future:true,title:'Week 8 · 由 v2 定制',sub:'反应时测验项目完成 + 写作 W5 + 数学 G10 衔接预习'},
+  {w:9,future:true,title:'Week 9 · 由 v2 定制',sub:'终期评估（对照 W1 基线）+ 写作 W6 模考 + 开学装备检查'}]};
+
+/* =====================================================
+   ENGINE — 状态、渲染、判分、存档
+   ===================================================== */
+const $=(s,r)=> (r||document).querySelector(s);
+const $$=(s,r)=> Array.prototype.slice.call((r||document).querySelectorAll(s));
+const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
+const addDays=(ds,n)=>{const d=new Date(ds+'T00:00:00');d.setDate(d.getDate()+n);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
+const daysSince=ds=>Math.floor((new Date(today()+'T00:00:00')-new Date(ds+'T00:00:00'))/864e5);
+const words=t=>String(t||'').trim().split(/\s+/).filter(Boolean).length;
+const strip=h=>String(h||'').replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();
+
+document.head.insertAdjacentHTML('beforeend','<style>.anno{display:inline-block;font-size:10px;letter-spacing:.07em;background:var(--sky);color:var(--navy);border:1px solid var(--sky-d);border-radius:3px;padding:0 6px;margin-right:6px;font-weight:700;vertical-align:1px}.due{color:var(--rust);font-weight:700;font-size:12px;white-space:nowrap}.okt{color:var(--ok);font-weight:600;font-size:12px}.catlbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}</style>');
+
+/* ---------- state ---------- */
+const KEY='simon_summer_v1';
+let S={meta:{created:today(),view:'',opened:0,rate:'1'},activity:{},answers:{},clsf:{},traces:{},ords:{},dict:{},essays:{},rubrics:{},checks:{},vocab:{},reviews:{}};
+let CAN_STORE=true;
+try{const raw=localStorage.getItem(KEY);if(raw){const old=JSON.parse(raw);for(const k in S){if(old[k]!==undefined)S[k]=old[k];}}localStorage.setItem('__t','1');localStorage.removeItem('__t');}catch(e){CAN_STORE=false;}
+function save(){S.activity[today()]=true;if(CAN_STORE){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}updateProgress();}
+
+/* ---------- lookups & registry ---------- */
+const REG=[];           // {mod,id,kind,min,brief}
+const TR={};            // trace id -> {exp,brief}
+const SAY={};           // say id -> text
+function reg(mod,id,kind,brief,min){if(REG.some(function(x){return x.id===id;}))return;REG.push({mod:mod,id:id,kind:kind,brief:brief||id,min:min||0});}
+
+/* ---------- shared renderers ---------- */
+function qHTML(mod,id,item,no){
+ reg(mod,id,'q',strip(item.q).slice(0,80));
+ let h='<div class="q" data-qid="'+id+'" data-a="'+item.a+'"><div class="stem"><span class="qno">'+no+'.</span>'+item.q+'</div>';
+ for(let i=0;i<item.o.length;i++){h+='<button class="opt" data-opt="'+i+'">'+String.fromCharCode(65+i)+'. '+item.o[i]+'</button>';}
+ return h+'<div class="verdict"></div><div class="exp">'+(item.e||'')+'</div></div>';
+}
+function quizList(mod,prefix,items,head){
+ let h=head?'<p style="margin:18px 0 4px"><b>'+head+'</b></p>':'';
+ for(let i=0;i<items.length;i++){h+=qHTML(mod,prefix+'_q'+i,items[i],i+1);}
+ return h;
+}
+function termsHTML(ts){if(!ts)return'';let h='<div class="terms">';for(const t of ts){h+='<span class="term"><b>'+t.en+'</b> '+t.cn+' — '+t.d+'</span>';}return h+'</div>';}
+function reflectHTML(mod,r){
+ if(!r)return'';reg(mod,r.id,'essay','反思 · '+strip(r.p).slice(0,50),12);
+ return '<div class="card"><p><b>✎ 反思框</b> · '+r.p+'</p><textarea class="ess" style="min-height:90px" data-essay="'+r.id+'" data-min="12" placeholder="写 2–3 句，自动保存"></textarea><div class="wc" data-wc="'+r.id+'">0 词</div></div>';
+}
+function lessonHTML(mod,prefix,l){
+ let h='<h3 class="lesson">'+l.t+(l.tag?' <span class="tag">'+l.tag+'</span>':'')+'</h3>';
+ if(l.read)h+='<div class="card">'+l.read+'</div>';
+ if(l.code)h+='<pre class="code">'+l.code+'</pre>';
+ if(l.read2)h+='<div class="card">'+l.read2+'</div>';
+ if(l.code2)h+='<pre class="code">'+l.code2+'</pre>';
+ if(l.read3)h+='<div class="card">'+l.read3+'</div>';
+ if(l.traces){h+='<p style="margin:14px 0 2px"><b>Trace 题 · 读代码，预测输出（精确到字符）</b></p>';
+  for(const t of l.traces){TR[t.id]={exp:t.exp,brief:'Java trace · '+strip(t.ask).slice(0,40)};reg(mod,t.id,'trace',TR[t.id].brief);
+   h+='<pre class="code">'+t.code+'</pre><div class="trace"><label>'+t.ask+'</label><input data-trace="'+t.id+'" autocomplete="off" placeholder="你的预测"><button class="btn sm ghost" data-tracecheck="'+t.id+'">检查</button><span class="mark" data-tracemark="'+t.id+'"></span></div>';}}
+ if(l.cn)h+='<div class="cn">'+l.cn+'</div>';
+ h+=termsHTML(l.terms);
+ if(l.quiz)h+=quizList(mod,prefix,l.quiz,'自测');
+ if(l.sols){for(const s of l.sols){h+='<details class="rv"><summary>'+s.t+'</summary><div class="rvb"><pre class="code">'+s.c+'</pre></div></details>';}}
+ if(l.reflect)h+=reflectHTML(mod,l.reflect);
+ return h;
+}
+function moduleHead(c){return '<div class="eyebrow">'+c.eyebrow+'</div><h1 class="vt">'+c.vt+'</h1><p class="vlead">'+c.lead+'</p>';}
+function unitsHTML(mod,key,units){
+ let h='';
+ for(let ui=0;ui<units.length;ui++){const u=units[ui];
+  h+='<h2 class="unit">'+u.t+'</h2><div class="unit-sub">'+u.sub+'</div>';
+  if(!u.lessons||!u.lessons.length){h+='<div class="note">本单元由 v2 根据你 V1 的学习数据定制推出。</div>';continue;}
+  for(let li=0;li<u.lessons.length;li++){h+=lessonHTML(mod,key+'_u'+ui+'l'+li,u.lessons[li]);}}
+ return h;
+}
+function rubricOpts(){let h='<option value="">—</option>';for(let b=4;b<=9;b+=0.5){h+='<option value="'+b+'">'+b+'</option>';}return h;}
+function taskHTML(mod,task){
+ reg(mod,task.id,'essay',strip(task.title).slice(0,70),Math.round(task.min*0.8));
+ let h='<div class="card"><p><b>'+task.title+'</b></p>'+task.prompt;
+ h+='<textarea class="ess" data-essay="'+task.id+'" data-min="'+task.min+'" placeholder="在这里写正文。每次输入自动保存到本机。"></textarea><div class="wc" data-wc="'+task.id+'">0 词 / 目标 ≥'+task.min+'</div>';
+ h+='<p style="margin-top:14px"><b>提交前自查</b></p>';
+ for(const c of task.checklist){h+='<div class="ckrow"><input type="checkbox" id="'+c.id+'" data-ck="'+c.id+'"><label for="'+c.id+'">'+c.t+'</label></div>';}
+ h+='<p style="margin-top:14px"><b>四项自评</b>（对照诊断包里的 band 描述给自己打分，导出报告会带上）</p><div class="rubgrid">';
+ for(const r of task.rubric){h+='<label>'+r.k+'</label><select data-rub="'+r.id+'">'+rubricOpts()+'</select>';}
+ return h+'</div></div>';
+}
+
+/* ---------- module renderers ---------- */
+function renderPsy(){const c=CONTENT.psy;$('#v-psy').innerHTML=moduleHead(c)+unitsHTML('psy','psy',c.units);}
+function renderJava(){const c=CONTENT.java;$('#v-java').innerHTML=moduleHead(c)+'<div class="card">'+c.setup+'</div>'+unitsHTML('java','jvq',c.units);}
+function renderMath(){
+ const c=CONTENT.math;let h=moduleHead(c)+'<div class="note">'+c.legend+'</div>';let n=0;
+ for(const p of c.parts){h+='<h2 class="unit">'+p.t+'</h2>';
+  for(const it of p.items){n++;reg('math',it.id,'cls',it.id.toUpperCase()+' · '+it.topic+' · '+strip(it.q).slice(0,46));
+   h+='<div class="diag"><div class="topic">'+it.topic+'</div><div class="dstem"><span class="qno">Q'+n+'.</span><span>'+it.q+'</span></div>'
+    +'<div class="btnrow"><button class="btn sm ghost" data-reveal="'+it.id+'">显示答案与详解</button></div>'
+    +'<div class="sol" id="sol_'+it.id+'">'+it.sol+'</div>'
+    +'<div class="clsrow"><button class="clsbtn" data-cls="A" data-cid="'+it.id+'">A · 完全会做</button><button class="clsbtn" data-cls="B" data-cid="'+it.id+'">B · 做对但慢</button><button class="clsbtn" data-cls="C" data-cid="'+it.id+'">C · 卡住有思路</button><button class="clsbtn" data-cls="D" data-cid="'+it.id+'">D · 完全不会</button></div></div>';}}
+ h+='<div class="note">'+c.outline+'</div>';$('#v-math').innerHTML=h;
+}
+function ordHTML(mod,o){
+ reg(mod,o.id,'ord','排序 · '+strip(o.lead).slice(0,40));
+ let h='<div class="card ord" data-ordid="'+o.id+'" data-n="'+o.correct.length+'"><p><b>'+o.lead+'</b></p><div class="pool">';
+ for(let k=0;k<o.show.length;k++){const orig=o.show[k];h+='<button class="pick" data-pick="'+orig+'" data-lt="'+String.fromCharCode(65+k)+'">'+String.fromCharCode(65+k)+'. '+o.correct[orig]+'</button>';}
+ h+='</div><div class="seq">你的顺序：<span class="sq">—</span></div><div class="btnrow"><button class="btn sm" data-ordcheck="'+o.id+'">检查</button><button class="btn sm ghost" data-ordreset="'+o.id+'">重来</button></div><div class="sol" id="ordsol_'+o.id+'"></div></div>';
+ return h;
+}
+function renderWriting(){
+ const c=CONTENT.writing;let h=moduleHead(c);
+ for(let wi=0;wi<c.weeks.length;wi++){const w=c.weeks[wi];
+  h+='<h2 class="unit">'+w.t+'</h2><div class="unit-sub">'+w.sub+'</div>';
+  if(w.read)h+='<div class="card">'+w.read+'</div>';
+  if(w.cn)h+='<div class="cn">'+w.cn+'</div>';
+  h+=termsHTML(w.terms);
+  if(w.model)h+='<p style="margin:18px 0 4px"><b>范文拆解</b></p><div class="card"><div class="catlbl">'+w.model.title+'</div>'+w.model.html+'</div>';
+  if(w.fnq)h+=quizList('writing','wr_w'+(wi+1)+'_fn',w.fnq,'识别练习 · 这句话是什么零件？');
+  if(w.sgq)h+=quizList('writing','wr_w'+(wi+1)+'_sg',w.sgq,'Thesis 手术台 · 挑出最强论点句');
+  if(w.linktable)h+='<p style="margin:18px 0 4px"><b>连接词工具箱</b>（用盐的量，不是用汤的量）</p>'+w.linktable;
+  if(w.ord)h+=ordHTML('writing',w.ord);
+  if(w.gaps)h+=quizList('writing','wr_w'+(wi+1)+'_gap',w.gaps,'连接词填空');
+  if(w.task)h+=taskHTML('writing',w.task);}
+ h+='<div class="note">'+c.outline+'</div>';$('#v-writing').innerHTML=h;
+}
+function renderEcon(){const c=CONTENT.econ;$('#v-econ').innerHTML=moduleHead(c)+unitsHTML('econ','ecu',c.units)+quizList('econ','ec',c.quiz,'10 题概念限时自测 · 学完 Unit 1–2 后做，限时 15 分钟')+'<h2 class="unit">综合验收 · 案例分析</h2>'+taskHTML('econ',c.caseTask)+'<div class="note">'+c.outline+'</div>';}
+function renderSci(){const c=CONTENT.sci;let h=moduleHead(c);for(const s of c.sections){h+='<h2 class="unit">'+s.t+'</h2><div class="unit-sub">'+s.sub+'</div>'+quizList('sci',s.pre,s.quiz,'');}h+='<div class="note">'+c.outline+'</div>';$('#v-sci').innerHTML=h;}
+
+/* ---------- 词汇 · Leitner ---------- */
+document.head.insertAdjacentHTML('beforeend','<style>.mtag{display:inline-block;font-size:11px;font-weight:600;color:var(--navy);background:var(--sky);padding:2px 8px;border-radius:3px;white-space:nowrap}.mrow{display:flex;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line);font-size:13.5px}.mrow:last-child{border-bottom:none}.modrow{display:flex;gap:12px;align-items:center;margin:7px 0}</style>');
+let VQ=[],VIDX=0;
+function vocabDue(w){const st=S.vocab[w];if(!st)return true;if(st.box>=5)return false;return st.due<=today();}
+function buildVQ(){VQ=[];for(const x of CONTENT.vocab.words){if(vocabDue(x.w))VQ.push(x.w);}VIDX=0;}
+function boxDist(){const d=[0,0,0,0,0,0];for(const x of CONTENT.vocab.words){const st=S.vocab[x.w];d[st?Math.min(st.box,5):0]++;}return d;}
+function distHTML(){const d=boxDist();return '<span>新词 <b>'+d[0]+'</b></span><span>Box 1 <b>'+d[1]+'</b></span><span>Box 2 <b>'+d[2]+'</b></span><span>Box 3 <b>'+d[3]+'</b></span><span>Box 4 <b>'+d[4]+'</b></span><span class="okt">已掌握 '+d[5]+'</span>';}
+function renderVocab(){
+ const c=CONTENT.vocab;buildVQ();
+ let h=moduleHead(c);
+ h+='<div class="card"><div class="catlbl">盒子分布</div><div id="vdist" style="display:flex;gap:18px;flex-wrap:wrap;font-size:14px">'+distHTML()+'</div></div>';
+ h+='<div id="vq"></div>';
+ h+='<p style="margin:22px 0 4px"><b>词表总览</b>（按学科 · 含当前盒位）</p>';
+ for(const k in c.cats){h+='<details class="rv"><summary>'+c.cats[k]+' · 15 词</summary><div class="rvb">';
+  for(const x of c.words){if(x.cat!==k)continue;const st=S.vocab[x.w];
+   h+='<div style="padding:8px 0;border-bottom:1px solid var(--line);font-size:14px"><b>'+x.w+'</b> <i style="color:var(--muted)">'+x.p+'</i> — '+x.d+' <span style="color:var(--muted)">· '+x.c+'</span>'+(st?' <span class="okt">Box '+Math.min(st.box,5)+'</span>':'')+'<br><span style="font-style:italic;color:var(--muted)">'+x.e+'</span></div>';}
+  h+='</div></details>';}
+ $('#v-vocab').innerHTML=h;drawVCard();
+}
+function drawVCard(){
+ const el=$('#vq');if(!el)return;
+ if(VIDX>=VQ.length){el.innerHTML='<div class="note">今天到期的词清零了 ✓ 明天再来——间隔本身就是记忆策略（心理学 0.2 课讲过为什么）。</div>';return;}
+ const x=CONTENT.vocab.words.find(function(z){return z.w===VQ[VIDX];});const st=S.vocab[x.w];
+ el.innerHTML='<div class="catlbl" style="margin-top:14px">今日队列 · 剩 '+(VQ.length-VIDX)+' 张 · '+CONTENT.vocab.cats[x.cat]+(st?' · Box '+st.box:' · 新词')+'</div>'
+  +'<div class="fcard"><div class="front"><div class="w">'+x.w+'</div><div class="pos">'+x.p+' · 先回忆词义，再点卡片翻面</div></div>'
+  +'<div class="back"><div class="w" style="font-size:22px">'+x.w+' <i style="font-size:14px;color:var(--muted)">'+x.p+'</i></div><div class="df">'+x.d+'</div><div class="cnz">'+x.c+'</div><div class="ex">'+x.e+'</div></div></div>'
+  +'<div class="btnrow"><button class="btn sm" data-grade="1">认识 ✓ 升盒</button><button class="btn sm warn-b" data-grade="0">不认识 · 回 Box 1</button></div>';
+}
+function gradeVocab(know){
+ const w=VQ[VIDX];if(!w)return;let st=S.vocab[w]||{box:0,due:today()};
+ if(know){st.box=Math.min((st.box||0)+1,5);const iv=[0,1,3,7,14,0][st.box];st.due=st.box>=5?'9999-12-31':addDays(today(),iv);}
+ else{st.box=1;st.due=addDays(today(),1);}
+ S.vocab[w]=st;VIDX++;save();const dv=$('#vdist');if(dv)dv.innerHTML=distHTML();drawVCard();
+}
+
+/* ---------- 听力 ---------- */
+function renderListen(){
+ const c=CONTENT.listen;let h=moduleHead(c);
+ h+='<div class="card"><b>语速</b>　<select data-rate><option value="0.8">慢 0.8×</option><option value="1">正常 1×</option><option value="1.15">快 1.15×</option></select>　<span style="font-size:13px;color:var(--muted)">没声音？换 Edge 浏览器打开本文件，并检查系统音量。每句最多听 2 遍再写。</span></div>';
+ h+='<p style="margin:18px 0 4px"><b>句子听写 · 10 句 · ≥80% 算过关</b></p>';
+ for(const s of c.sentences){SAY[s.id]=s.text;reg('listen',s.id,'dict','听写 '+s.id.replace('ls_s','#')+' · '+s.lv);
+  h+='<div class="dict"><div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><b>'+s.id.replace('ls_s','句 ')+'</b><span style="color:var(--muted);font-size:12px">'+s.lv+'</span><button class="btn sm ghost" data-say="'+s.id+'">▶ 播放</button><span class="mark" data-dscore="'+s.id+'"></span></div>'
+  +'<input data-dict="'+s.id+'" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="把听到的整句打在这里，回车或点检查">'
+  +'<div class="btnrow"><button class="btn sm" data-dictcheck="'+s.id+'">检查</button></div><div class="diff" data-diff="'+s.id+'"></div></div>';}
+ const p=c.passage;SAY[p.id]=p.text;
+ h+='<p style="margin:24px 0 4px"><b>'+p.title+'</b></p><div class="card"><button class="btn sm ghost" data-say="'+p.id+'">▶ 播放整段</button><span style="font-size:13px;color:var(--muted)">　先听两遍、做完三题，再展开原文核对。</span></div>';
+ h+=quizList('listen','lsp',p.qs,'段落理解 · 3 题');
+ h+='<details class="rv"><summary>查看原文（做完题再开）</summary><div class="rvb"><p style="font-size:14.5px;line-height:1.85">'+p.text+'</p></div></details>';
+ $('#v-listen').innerHTML=h;
+}
+const normWords=function(t){return String(t||'').toLowerCase().replace(/[^a-z0-9' ]+/g,' ').split(/\s+/).filter(Boolean);};
+function checkDict(id){
+ const inp=$('input[data-dict="'+id+'"]');if(!inp)return;
+ const tgt=normWords(SAY[id]),usr=normWords(inp.value);
+ let ptr=0,hits=0;const marks=[];
+ for(const w of tgt){const k=usr.indexOf(w,ptr);if(k>=0){hits++;ptr=k+1;marks.push('<span class="hit">'+w+'</span>');}else{marks.push('<span class="miss">'+w+'</span>');}}
+ const sc=Math.round(hits/tgt.length*100);
+ const prev=S.dict[id]||{best:0,n:0};prev.n++;prev.last=sc;if(sc>prev.best)prev.best=sc;S.dict[id]=prev;
+ $('[data-diff="'+id+'"]').innerHTML=marks.join(' ');
+ const m=$('[data-dscore="'+id+'"]');m.textContent=sc+'%'+(sc>=80?' ✓':'');m.className='mark '+(sc>=80?'right':'wrong');
+ save();
+}
+
+/* ---------- 计划器 / 使用说明 ---------- */
+function renderPlan(){
+ const c=CONTENT.planner;let h=moduleHead(c);
+ for(const w of c.weeks){
+  h+='<div class="wkcard'+(w.future?' future':'')+'"><h4>'+w.title+'</h4><div class="wsub">'+w.sub+'</div>';
+  if(w.items){for(const it of w.items){reg('plan',it.id,'ck','W'+w.w+' · '+strip(it.t).slice(0,48));
+   h+='<div class="ckrow"><input type="checkbox" id="'+it.id+'" data-ck="'+it.id+'"><label for="'+it.id+'">'+it.t+'</label></div>';}}
+  else h+='<div style="font-size:13px;color:var(--muted)">空槽 · 回传 Week 5 学习报告后由 v2 填充。</div>';
+  h+='</div>';}
+ $('#v-plan').innerHTML=h;
+}
+function renderGuide(){
+ $('#v-guide').innerHTML='<div class="eyebrow">READ ME FIRST</div><h1 class="vt">使用说明</h1>'
+ +'<div class="card"><div class="catlbl">① 打开方式（重要）</div><p style="font-size:14.5px;line-height:1.9">把本文件<b>下载到电脑本地</b>，用 <b>Edge 或 Chrome 双击打开</b>。所有进度自动保存在这台电脑的这个浏览器里——所以：<b>固定用同一台电脑、同一个浏览器、文件放固定位置不改名</b>；不要清除浏览器数据；不要用隐私/无痕窗口。</p></div>'
+ +'<div class="card"><div class="catlbl">② 每天怎么用</div><p style="font-size:14.5px;line-height:1.9">先开「9 周计划器」看本周卡片 → 做对应模块 → 做完打勾。每天上限 5.5 小时，每周休 2 天。做题规则：<b>先自己想，再点答案</b>；答错不丢人，错题会自动进仪表盘的错题本，按 3 → 7 → 14 天间隔重现，复习三轮自动毕业——这套机制本身就是心理学 Unit 0 教的内容。</p></div>'
+ +'<div class="card"><div class="catlbl">③ 存档双保险</div><p style="font-size:14.5px;line-height:1.9">进度自动保存；但浏览器数据有被误清的可能，所以<b>每周日在仪表盘点一次「导出存档备份」</b>，把 .json 文件存到网盘或微信收藏。换电脑或丢档时用「导入存档」恢复。</p></div>'
+ +'<div class="card"><div class="catlbl">④ 声音</div><p style="font-size:14.5px;line-height:1.9">听力模块用的是电脑自带英文语音，<b>Edge 的声音最自然</b>（Microsoft Natural 系列），Chrome 次之。第一次点播放可能有 1–2 秒延迟，正常。</p></div>'
+ +'<div class="card"><div class="catlbl">⑤ V1 范围与反馈闭环</div><p style="font-size:14.5px;line-height:1.9">这是 <b>v1.2</b>：深做了心理学 Unit 0–1、Java Unit 1–2、经济学 Unit 1–2（含四步案例分析）、写作 Week 1–2、数学 30 题诊断，外加理化 G9 全覆盖 30 题、60 词卡、10 句听写；Java Unit 3–4、心理 Unit 2、经济 Unit 3（贸易与制度）、写作 W3–W6、数学补弱包是 v2 的内容。<b>三步闭环：用满 1–2 周（最迟 Week 5）→ 仪表盘点「导出学习报告」→ 把文件原样发给爸爸转 Claude</b>。v2 按你的真实数据定制，不是猜的。</p></div>'
+ +'<div class="note">一句话版：固定电脑打开 → 按周卡学 → 错了让错题本管 → 周日备份 → 两周后回传报告。</div>';
+}
+
+/* ---------- 错题本 / 进度 ---------- */
+function isDone(r){
+ if(r.kind==='q')return !!S.answers[r.id];
+ if(r.kind==='trace')return !!S.traces[r.id];
+ if(r.kind==='cls')return !!S.clsf[r.id];
+ if(r.kind==='ord')return !!(S.ords[r.id]&&S.ords[r.id].ok);
+ if(r.kind==='essay')return words(S.essays[r.id])>=(r.min||1);
+ if(r.kind==='dict')return !!(S.dict[r.id]&&S.dict[r.id].best>=80);
+ if(r.kind==='ck')return !!S.checks[r.id];
+ return false;
+}
+function progOf(mod){let done=0,total=0;for(const r of REG){if(mod&&r.mod!==mod)continue;total++;if(isDone(r))done++;}return {done:done,total:total,pct:total?Math.round(done/total*100):0};}
+function mistakes(){
+ const out=[];
+ for(const r of REG){
+  let bad=false;
+  if(r.kind==='q'){const a=S.answers[r.id];bad=!!(a&&!a.ok);}
+  else if(r.kind==='trace'){const t=S.traces[r.id];bad=!!(t&&!t.ok);}
+  else if(r.kind==='cls'){const c=S.clsf[r.id];bad=(c==='C'||c==='D');}
+  else if(r.kind==='ord'){const o=S.ords[r.id];bad=!!(o&&!o.ok);}
+  else if(r.kind==='dict'){const d=S.dict[r.id];bad=!!(d&&d.n>=1&&d.best<80);}
+  if(!bad)continue;
+  const rv=S.reviews[r.id];let due,info;
+  if(!rv){due=true;info='待复习';}
+  else if(rv.n>=3){continue;}
+  else{const gap=[3,7,14][Math.min(rv.n-1,2)];const left=gap-daysSince(rv.d);due=left<=0;info=due?('第 '+(rv.n+1)+' 轮到期'):('已复习 ×'+rv.n+' · '+left+' 天后再现');}
+  out.push({id:r.id,mod:r.mod,brief:r.brief,due:due,info:info});
+ }
+ out.sort(function(a,b){return (b.due?1:0)-(a.due?1:0);});
+ return out;
+}
+const MODS=[['psy','心理学'],['java','Java'],['math','数学诊断'],['writing','写作'],['listen','听力'],['econ','经济'],['sci','理化'],['plan','计划']];
+const MODCN={psy:'心理',java:'Java',math:'数学',writing:'写作',listen:'听力',econ:'经济',sci:'理化',plan:'计划'};
+function streak(){let n=0,d=today();if(!S.activity[d])d=addDays(d,-1);while(S.activity[d]){n++;d=addDays(d,-1);}return n;}
+function weekState(w){if(!w.items)return '';let c=0;for(const it of w.items){if(S.checks[it.id])c++;}if(!c)return '';return c===w.items.length?'full':'half';}
+function updateProgress(){
+ const all=progOf(null);const e=$('[data-pct="all"]');if(e)e.textContent=all.pct+'%';
+ for(const m of MODS){const p=$('[data-pct="'+m[0]+'"]');if(p)p.textContent=progOf(m[0]).pct+'%';}
+}
+
+/* ---------- 仪表盘 ---------- */
+function renderDash(){
+ const all=progOf(null),mts=mistakes(),dueN=mts.filter(function(m){return m.due;}).length;
+ let dots='';for(const w of CONTENT.planner.weeks){dots+='<span class="wk '+weekState(w)+'" title="'+w.title+'"></span>';}
+ let h='<div class="mast"><div class="mt-top"><span class="nm">Simon Sun · Summer Console</span><span class="pr">IGCSE G9 → G10 · IBDP-BOUND · ISA LIWAN</span></div>'
+  +'<div class="mt-body"><div class="stat"><div class="k">总进度</div><div class="v">'+all.pct+'%</div></div>'
+  +'<div class="stat"><div class="k">连续学习</div><div class="v">'+streak()+'<span style="font-size:13px"> 天</span></div></div>'
+  +'<div class="stat"><div class="k">累计活跃</div><div class="v">'+Object.keys(S.activity).length+'<span style="font-size:13px"> 天</span></div></div>'
+  +'<div class="stat"><div class="k">错题待复习</div><div class="v" style="color:'+(dueN?'var(--rust)':'var(--ok)')+'">'+dueN+'</div></div>'
+  +'<div class="dotrail">'+dots+'<span class="lbl">W1–W9</span></div></div></div>';
+ h+='<div class="card"><div class="catlbl">模块进度</div>';
+ for(const m of MODS){const p=progOf(m[0]);h+='<div class="modrow"><span style="width:84px;font-size:13.5px">'+m[1]+'</span><div class="pbar" style="flex:1"><i style="width:'+p.pct+'%"></i></div><span class="pcttx">'+p.pct+'%</span></div>';}
+ h+='<div style="font-size:12px;color:var(--muted);margin-top:8px">词汇进度看词汇页的盒子分布；作文达到目标词数才计入完成；听写 ≥80% 算过关。</div></div>';
+ h+='<div class="card"><div class="catlbl">错题本 · 间隔重现 3 → 7 → 14 天 · 复习三轮自动毕业</div>';
+ if(!mts.length)h+='<p style="font-size:14px">还没有错题。开始做题后，答错的会自动进来——这是功能，不是惩罚。</p>';
+ else{for(const m of mts){h+='<div class="mrow"><span class="mtag">'+(MODCN[m.mod]||m.mod)+'</span><span style="flex:1">'+m.brief+'</span><span class="'+(m.due?'due':'okt')+'">'+m.info+'</span>'+(m.due?'<button class="btn sm ghost" data-review="'+m.id+'">已复习 ✓</button>':'')+'</div>';}}
+ h+='</div>';
+ h+='<div class="card"><div class="catlbl">存档与反馈闭环</div><div class="btnrow"><button class="btn" data-export="report">导出学习报告（发给 Claude → v2）</button><button class="btn ghost" data-export="state">导出存档备份</button><button class="btn ghost" data-import>导入存档</button><input type="file" data-importfile accept=".json,application/json" style="display:none"></div>'
+  +'<p style="font-size:13.5px;color:var(--muted);line-height:1.9">三步：① 用满 1–2 周（最迟 Week 5）→ ② 点「导出学习报告」→ ③ 把 .json 文件原样发回给 Claude。v2 据此定制：数学补弱包、Java Unit 3–4、写作 W3–W6、心理 Unit 2、经济案例分析、W6–W9 计划。'
+  +(CAN_STORE?'':'<br><b style="color:var(--rust)">⚠ 当前打开方式不支持本地存储（可能是预览窗口或隐私模式）——关页即丢进度。请下载文件后用 Edge/Chrome 直接打开。</b>')+'</p></div>';
+ $('#v-dash').innerHTML=h;
+}
+
+/* ---------- 导出 / 导入 ---------- */
+function dl(name,obj){const blob=new Blob([JSON.stringify(obj,null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},400);}
+function exportReport(){
+ const rep={type:'simon_summer_report',version:1,exported:new Date().toISOString(),
+  meta:{created:S.meta.created,opened:S.meta.opened,activeDays:Object.keys(S.activity).length,streak:streak(),activityDates:Object.keys(S.activity).sort()},
+  progress:{},quizAccuracy:{},mathClassification:{A:[],B:[],C:[],D:[]},
+  essays:{},rubrics:S.rubrics,dictation:S.dict,vocabBoxes:boxDist(),
+  mistakesOutstanding:mistakes().map(function(m){return (MODCN[m.mod]||m.mod)+' | '+m.brief+' | '+m.info;}),
+  plannerChecks:S.checks,state:S};
+ for(const m of MODS){rep.progress[m[0]]=progOf(m[0]);}
+ const acc={};
+ for(const r of REG){if(r.kind!=='q')continue;const a=S.answers[r.id];if(!a)continue;if(!acc[r.mod])acc[r.mod]={right:0,total:0};acc[r.mod].total++;if(a.ok)acc[r.mod].right++;}
+ rep.quizAccuracy=acc;
+ for(const id in S.clsf){const g=S.clsf[id];const r=REG.find(function(x){return x.id===id;});if(rep.mathClassification[g])rep.mathClassification[g].push(r?r.brief:id);}
+ for(const id in S.essays){rep.essays[id]={words:words(S.essays[id]),text:S.essays[id]};}
+ dl('Simon学习报告_'+today().replace(/-/g,'')+'.json',rep);
+}
+function exportState(){dl('Simon课件存档_'+today().replace(/-/g,'')+'.json',{type:'simon_summer_state',version:1,state:S});}
+function importState(file){
+ const rd=new FileReader();
+ rd.onload=function(){try{const o=JSON.parse(rd.result);const st=o.state||o;if(!st.meta)throw new Error('bad');S=st;save();rerender();alert('导入成功，进度已恢复。');}catch(e){alert('导入失败：这不是有效的存档文件。');}};
+ rd.readAsText(file);
+}
+
+/* ---------- TTS ---------- */
+let VOICE=null;
+function pickVoice(){
+ try{const vs=window.speechSynthesis.getVoices().filter(function(v){return /^en/i.test(v.lang);});if(!vs.length)return;
+  VOICE=vs.find(function(v){return /natural|online/i.test(v.name);})
+   ||vs.find(function(v){return /microsoft/i.test(v.name)&&/aria|jenny|guy|ryan|sonia|libby|ana/i.test(v.name);})
+   ||vs.find(function(v){return /google/i.test(v.name);})
+   ||vs[0];}catch(e){}
+}
+function speak(text){
+ if(!text)return;
+ if(!('speechSynthesis' in window)){alert('这个浏览器不支持语音合成——请用 Edge 或 Chrome 打开本文件。');return;}
+ try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);if(VOICE)u.voice=VOICE;u.lang='en-US';u.rate=parseFloat(S.meta.rate||'1');speechSynthesis.speak(u);}catch(e){}
+}
+if('speechSynthesis' in window){pickVoice();window.speechSynthesis.onvoiceschanged=pickVoice;}
+
+/* ---------- 状态回放 ---------- */
+function paintQ(qe,pick,ok){
+ qe.classList.add('done');const a=parseInt(qe.getAttribute('data-a'),10);
+ $$('.opt',qe).forEach(function(b,i){if(i===pick){b.classList.add('sel');b.classList.add(ok?'right':'wrong');}if(i===a)b.classList.add('key');});
+ const v=$('.verdict',qe);if(v){v.textContent=ok?'✓ 正确':('✗ 不对 — 正确答案是 '+String.fromCharCode(65+a));v.className='verdict '+(ok?'right':'wrong');}
+}
+function applyState(){
+ for(const id in S.answers){const qe=$('.q[data-qid="'+id+'"]');if(qe&&!qe.classList.contains('done'))paintQ(qe,S.answers[id].pick,S.answers[id].ok);}
+ for(const id in S.traces){const t=S.traces[id];const inp=$('input[data-trace="'+id+'"]');if(inp)inp.value=t.val||'';
+  const mk=$('[data-tracemark="'+id+'"]');if(mk){mk.textContent=t.ok?'✓ 正确':('✗ 期望: '+(TR[id]?TR[id].exp:''));mk.className='mark '+(t.ok?'right':'wrong');}}
+ for(const id in S.clsf){const sel=S.clsf[id];$$('.clsbtn[data-cid="'+id+'"]').forEach(function(x){x.classList.toggle('on',x.getAttribute('data-cls')===sel);});}
+ for(const id in S.ords){const o=S.ords[id];if(o&&o.ok){const sol=$('#ordsol_'+id);if(sol){sol.classList.add('open');sol.innerHTML='✓ 此题已完成正确排序。';}}}
+ for(const id in S.essays){const ta=$('textarea[data-essay="'+id+'"]');if(!ta)continue;ta.value=S.essays[id];
+  const wc=$('[data-wc="'+id+'"]');const min=ta.getAttribute('data-min');if(wc)wc.textContent=words(S.essays[id])+' 词'+(min&&min!=='12'?(' / 目标 ≥'+min):'');}
+ for(const id in S.rubrics){const s=$('select[data-rub="'+id+'"]');if(s)s.value=S.rubrics[id];}
+ for(const id in S.checks){if(!S.checks[id])continue;const c=$('input[data-ck="'+id+'"]');if(c){c.checked=true;const row=c.closest('.ckrow');if(row)row.classList.add('done');}}
+ for(const id in S.dict){const d=S.dict[id];const m=$('[data-dscore="'+id+'"]');if(m&&d.best){m.textContent='最好 '+d.best+'%'+(d.best>=80?' ✓':'');m.className='mark '+(d.best>=80?'right':'wrong');}}
+ const rs=$('select[data-rate]');if(rs)rs.value=S.meta.rate||'1';
+}
+
+/* ---------- 事件 ---------- */
+function onClick(e){
+ const t=e.target;
+ const nav=t.closest('[data-nav]');if(nav){showView(nav.getAttribute('data-nav'));return;}
+ const opt=t.closest('.opt');
+ if(opt){const qe=opt.closest('.q');
+  if(qe&&!qe.classList.contains('done')){const id=qe.getAttribute('data-qid');const pick=parseInt(opt.getAttribute('data-opt'),10);const ok=pick===parseInt(qe.getAttribute('data-a'),10);
+   S.answers[id]={pick:pick,ok:ok,d:today()};paintQ(qe,pick,ok);save();}return;}
+ const rev=t.closest('[data-reveal]');if(rev){const s=$('#sol_'+rev.getAttribute('data-reveal'));if(s)s.classList.toggle('open');return;}
+ const cb=t.closest('.clsbtn');if(cb){const cid=cb.getAttribute('data-cid');
+  $$('.clsbtn[data-cid="'+cid+'"]').forEach(function(x){x.classList.remove('on');});cb.classList.add('on');
+  S.clsf[cid]=cb.getAttribute('data-cls');delete S.reviews[cid];save();return;}
+ const tc=t.closest('[data-tracecheck]');if(tc){const id=tc.getAttribute('data-tracecheck');const inp=$('input[data-trace="'+id+'"]');if(!inp)return;
+  const ok=inp.value.trim()===TR[id].exp;S.traces[id]={val:inp.value.trim(),ok:ok,d:today()};
+  const mk=$('[data-tracemark="'+id+'"]');mk.textContent=ok?'✓ 正确':('✗ 期望: '+TR[id].exp);mk.className='mark '+(ok?'right':'wrong');save();return;}
+ const say=t.closest('[data-say]');if(say){speak(SAY[say.getAttribute('data-say')]);return;}
+ const dc=t.closest('[data-dictcheck]');if(dc){checkDict(dc.getAttribute('data-dictcheck'));return;}
+ const pk=t.closest('.pick');
+ if(pk&&!pk.classList.contains('used')){const card=pk.closest('.ord');
+  card.dataset.seq=(card.dataset.seq?card.dataset.seq+',':'')+pk.getAttribute('data-pick');
+  card.dataset.lts=(card.dataset.lts?card.dataset.lts+' → ':'')+pk.getAttribute('data-lt');
+  pk.classList.add('used');const sq=$('.sq',card);if(sq)sq.textContent=card.dataset.lts;return;}
+ const oc=t.closest('[data-ordcheck]');
+ if(oc){const id=oc.getAttribute('data-ordcheck');const card=$('.ord[data-ordid="'+id+'"]');const n=parseInt(card.getAttribute('data-n'),10);
+  const seq=(card.dataset.seq||'').split(',').filter(Boolean).map(Number);const sol=$('#ordsol_'+id);sol.classList.add('open');
+  if(seq.length<n){sol.innerHTML='还有 '+(n-seq.length)+' 句没选——把所有句子按你认为的正确顺序点完，再检查。';return;}
+  const ok=seq.every(function(v,i){return v===i;});S.ords[id]={ok:ok,seq:seq,d:today()};save();
+  sol.innerHTML=ok?'✓ 排对了。回头看每句开头的衔接信号（However / This / such a…）是怎么咬合上一句的——这就是 cohesion。':'✗ 还不对。提示：先找"总起句"（唯一不依赖任何前文的那句），再追踪 this / such / however 这些指回信号。点「重来」再试。';return;}
+ const orx=t.closest('[data-ordreset]');
+ if(orx){const id=orx.getAttribute('data-ordreset');const card=$('.ord[data-ordid="'+id+'"]');
+  card.dataset.seq='';card.dataset.lts='';$$('.pick',card).forEach(function(x){x.classList.remove('used');});
+  const sq=$('.sq',card);if(sq)sq.textContent='—';const sol=$('#ordsol_'+id);sol.classList.remove('open');return;}
+ const fc=t.closest('.fcard');if(fc){fc.classList.toggle('flip');return;}
+ const gr=t.closest('[data-grade]');if(gr){gradeVocab(gr.getAttribute('data-grade')==='1');return;}
+ const rw=t.closest('[data-review]');if(rw){const id=rw.getAttribute('data-review');const rv=S.reviews[id]||{n:0,d:today()};rv.n++;rv.d=today();S.reviews[id]=rv;save();renderDash();return;}
+ const ex=t.closest('[data-export]');if(ex){if(ex.getAttribute('data-export')==='report')exportReport();else exportState();return;}
+ if(t.closest('[data-import]')){const fi=$('input[data-importfile]');if(fi)fi.click();return;}
+}
+let essTimer=null;
+function onInput(e){
+ const t=e.target;
+ if(t.matches('textarea[data-essay]')){const id=t.getAttribute('data-essay');S.essays[id]=t.value;
+  const wc=$('[data-wc="'+id+'"]');const min=t.getAttribute('data-min');
+  if(wc)wc.textContent=words(t.value)+' 词'+(min&&min!=='12'?(' / 目标 ≥'+min):'');
+  clearTimeout(essTimer);essTimer=setTimeout(save,600);}
+}
+function onChange(e){
+ const t=e.target;
+ if(t.matches('select[data-rub]')){S.rubrics[t.getAttribute('data-rub')]=t.value;save();return;}
+ if(t.matches('input[data-ck]')){S.checks[t.getAttribute('data-ck')]=t.checked;const row=t.closest('.ckrow');if(row)row.classList.toggle('done',t.checked);save();return;}
+ if(t.matches('select[data-rate]')){S.meta.rate=t.value;save();return;}
+ if(t.matches('input[data-importfile]')){if(t.files&&t.files[0])importState(t.files[0]);t.value='';return;}
+}
+function onKey(e){
+ if(e.key!=='Enter')return;
+ if(e.target.matches('input[data-dict]')){checkDict(e.target.getAttribute('data-dict'));e.preventDefault();}
+ else if(e.target.matches('input[data-trace]')){const id=e.target.getAttribute('data-trace');const btn=$('[data-tracecheck="'+id+'"]');if(btn)btn.click();e.preventDefault();}
+}
+
+/* ---------- 视图与启动 ---------- */
+function showView(k){
+ $$('.view').forEach(function(v){v.classList.remove('on');});
+ const tgt=$('#v-'+k);if(tgt)tgt.classList.add('on');
+ $$('.nav-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-nav')===k);});
+ S.meta.view=k;
+ if(k==='dash')renderDash();
+ if(k==='vocab')renderVocab();
+ save();
+ try{const mn=$('#main');if(mn)mn.scrollTop=0;window.scrollTo(0,0);}catch(e){}
+}
+function rerender(){
+ renderGuide();renderPsy();renderJava();renderMath();renderWriting();renderVocab();renderListen();renderEcon();renderSci();renderPlan();
+ applyState();updateProgress();
+ showView(S.meta.view&&$('#v-'+S.meta.view)?S.meta.view:'dash');
+}
+function boot(){
+ try{
+  S.meta.opened=(S.meta.opened||0)+1;
+  rerender();
+  document.addEventListener('click',onClick);
+  document.addEventListener('input',onInput);
+  document.addEventListener('change',onChange);
+  document.addEventListener('keydown',onKey);
+  save();
+ }catch(err){
+  document.body.innerHTML='<div style="max-width:620px;margin:80px auto;font-family:sans-serif"><h2>课件初始化出错</h2><p>请把下面这段错误信息截图发回给 Claude，下一版会修复：</p><pre style="white-space:pre-wrap;background:#f4f4f4;padding:14px;border-radius:6px">'+esc(err&&err.stack?err.stack:String(err))+'</pre></div>';
+ }
+}
+boot();
+</script>
+</body>
+</html>

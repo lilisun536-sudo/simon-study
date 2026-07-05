@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>编程实验室 — Simon 学习中心</title>
+<style>
+:root{
+  --bg:#F5F5F7; --card:#FFFFFF; --ink:#1D1D1F; --sub:#6E6E73;
+  --hair:#D2D2D7; --blue:#0071E3; --green:#30D158; --wait:#E8E8ED;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:17px; line-height:1.55; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:920px;margin:0 auto;padding:0 22px}
+.top{border-bottom:1px solid var(--hair);background:rgba(245,245,247,.85);backdrop-filter:saturate(180%) blur(20px);position:sticky;top:0;z-index:10}
+.top-in{display:flex;align-items:baseline;justify-content:space-between;padding:14px 0}
+.back{font-size:15px;color:var(--blue);text-decoration:none}
+.back::before{content:"‹ "}
+.brand{font-size:13px;color:var(--sub)}
+.hero{padding:56px 0 28px}
+.eyebrow{font-size:13px;font-weight:600;color:var(--sub);letter-spacing:.02em;margin-bottom:8px}
+.hero h1{font-size:clamp(28px,5vw,42px);font-weight:600;letter-spacing:-.02em}
+.hero p{margin-top:8px;font-size:17px;color:var(--sub)}
+.card{
+  background:var(--card);border-radius:20px;padding:32px;margin-bottom:20px;
+  box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 28px rgba(0,0,0,.05);
+}
+.card h2{font-size:21px;font-weight:600;letter-spacing:-.01em}
+.card .sub{margin-top:6px;color:var(--sub);font-size:15px}
+/* 反应时测验 */
+.stage{
+  margin-top:20px;height:220px;border-radius:16px;background:var(--wait);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;
+  cursor:pointer;user-select:none;-webkit-user-select:none;transition:background .15s;
+}
+.stage:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.stage.go{background:var(--green)}
+.stage .big{font-size:24px;font-weight:600;letter-spacing:-.015em}
+.stage.go .big{color:#fff}
+.stage .small{font-size:14px;color:var(--sub)}
+.stage.go .small{color:rgba(255,255,255,.85)}
+.rt-meta{margin-top:14px;display:flex;justify-content:space-between;font-size:14px;color:var(--sub);flex-wrap:wrap;gap:8px}
+/* 游乐场 */
+.pg{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pg textarea{
+  width:100%;height:320px;resize:vertical;border:1px solid var(--hair);border-radius:14px;
+  padding:14px;font:13px/1.5 ui-monospace,"SF Mono",Menlo,Consolas,"Cascadia Mono",monospace;
+  color:var(--ink);background:#FAFAFC;outline:none;
+}
+.pg textarea:focus-visible{border-color:var(--blue)}
+.pg iframe{width:100%;height:320px;border:1px solid var(--hair);border-radius:14px;background:#fff}
+.btns{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{
+  font:inherit;font-size:15px;font-weight:500;border:0;border-radius:99px;
+  padding:9px 22px;cursor:pointer;transition:opacity .15s;
+}
+.btn:hover{opacity:.85}
+.btn:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-ghost{background:#E8E8ED;color:var(--ink)}
+.hint{font-size:13px;color:var(--sub)}
+/* 作品位 */
+.slot{
+  margin-top:20px;border:1.5px dashed var(--hair);border-radius:16px;padding:26px;
+  color:var(--sub);font-size:15px;
+}
+.slot b{color:var(--ink);font-weight:600}
+.foot{border-top:1px solid var(--hair);margin-top:56px;padding:22px 0 44px;font-size:13px;color:var(--sub)}
+@media (max-width:700px){.pg{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.stage,.btn{transition:none}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap top-in">
+  <a class="back" href="../">学习中心</a>
+  <span class="brand">编程实验室</span>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">编程实验室</div>
+    <h1>写代码，跑起来。</h1>
+    <p>先玩明白目标，再动手改代码，最后做出你自己的版本。</p>
+  </section>
+
+  <div class="card">
+    <h2>目标示例 · 反应时测验</h2>
+    <p class="sub">这是你 Java 模块期末项目要做出的东西。变绿的瞬间点击，测你的反应速度——玩三组，想一想：它需要哪些变量？计时怎么实现？抢跑怎么判定？</p>
+    <div class="stage" id="stage" tabindex="0" role="button" aria-label="反应时测验区域">
+      <span class="big" id="stBig">点击开始</span>
+      <span class="small" id="stSmall">共 5 轮 · 变绿后尽快点击</span>
+    </div>
+    <div class="rt-meta">
+      <span id="rtRound">第 — 轮 / 5</span>
+      <span id="rtTimes"></span>
+      <span id="rtBest"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>代码游乐场</h2>
+    <p class="sub">左边写 HTML + JavaScript，点「运行」，右边立刻看到结果。改坏了不要紧——「恢复示例」随时重来。代码保存在这台电脑的浏览器里。</p>
+    <div class="pg">
+      <textarea id="ed" spellcheck="false" aria-label="代码编辑区"></textarea>
+      <iframe id="fr" title="运行结果"></iframe>
+    </div>
+    <div class="btns">
+      <button class="btn btn-blue" id="runBtn">运行</button>
+      <button class="btn btn-ghost" id="resetBtn">恢复示例</button>
+      <span class="hint" id="saveHint"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>我的作品</h2>
+    <div class="slot">
+      <b>第 1 个作品位 · 空。</b><br>
+      完成 Java 模块后，在游乐场里做出你自己的反应时测验（网页版），运行成功后告诉 Boss——它会被正式收录到这里，署你的名。
+    </div>
+  </div>
+</main>
+
+<footer class="foot"><div class="wrap">Simon 学习门户 · 2026 夏 · v1</div></footer>
+
+<script>
+(function(){
+  /* ---------- 反应时测验 ---------- */
+  var stage=document.getElementById('stage');
+  var big=document.getElementById('stBig'), small=document.getElementById('stSmall');
+  var roundEl=document.getElementById('rtRound'), timesEl=document.getElementById('rtTimes'), bestEl=document.getElementById('rtBest');
+  var BEST_KEY='simon_rt_best', ROUNDS=5;
+  var state='idle', timer=null, t0=0, round=0, times=[];
+
+  function showBest(){
+    try{
+      var b=localStorage.getItem(BEST_KEY);
+      bestEl.textContent=b?('历史最快 '+b+' ms'):'';
+    }catch(e){}
+  }
+  function setStage(cls,b,s){
+    stage.className='stage'+(cls?' '+cls:'');
+    big.textContent=b; small.textContent=s;
+  }
+  function startRound(){
+    state='waiting';
+    setStage('','等待变绿…','变绿前点击算抢跑');
+    timer=setTimeout(function(){
+      state='go'; t0=performance.now();
+      setStage('go','点！','');
+    },1500+Math.random()*2500);
+  }
+  function finish(){
+    var sum=0,best=times[0];
+    for(var i=0;i<times.length;i++){sum+=times[i];if(times[i]<best)best=times[i];}
+    var avg=Math.round(sum/times.length);
+    try{
+      var old=parseInt(localStorage.getItem(BEST_KEY)||'0',10);
+      if(!old||best<old)localStorage.setItem(BEST_KEY,String(best));
+    }catch(e){}
+    showBest();
+    state='done';
+    setStage('','平均 '+avg+' ms · 最快 '+best+' ms','点击再来一组');
+  }
+  stage.addEventListener('click',function(){
+    if(state==='idle'||state==='done'){
+      round=0;times=[];timesEl.textContent='';
+      round=1;roundEl.textContent='第 1 轮 / '+ROUNDS;
+      startRound();return;
+    }
+    if(state==='waiting'){
+      clearTimeout(timer);state='between';
+      setStage('','抢跑了','点击重新开始这一轮');return;
+    }
+    if(state==='go'){
+      var dt=Math.round(performance.now()-t0);
+      times.push(dt);
+      timesEl.textContent=times.join(' · ')+' ms';
+      if(round>=ROUNDS){finish();return;}
+      state='between';
+      setStage('',dt+' ms','点击进入第 '+(round+1)+' 轮');return;
+    }
+    if(state==='between'){
+      round=Math.min(round+(times.length===round?1:0),ROUNDS);
+      roundEl.textContent='第 '+round+' 轮 / '+ROUNDS;
+      startRound();return;
+    }
+  });
+  stage.addEventListener('keydown',function(e){
+    if(e.key===' '||e.key==='Enter'){e.preventDefault();stage.click();}
+  });
+  showBest();
+
+  /* ---------- 代码游乐场 ---------- */
+  var ed=document.getElementById('ed'), fr=document.getElementById('fr');
+  var runBtn=document.getElementById('runBtn'), resetBtn=document.getElementById('resetBtn'), saveHint=document.getElementById('saveHint');
+  var PG_KEY='simon_playground';
+  var EXAMPLE=[
+    '<!doctype html>',
+    '<meta charset="utf-8">',
+    '<style>',
+    '  body{font-family:-apple-system,"PingFang SC",sans-serif;padding:24px}',
+    '  button{font-size:17px;padding:10px 24px;border:0;border-radius:99px;',
+    '         background:#0071E3;color:#fff;cursor:pointer}',
+    '</style>',
+    '',
+    '<h3>点击计数器</h3>',
+    '<p>已点击 <b id="n">0</b> 次</p>',
+    '<button id="b">点我</button>',
+    '',
+    '<script>',
+    '  // 试试：把 n++ 改成 n+=2，或者给按钮换个颜色',
+    '  let n = 0;',
+    '  document.getElementById("b").onclick = () => {',
+    '    n++;',
+    '    document.getElementById("n").textContent = n;',
+    '  };',
+    '<\/script>'
+  ].join('\n');
+
+  function run(){
+    var code=ed.value;
+    fr.setAttribute('srcdoc',code);
+    try{
+      localStorage.setItem(PG_KEY,code);
+      saveHint.textContent='已运行并保存 · '+new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
+    }catch(e){saveHint.textContent='已运行';}
+  }
+  runBtn.addEventListener('click',run);
+  resetBtn.addEventListener('click',function(){ed.value=EXAMPLE;run();});
+  ed.addEventListener('keydown',function(e){
+    if((e.metaKey||e.ctrlKey)&&e.key==='Enter'){e.preventDefault();run();}
+  });
+
+  var saved=null;
+  try{saved=localStorage.getItem(PG_KEY);}catch(e){}
+  ed.value=saved||EXAMPLE;
+  run();
+  window.__labRun=run;
+})();
+</script>
+</body>
+</html>

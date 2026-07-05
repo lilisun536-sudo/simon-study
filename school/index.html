@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学校课件 · 数学 — Simon 学习中心</title>
+<style>
+:root{
+  --bg:#F5F5F7; --card:#FFFFFF; --ink:#1D1D1F; --sub:#6E6E73;
+  --hair:#D2D2D7; --blue:#0071E3; --amber:#C56A00;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:17px; line-height:1.55; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:920px;margin:0 auto;padding:0 22px}
+.top{border-bottom:1px solid var(--hair);background:rgba(245,245,247,.85);backdrop-filter:saturate(180%) blur(20px);position:sticky;top:0}
+.top-in{display:flex;align-items:baseline;justify-content:space-between;padding:14px 0}
+.back{font-size:15px;color:var(--blue);text-decoration:none}
+.back::before{content:"‹ "}
+.brand{font-size:13px;color:var(--sub)}
+.hero{padding:56px 0 28px}
+.eyebrow{font-size:13px;font-weight:600;color:var(--sub);letter-spacing:.02em;margin-bottom:8px}
+.hero h1{font-size:clamp(28px,5vw,42px);font-weight:600;letter-spacing:-.02em}
+.chip{display:inline-block;font-size:12px;font-weight:600;color:var(--amber);background:#FFF4E3;border-radius:99px;padding:3px 10px;margin-left:10px;vertical-align:6px}
+.card{
+  background:var(--card);border-radius:20px;padding:32px;margin-bottom:18px;
+  box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 28px rgba(0,0,0,.05);
+}
+.card h2{font-size:20px;font-weight:600;letter-spacing:-.01em;margin-bottom:10px}
+.card p{color:var(--sub);font-size:15px}
+.card p+p{margin-top:8px}
+.go{display:inline-block;margin-top:16px;font-size:15px;font-weight:500;color:var(--blue);text-decoration:none}
+.go::after{content:" ›"}
+.foot{border-top:1px solid var(--hair);margin-top:56px;padding:22px 0 44px;font-size:13px;color:var(--sub)}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap top-in">
+  <a class="back" href="../">学习中心</a>
+  <span class="brand">学校课件</span>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">学校课件 · 与校内进度同步</div>
+    <h1>数学<span class="chip">整理中</span></h1>
+  </section>
+
+  <div class="card">
+    <h2>这一区在准备什么</h2>
+    <p>这里将放置与爱莎荔湾校内进度同步的数学课件与练习——按学校教材的章节顺序编排，作为课内学习的巩固与延伸。</p>
+    <p>资料整理完成后会直接在这个网址上线，收藏本页即可，不需要换链接。</p>
+  </div>
+
+  <div class="card">
+    <h2>在此之前，先做这件事</h2>
+    <p>暑期自学系统里的数学诊断已经就绪，先完成它——诊断结果会决定这一区上线后的练习侧重。</p>
+    <a class="go" href="../study/">去做数学诊断</a>
+  </div>
+</main>
+
+<footer class="foot"><div class="wrap">Simon 学习门户 · 2026 夏 · v1</div></footer>
+</body>
+</html>

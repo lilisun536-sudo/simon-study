@@ -144,7 +144,7 @@ select.inp{width:auto;cursor:pointer}
         <div class="dn"><b id="dMast">0<span style="font-size:14px;color:var(--sub)">/26</span></b><span>已掌握</span></div>
         <div class="dn"><b id="dRev">0</b><span>待复习</span></div>
       </div>
-      <span class="chip" id="syncPill" style="display:none;cursor:pointer" title="点击立即同步"></span> <button class="btn btn-ghost btn-mini" onclick="exportReport()">导出学习报告</button>
+      <button class="btn btn-ghost btn-mini" onclick="exportReport()">导出学习报告</button>
     </div>
     <div class="bar"><i id="dBar"></i></div>
   </div>
@@ -154,7 +154,7 @@ select.inp{width:auto;cursor:pointer}
   <div id="qwrap"></div>
 </main>
 
-<footer class="foot"><div class="wrap">数学专项 v2 · 卷一 W19 P2 + 卷二 W20 P2（各 70 分）· Simon 学习门户 2026 夏<br>本卷答案与讲解由 Claude 独立求解并经程序复核；如与官方评分标准有出入，以官方为准。配置云同步后，进度自动上传，家长可远程查看。</div></footer>
+<footer class="foot"><div class="wrap">数学专项 v2 · 卷一 W19 P2 + 卷二 W20 P2（各 70 分）· Simon 学习门户 2026 夏<br>本卷答案与讲解由 Claude 独立求解并经程序复核；如与官方评分标准有出入，以官方为准。</div></footer>
 <div class="toast" id="toast"></div>
 <script>
 'use strict';
@@ -443,7 +443,7 @@ var SKEY='simon_school_math_v1';
 var ST={meta:{created:new Date().toISOString().slice(0,10),opened:0},it:{},qv:{}};
 try{var _s=JSON.parse(localStorage.getItem(SKEY));if(_s&&_s.it)ST=_s}catch(e){}
 ST.meta.opened=(ST.meta.opened||0)+1;
-function save(){try{localStorage.setItem(SKEY,JSON.stringify(ST))}catch(e){};if(window.__SYNC)window.__SYNC.schedule()}
+function save(){try{localStorage.setItem(SKEY,JSON.stringify(ST))}catch(e){}}
 function IT(id){if(!ST.it[id])ST.it[id]={a:0,w:0,ok:0};return ST.it[id]}
 
 /* ================= 判定 ================= */
@@ -1139,54 +1139,6 @@ $('#tab1').onclick=function(){showPaper(1)};
 showPaper(ST.meta.tab===1?1:0);
 save();
 window.__M={ST:function(){return ST},checkSpec:checkSpec,QS:QS,QS2:QS2,PAPERS:PAPERS,showPaper:showPaper,SKEY:SKEY,dash:dash,IT:IT};
-</script>
-<script>
-'use strict';
-/* ===== 云同步：GitHub 仓库即数据库 ===== */
-var SYNC={
- repo:'lilisun536-sudo/simon-study',path:'data/progress.json',
- tk:function(){try{return localStorage.getItem('simon_sync_token')||''}catch(e){return ''}},
- last:'',timer:null,state:'idle',t0:null,
- collect:function(){
-   var keys={};['simon_summer_v1','simon_school_math_v1'].forEach(function(k){
-     try{var v=localStorage.getItem(k);if(v)keys[k]=JSON.parse(v)}catch(e){}});
-   var ms=null;
-   try{ms=PAPERS.map(function(P){var a=0,r=0,m=0,rev=0;
-     P.qs.forEach(function(q){q.parts.forEach(function(p){var t=IT(p.id);if(t.a)a++;if(t.ok)r++});
-       var c=stChip(q);if(c[1]==='已掌握')m++;if(c[1]==='需复习')rev++});
-     return{key:P.key,name:P.name,code:P.code,answered:a,of:P.items,right:r,mastered:m,ofQ:P.qs.length,review:rev}})}catch(e){}
-   return{v:1,ts:new Date().toISOString(),from:'math',keys:keys,mathSummary:ms};
- },
- b64:function(s){return btoa(unescape(encodeURIComponent(s)))},
- sig:function(s){return s.replace(/"ts":\s*"[^"]*"/,'')},
- push:function(done){
-   var t=SYNC.tk();
-   if(!t){SYNC.state='off';SYNC.paint();if(done)done(false,'未配置令牌');return}
-   if(typeof fetch==='undefined'&&!window.fetch){SYNC.state='err';SYNC.paint();if(done)done(false,'环境不支持');return}
-   var body=JSON.stringify(SYNC.collect(),null,1);
-   if(SYNC.sig(body)===SYNC.last){SYNC.state='ok';SYNC.paint();if(done)done(true,'无变化');return}
-   SYNC.state='busy';SYNC.paint();
-   var api='https://api.github.com/repos/'+SYNC.repo+'/contents/'+SYNC.path;
-   var H={'Authorization':'Bearer '+t,'Accept':'application/vnd.github+json'};
-   window.fetch(api,{headers:H}).then(function(r){return r.status===404?{sha:null}:r.json()}).then(function(j){
-     var payload={message:'sync '+new Date().toISOString().slice(0,16),content:SYNC.b64(body)};
-     if(j&&j.sha)payload.sha=j.sha;
-     return window.fetch(api,{method:'PUT',headers:H,body:JSON.stringify(payload)});
-   }).then(function(r){
-     if(r&&r.ok){SYNC.last=SYNC.sig(body);SYNC.state='ok';SYNC.t0=new Date();if(done)done(true,'ok')}
-     else{SYNC.state='err';if(done)done(false,'HTTP '+(r&&r.status))}
-     SYNC.paint();
-   }).catch(function(e){SYNC.state='err';SYNC.paint();if(done)done(false,String(e))});
- },
- schedule:function(){if(!SYNC.tk())return;clearTimeout(SYNC.timer);SYNC.timer=setTimeout(function(){SYNC.push()},90000)},
- paint:function(){var e=document.getElementById('syncPill');if(!e)return;
-   var m={off:'',busy:'同步中…',ok:'已同步 '+(SYNC.t0?SYNC.t0.toTimeString().slice(0,5):''),err:'同步失败·稍后自动重试',idle:SYNC.tk()?'云同步已开启':''}[SYNC.state]||'';
-   e.textContent=m;e.style.display=m?'inline-block':'none';}
-};
-window.__SYNC=SYNC;
-(function(){var e=document.getElementById('syncPill');if(e)e.onclick=function(){SYNC.push(function(ok,msg){toast(ok?'已手动同步':'同步失败：'+msg)})}})();
-if(SYNC.tk()){setTimeout(function(){SYNC.push()},2500)}
-SYNC.paint();
 </script>
 </body>
 </html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>家长看板 — Simon 学习中心</title>
+<style>
+:root{--bg:#F5F5F7;--card:#FFFFFF;--ink:#1D1D1F;--sub:#6E6E73;--hair:#D2D2D7;--blue:#0071E3;--green:#30D158;--amber:#C56A00;--ambbg:#FFF4E3;--track:#E8E8ED}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+.top{border-bottom:1px solid var(--hair);background:rgba(245,245,247,.85);backdrop-filter:saturate(180%) blur(20px);position:sticky;top:0;z-index:10}
+.top-in{display:flex;align-items:baseline;justify-content:space-between;padding:13px 0}
+.back{font-size:15px;color:var(--blue);text-decoration:none}
+.back::before{content:"‹ "}
+.brand{font-size:13px;color:var(--sub)}
+.hero{padding:40px 0 18px}
+.eyebrow{font-size:13px;font-weight:600;color:var(--sub);letter-spacing:.02em;margin-bottom:8px}
+.hero h1{font-size:clamp(26px,5vw,36px);font-weight:600;letter-spacing:-.02em}
+.meta{margin-top:8px;font-size:14px;color:var(--sub)}
+.btnrow{margin:14px 0 4px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{font:inherit;font-size:14px;font-weight:500;border:0;border-radius:99px;padding:8px 18px;cursor:pointer}
+.btn-blue{background:var(--blue);color:#fff}.btn-ghost{background:var(--track);color:var(--ink)}
+.card{background:var(--card);border-radius:20px;padding:24px 26px;margin:16px 0;box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 28px rgba(0,0,0,.05)}
+.card h2{font-size:19px;font-weight:600;letter-spacing:-.01em;margin-bottom:12px}
+.nums{display:flex;gap:26px;flex-wrap:wrap}
+.dn b{font-size:24px;font-weight:600;letter-spacing:-.02em}
+.dn b i{font-style:normal;font-size:14px;color:var(--sub)}
+.dn span{display:block;font-size:12px;color:var(--sub);margin-top:1px}
+.bar{height:6px;background:var(--track);border-radius:99px;margin-top:14px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--green);border-radius:99px}
+.rv{margin-top:12px;font-size:13.5px;color:var(--amber);background:var(--ambbg);border-radius:12px;padding:9px 14px;display:none}
+.empty{padding:36px 10px;text-align:center;color:var(--sub);font-size:15px}
+.foot{border-top:1px solid var(--hair);margin-top:40px;padding:18px 0 40px;font-size:13px;color:var(--sub)}
+.err{color:#C0392B}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap top-in">
+  <a class="back" href="../">学习中心</a>
+  <span class="brand">家长看板</span>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">远程进度 · 由 Simon 设备自动同步</div>
+    <h1>Simon 学习看板</h1>
+    <p class="meta" id="metaLine">正在读取云端数据…</p>
+    <div class="btnrow">
+      <button class="btn btn-blue" onclick="loadRemote()">刷新</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('fileIn').click()">导入本地报告文件</button>
+      <input type="file" id="fileIn" accept=".json" style="display:none">
+    </div>
+  </section>
+  <div id="boards"></div>
+</main>
+
+<footer class="foot"><div class="wrap">数据来源：仓库 data/progress.json（Simon 端保存后约 90 秒内自动上传）。刷新即取最新。</div></footer>
+
+<script>
+'use strict';
+var REPO='lilisun536-sudo/simon-study',PATH='data/progress.json';
+var PMETA={a:{name:'卷一 · W19 P2',items:31,qs:26},b:{name:'卷二 · W20 P2',items:32,qs:23},c:{name:'卷三 · W19 P4',items:51,qs:10},d:{name:'卷四 · W20 P4',items:53,qs:10}};
+function $(s){return document.querySelector(s)}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e}
+function b64d(s){return decodeURIComponent(escape(atob(String(s).replace(/\n/g,''))))}
+function qkeyOf(pid){var pfx='';var s=String(pid);if(/^[a-z]/.test(s)&&!/^\d/.test(s)){pfx=s[0];s=s.slice(1)}var m=s.match(/^\d+/);return m?pfx+m[0]:null}
+function reconstructMath(arch){
+  if(!arch||!arch.it)return null;
+  var groups={};
+  Object.keys(arch.it).forEach(function(pid){
+    var qk=qkeyOf(pid);if(!qk)return;
+    (groups[qk]=groups[qk]||[]).push(arch.it[pid]);
+  });
+  var papers={};
+  Object.keys(groups).forEach(function(qk){
+    var pk=/^[a-z]/.test(qk)?qk[0]:'a';
+    var P=papers[pk]=papers[pk]||{answered:0,right:0,mastered:0,review:0,revList:[]};
+    var parts=groups[qk];
+    parts.forEach(function(t){if(t.a)P.answered++;if(t.ok)P.right++});
+    var allOk=parts.every(function(t){return t.ok});
+    var anyW=parts.some(function(t){return t.w});
+    var v=(arch.qv||{})[qk]||0;
+    var num=qk.replace(/^[a-z]/,'');
+    if(allOk&&v>=2)P.mastered++;
+    else if(anyW){P.review++;P.revList.push('Q'+num)}
+  });
+  return papers;
+}
+function board(title,rows,revLine){
+  var c=el('div','card');c.appendChild(el('h2','',title));
+  var n=el('div','nums');
+  rows.forEach(function(r){n.appendChild(el('div','dn','<b>'+r[1]+(r[2]?'<i>/'+r[2]+'</i>':'')+'</b><span>'+r[0]+'</span>'))});
+  c.appendChild(n);
+  if(rows[0]&&rows[0][2]){var b=el('div','bar');var i=el('i');i.style.width=Math.min(100,Math.round(rows[0][1]/rows[0][2]*100))+'%';b.appendChild(i);c.appendChild(b)}
+  if(revLine){var rv=el('div','rv',revLine);rv.style.display='block';c.appendChild(rv)}
+  return c;
+}
+function render(data){
+  var bx=$('#boards');bx.innerHTML='';
+  if(!data){bx.appendChild(el('div','card','<div class="empty">尚无同步数据。<br>在 Simon 电脑的「学习中心 → ⚙ 同步设置」里粘贴令牌完成一次配置后，这里就会有数据。</div>'));return}
+  var ts=data.ts?new Date(data.ts):null;
+  $('#metaLine').innerHTML='最近同步：<b>'+(ts?ts.toLocaleString('zh-CN'):'未知')+'</b>（来自 '+(data.from==='hub'?'学习中心页':'数学专项页')+'）';
+  /* 暑期课件 */
+  var sm=data.summerSummary;
+  if(!sm&&data.keys&&data.keys.simon_summer_v1){
+    var S=data.keys.simon_summer_v1,n=0;
+    ['answers','clsf','traces','ords','essays','rubrics','checks','dict','vocab','reviews'].forEach(function(k){if(S[k])n+=Object.keys(S[k]).length});
+    var last='';if(S.activity){var dd=Object.keys(S.activity).sort();last=dd[dd.length-1]||''}
+    sm={covered:Math.min(n,202),total:202,last:last};
+  }
+  if(sm)bx.appendChild(board('暑期自学系统',[['练习点覆盖',sm.covered,sm.total]].concat(sm.last?[['最近学习',sm.last,'']]:[])));
+  else bx.appendChild(el('div','card','<h2>暑期自学系统</h2><div class="empty">尚未开始</div>'));
+  /* 数学专项：原始档案重建（权威），摘要兜底 */
+  var rec=data.keys?reconstructMath(data.keys.simon_school_math_v1):null;
+  var sums={};(data.mathSummary||[]).forEach(function(s){sums[s.key]=s});
+  var pks=Object.keys(PMETA).filter(function(k){return (rec&&rec[k])||sums[k]});
+  if(!pks.length)bx.appendChild(el('div','card','<h2>数学专项</h2><div class="empty">尚未开始</div>'));
+  pks.forEach(function(pk){
+    var meta=PMETA[pk]||{name:'卷 '+pk,items:(sums[pk]||{}).of||0,qs:(sums[pk]||{}).ofQ||0};
+    var r=rec&&rec[pk]?rec[pk]:{answered:sums[pk].answered,right:sums[pk].right,mastered:sums[pk].mastered,review:sums[pk].review,revList:[]};
+    var items=(sums[pk]&&sums[pk].of)||meta.items, qn=(sums[pk]&&sums[pk].ofQ)||meta.qs;
+    bx.appendChild(board('数学专项 · '+meta.name,
+      [['已作答',r.answered,items],['当前全对',r.right,''],['已掌握',r.mastered,qn],['待复习',r.review,'']],
+      r.revList&&r.revList.length?('待复习题目：'+r.revList.join(' · ')+' —— 建议用变式清零'):''));
+  });
+}
+window.__reportRender=render;
+function loadRemote(){
+  $('#metaLine').textContent='正在读取云端数据…';
+  if(!window.fetch){$('#metaLine').innerHTML='<span class="err">此浏览器不支持远程读取，请用「导入本地报告文件」。</span>';render(null);return}
+  var api='https://api.github.com/repos/'+REPO+'/contents/'+PATH+'?ref=main';
+  window.fetch(api,{headers:{'Accept':'application/vnd.github.raw+json'},cache:'no-store'})
+  .then(function(r){if(r.status===404)throw 'EMPTY';if(!r.ok)throw 'HTTP '+r.status;return r.text()})
+  .then(function(t){render(JSON.parse(t))})
+  .catch(function(e){
+    if(e==='EMPTY'){$('#metaLine').textContent='云端还没有数据。';render(null);return}
+    window.fetch('https://raw.githubusercontent.com/'+REPO+'/main/'+PATH+'?_='+Date.now(),{cache:'no-store'})
+    .then(function(r){if(!r.ok)throw 'HTTP '+r.status;return r.text()})
+    .then(function(t){render(JSON.parse(t))})
+    .catch(function(e2){$('#metaLine').innerHTML='<span class="err">远程读取失败（'+e2+'）。可让 Simon 导出报告文件微信发来，用「导入本地报告文件」查看。</span>';render(null)});
+  });
+}
+document.getElementById('fileIn').addEventListener('change',function(ev){
+  var f=ev.target.files[0];if(!f)return;
+  var rd=new FileReader();
+  rd.onload=function(){
+    try{
+      var j=JSON.parse(rd.result);
+      if(j.keys||j.summerSummary){render(j)}
+      else if(j.schema==='simon_school_math_v2'&&j.papers){
+        var ms=Object.keys(j.papers).map(function(k){var p=j.papers[k];return{key:k,name:p.name,answered:p.answered,of:p.of,right:p.right,mastered:p.mastered,ofQ:p.ofQ,review:p.review}});
+        render({ts:j.exported,from:'math',mathSummary:ms,keys:null});
+      }
+      else if(j.it){render({ts:new Date().toISOString(),from:'math',keys:{simon_school_math_v1:j}})}
+      else alert('无法识别的文件结构');
+    }catch(e){alert('文件解析失败：'+e)}
+  };
+  rd.readAsText(f);
+});
+loadRemote();
+</script>
+</body>
+</html>

@@ -117,7 +117,7 @@ body{
   </section>
 </main>
 
-<footer class="foot"><div class="wrap">Simon 学习门户 · 2026 夏 · v1 &nbsp;·&nbsp; 请固定使用同一浏览器，进度保存在本机。</div></footer>
+<footer class="foot"><div class="wrap">Simon 学习门户 · 2026 夏 · v1 &nbsp;·&nbsp; 进度保存在本机；配置云同步后自动上传，家长可远程查看。&nbsp;<a href="report/" style="color:var(--blue);text-decoration:none">家长看板 ›</a>&nbsp;<a href="#" id="syncSetup" style="color:var(--sub);text-decoration:none">⚙ 同步设置</a></div></footer>
 
 <script>
 (function(){
@@ -180,6 +180,50 @@ body{
 
   window.__hubBoot=boot;
   boot();
+})();
+</script>
+<script>
+'use strict';
+(function(){
+ var REPO='lilisun536-sudo/simon-study',PATH='data/progress.json';
+ function tk(){try{return localStorage.getItem('simon_sync_token')||''}catch(e){return ''}}
+ function b64e(s){return btoa(unescape(encodeURIComponent(s)))}
+ function b64d(s){return decodeURIComponent(escape(atob(s.replace(/\n/g,''))))}
+ function collect(prevMath){
+   var keys={};['simon_summer_v1','simon_school_math_v1'].forEach(function(k){
+     try{var v=localStorage.getItem(k);if(v)keys[k]=JSON.parse(v)}catch(e){}});
+   var sm=null;
+   try{var S=keys.simon_summer_v1;if(S){var n=0;['answers','clsf','traces','ords','essays','rubrics','checks','dict','vocab','reviews'].forEach(function(k){if(S[k])n+=Object.keys(S[k]).length});
+     var last='';if(S.activity){var d=Object.keys(S.activity).sort();last=d[d.length-1]||''}
+     sm={covered:Math.min(n,202),total:202,last:last}}}catch(e){}
+   return{v:1,ts:new Date().toISOString(),from:'hub',keys:keys,summerSummary:sm,mathSummary:prevMath||null};
+ }
+ function push(done){
+   var t=tk();if(!t){if(done)done(false,'未配置');return}
+   if(!window.fetch){if(done)done(false,'环境不支持');return}
+   var api='https://api.github.com/repos/'+REPO+'/contents/'+PATH;
+   var H={'Authorization':'Bearer '+t,'Accept':'application/vnd.github+json'};
+   window.fetch(api,{headers:H}).then(function(r){return r.status===404?null:r.json()}).then(function(j){
+     var prevMath=null;
+     try{if(j&&j.content){var prev=JSON.parse(b64d(j.content));prevMath=prev.mathSummary||null}}catch(e){}
+     var body=JSON.stringify(collect(prevMath),null,1);
+     var payload={message:'sync(hub) '+new Date().toISOString().slice(0,16),content:b64e(body)};
+     if(j&&j.sha)payload.sha=j.sha;
+     return window.fetch(api,{method:'PUT',headers:H,body:JSON.stringify(payload)});
+   }).then(function(r){if(done)done(!!(r&&r.ok),r&&r.status)}).catch(function(e){if(done)done(false,String(e))});
+ }
+ window.__hubSync=push;
+ if(tk())setTimeout(function(){push(function(){})},2000);
+ var lk=document.getElementById('syncSetup');
+ if(lk)lk.onclick=function(ev){ev.preventDefault();
+   var cur=tk();
+   var v=window.prompt('云同步设置\n\n粘贴 GitHub 细粒度令牌（仅授权 simon-study 仓库、Contents 读写）。\n留空并确定 = 关闭同步。',cur);
+   if(v===null)return;
+   v=v.trim();
+   try{if(v){localStorage.setItem('simon_sync_token',v)}else{localStorage.removeItem('simon_sync_token')}}catch(e){}
+   if(v){push(function(ok,st){alert(ok?'令牌有效，首次同步成功 ✓\n以后学习数据将自动上传。':'同步失败（'+st+'）——检查令牌权限或网络后重试。')})}
+   else alert('已关闭云同步。');
+ };
 })();
 </script>
 </body>

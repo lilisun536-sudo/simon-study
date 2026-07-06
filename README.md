@@ -1,1 +1,1 @@
-# simon-study
+# simon-study study

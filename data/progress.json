@@ -1,12 +1,12 @@
 {
  "v": 2,
- "ts": "2026-07-06T12:28:08.091Z",
+ "ts": "2026-07-06T12:31:04.257Z",
  "from": "study",
  "keys": {
   "simon_summer_v1": {
    "meta": {
     "created": "2026-07-05",
-    "view": "vocab",
+    "view": "listen",
     "opened": 6,
     "rate": "1"
    },
@@ -90,7 +90,33 @@
    },
    "traces": {},
    "ords": {},
-   "dict": {},
+   "dict": {
+    "ls_s1": {
+     "best": 100,
+     "n": 1,
+     "last": 100
+    },
+    "ls_s2": {
+     "best": 86,
+     "n": 1,
+     "last": 86
+    },
+    "ls_s3": {
+     "best": 83,
+     "n": 1,
+     "last": 83
+    },
+    "ls_s4": {
+     "best": 100,
+     "n": 1,
+     "last": 100
+    },
+    "ls_s5": {
+     "best": 80,
+     "n": 1,
+     "last": 80
+    }
+   },
    "essays": {},
    "rubrics": {},
    "checks": {},
@@ -725,7 +751,7 @@
   }
  ],
  "summerSummary": {
-  "covered": 19,
+  "covered": 24,
   "total": 202,
   "last": "2026-07-06"
  }

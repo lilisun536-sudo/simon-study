@@ -1,7 +1,7 @@
 {
  "v": 1,
- "ts": "2026-07-06T10:18:49.228Z",
- "from": "hub",
+ "ts": "2026-07-06T10:19:08.330Z",
+ "from": "math",
  "keys": {
   "simon_summer_v1": {
    "meta": {
@@ -99,7 +99,7 @@
   "simon_school_math_v1": {
    "meta": {
     "created": "2026-07-05",
-    "opened": 3,
+    "opened": 4,
     "tab": 0
    },
    "it": {
@@ -422,10 +422,28 @@
    "qv": {}
   }
  },
- "summerSummary": {
-  "covered": 18,
-  "total": 202,
-  "last": "2026-07-05"
- },
- "mathSummary": null
+ "mathSummary": [
+  {
+   "key": "a",
+   "name": "卷一",
+   "code": "0580/21/O/N/19",
+   "answered": 1,
+   "of": 31,
+   "right": 1,
+   "mastered": 0,
+   "ofQ": 26,
+   "review": 0
+  },
+  {
+   "key": "b",
+   "name": "卷二",
+   "code": "0580/21/O/N/20",
+   "answered": 0,
+   "of": 32,
+   "right": 0,
+   "mastered": 0,
+   "ofQ": 23,
+   "review": 0
+  }
+ ]
 }

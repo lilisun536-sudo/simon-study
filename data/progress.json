@@ -1,7 +1,7 @@
 {
  "v": 1,
- "ts": "2026-07-06T10:19:08.330Z",
- "from": "math",
+ "ts": "2026-07-06T10:19:15.086Z",
+ "from": "hub",
  "keys": {
   "simon_summer_v1": {
    "meta": {
@@ -421,6 +421,11 @@
    },
    "qv": {}
   }
+ },
+ "summerSummary": {
+  "covered": 18,
+  "total": 202,
+  "last": "2026-07-05"
  },
  "mathSummary": [
   {

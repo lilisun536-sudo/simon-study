@@ -1658,5 +1658,111 @@ function boot(){
 }
 boot();
 </script>
-</body>
+<script>
+'use strict';
+/* ===== 云同步 v2 · 漫游版：云为主档案，本机为缓存 ===== */
+(function(){
+var REPO='lilisun536-sudo/simon-study',PATH='data/progress.json';
+var MODE={name:'study',math:false,summer:true}; /* {name, math:bool, summer:bool} */
+var K1='simon_summer_v1',K2='simon_school_math_v1';
+var REMOTE={mathSummary:null,summerSummary:null,sha:null};
+var lastSig='',timer=null,dirty=false;
+function tk(){try{return localStorage.getItem('simon_sync_token')||''}catch(e){return ''}}
+function b64e(s){return btoa(unescape(encodeURIComponent(s)))}
+function b64d(s){return decodeURIComponent(escape(atob(String(s).replace(/\n/g,''))))}
+function lsGet(k){try{var v=localStorage.getItem(k);return v?JSON.parse(v):null}catch(e){return null}}
+function lsSet(k,o){try{localStorage.setItem(k,JSON.stringify(o))}catch(e){}}
+function rich(k,o){if(!o)return 0;var n=0;
+ if(k===K2){if(o.it)for(var i in o.it){n+=(o.it[i].a||0)+(o.it[i].ok?1:0)}if(o.qv)for(var q in o.qv)n+=(o.qv[q]||0)*2;return n}
+ ['answers','clsf','traces','ords','essays','rubrics','checks','dict','vocab','reviews'].forEach(function(s){if(o[s])n+=Object.keys(o[s]).length});return n}
+function mergeMath(a,b){if(!a)return b;if(!b)return a;
+ var out={meta:{},it:{},qv:{}},k;
+ var ids={};[a.it||{},b.it||{}].forEach(function(o){for(k in o)ids[k]=1});
+ for(k in ids){var x=(a.it||{})[k],y=(b.it||{})[k];
+   if(!x){out.it[k]=y}else if(!y){out.it[k]=x}
+   else{out.it[k]={a:Math.max(x.a||0,y.a||0),w:(x.w||y.w)?1:0,ok:(((x.a||0)>=(y.a||0))?x.ok:y.ok)?1:0}}}
+ var qs={};[a.qv||{},b.qv||{}].forEach(function(o){for(k in o)qs[k]=1});
+ for(k in qs)out.qv[k]=Math.max((a.qv||{})[k]||0,(b.qv||{})[k]||0);
+ var ma=a.meta||{},mb=b.meta||{};
+ out.meta={created:ma.created||mb.created,opened:Math.max(ma.opened||0,mb.opened||0),tab:(ma.tab!=null?ma.tab:mb.tab)};
+ return out}
+function summerSummary(){var S=lsGet(K1);if(!S)return null;var n=0;
+ ['answers','clsf','traces','ords','essays','rubrics','checks','dict','vocab','reviews'].forEach(function(s){if(S[s])n+=Object.keys(S[s]).length});
+ var last='';if(S.activity){var d=Object.keys(S.activity).sort();last=d[d.length-1]||''}
+ return{covered:Math.min(n,202),total:202,last:last}}
+function mathSummary(){try{return PAPERS.map(function(P){var a=0,r=0,m=0,rev=0;
+ P.qs.forEach(function(q){q.parts.forEach(function(p){var t=IT(p.id);if(t.a)a++;if(t.ok)r++});
+   var c=stChip(q);if(c[1]==='已掌握')m++;if(c[1]==='需复习')rev++});
+ return{key:P.key,name:P.name,code:P.code,answered:a,of:P.items,right:r,mastered:m,ofQ:P.qs.length,review:rev}})}catch(e){return null}}
+function fetchRemote(){var api='https://api.github.com/repos/'+REPO+'/contents/'+PATH+'?ref=main';
+ var H={'Accept':'application/vnd.github+json'};var t=tk();if(t)H['Authorization']='Bearer '+t;
+ return window.fetch(api,{headers:H,cache:'no-store'}).then(function(r){
+   if(r.status===404)return null;if(!r.ok)throw 'HTTP '+r.status;return r.json()})
+ .then(function(j){if(!j)return null;REMOTE.sha=j.sha||null;
+   var p=null;try{p=JSON.parse(b64d(j.content))}catch(e){}
+   if(p){REMOTE.mathSummary=p.mathSummary||REMOTE.mathSummary;REMOTE.summerSummary=p.summerSummary||REMOTE.summerSummary}
+   return p})
+ .catch(function(e){
+   return window.fetch('https://raw.githubusercontent.com/'+REPO+'/main/'+PATH+'?_='+Date.now(),{cache:'no-store'})
+   .then(function(r){if(!r.ok)return null;return r.text()})
+   .then(function(t2){if(!t2)return null;var p=null;try{p=JSON.parse(t2)}catch(e2){}
+     if(p){REMOTE.mathSummary=p.mathSummary||null;REMOTE.summerSummary=p.summerSummary||null}
+     return p}).catch(function(){return null})})}
+function pull(done){
+ if(!window.fetch){done&&done(false);return}
+ fetchRemote().then(function(p){
+   if(!p||!p.keys){done&&done(false);return}
+   var changed=false;
+   /* 数学：逐题合并 */
+   var lm=lsGet(K2),cm=p.keys[K2];
+   if(cm){var mm=mergeMath(lm,cm);
+     if(JSON.stringify(mm)!==JSON.stringify(lm)){lsSet(K2,mm);changed=true}
+     if(lm&&JSON.stringify(mm)!==JSON.stringify(cm))dirty=true}
+   /* 暑期：择富采用 */
+   var ls=lsGet(K1),cs=p.keys[K1];
+   if(cs&&rich(K1,cs)>rich(K1,ls)){lsSet(K1,cs);changed=true}
+   else if(ls&&rich(K1,ls)>rich(K1,cs||null))dirty=true;
+   if(changed){
+     var g='sy2r_'+MODE.name;
+     try{if(!sessionStorage.getItem(g)){sessionStorage.setItem(g,'1');location.reload();return}}catch(e){}
+   }
+   done&&done(changed);
+ }).catch(function(){done&&done(false)})}
+function collect(){var keys={};var v1=lsGet(K1),v2=lsGet(K2);if(v1)keys[K1]=v1;if(v2)keys[K2]=v2;
+ return{v:2,ts:new Date().toISOString(),from:MODE.name,keys:keys,
+   mathSummary:MODE.math?mathSummary():(REMOTE.mathSummary||null),
+   summerSummary:MODE.summer?summerSummary():(REMOTE.summerSummary||null)}}
+function sig(s){return s.replace(/"ts":\s*"[^"]*"/,'')}
+function paint(st,t0){var e=document.getElementById('syncPill');if(!e)return;
+ var m={off:'',busy:'同步中…',ok:'已同步 '+(t0?t0.toTimeString().slice(0,5):''),err:'同步失败·稍后自动重试'}[st]||'';
+ e.textContent=m;e.style.display=m?'inline-block':'none'}
+function push(done,keepalive){
+ var t=tk();if(!t){paint('off');done&&done(false,'未配置令牌');return}
+ if(!window.fetch){done&&done(false,'环境不支持');return}
+ var body=JSON.stringify(collect(),null,1);
+ if(sig(body)===lastSig){dirty=false;paint('ok',push._t0);done&&done(true,'无变化');return}
+ paint('busy');
+ var api='https://api.github.com/repos/'+REPO+'/contents/'+PATH;
+ var H={'Authorization':'Bearer '+t,'Accept':'application/vnd.github+json'};
+ fetchRemote().then(function(){
+   /* 拉最新 sha 与对端摘要后再写，最大限度保全 */
+   var body2=JSON.stringify(collect(),null,1);
+   var payload={message:'sync('+MODE.name+') '+new Date().toISOString().slice(0,16),content:b64e(body2)};
+   if(REMOTE.sha)payload.sha=REMOTE.sha;
+   var opt={method:'PUT',headers:H,body:JSON.stringify(payload)};
+   if(keepalive&&opt.body.length<58000)opt.keepalive=true;
+   return window.fetch(api,opt).then(function(r){
+     if(r&&r.ok){lastSig=sig(body2);dirty=false;push._t0=new Date();paint('ok',push._t0);done&&done(true,'ok')}
+     else{paint('err');done&&done(false,'HTTP '+(r&&r.status))}})
+ }).catch(function(e){paint('err');done&&done(false,String(e))})}
+function schedule(){dirty=true;if(!tk())return;clearTimeout(timer);timer=setTimeout(function(){push()},90000)}
+function flush(){if(dirty&&tk())push(null,true)}
+window.addEventListener('pagehide',flush);
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')flush()});
+window.__SY2={pull:pull,push:push,schedule:schedule,collect:collect,mergeMath:mergeMath,rich:rich,REMOTE:REMOTE,flush:flush};
+pull(function(){});
+setInterval(function(){if(tk())push()},180000);
+window.addEventListener('load',function(){if(tk())setTimeout(function(){push()},4000)});
+})();
+</script>\n</body>
 </html>

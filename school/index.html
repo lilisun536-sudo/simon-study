@@ -133,7 +133,8 @@ select.inp{width:auto;cursor:pointer}
     <button class="tab on" id="tab0">卷一 · 0580/21 · W19 P2</button>
     <button class="tab" id="tab1">卷二 · 0580/21 · W20 P2</button>
     <button class="tab" id="tab2">卷三 · 0580/41 · W19 P4</button>
-    <button class="tab lock" onclick="toast('卷四整理中')">卷四 · W20 P4</button>
+    <button class="tab" id="tab3">卷四 · 0580/41 · W20 P4</button>
+    <button class="tab lock" onclick="toast('卷五规划中')">卷五 · 敬请期待</button>
   </div>
 
   <div class="dash">
@@ -154,7 +155,7 @@ select.inp{width:auto;cursor:pointer}
   <div id="qwrap"></div>
 </main>
 
-<footer class="foot"><div class="wrap">数学专项 <b>v3.1 · 三卷齐备 · 云同步v2</b> · 卷一/卷二 P2（各70分）+ 卷三 P4（130分）· Simon 学习门户 2026 夏<br>本卷答案与讲解由 Claude 独立求解并经程序复核；如与官方评分标准有出入，以官方为准。配置云同步后，进度自动上传，家长可远程查看。</div></footer>
+<footer class="foot"><div class="wrap">数学专项 <b>v4.1 · 四卷齐备 · 云同步v2</b> · 卷一/卷二 P2（各70分）+ 卷三/卷四 P4（各130分）· Simon 学习门户 2026 夏<br>本卷答案与讲解由 Claude 独立求解并经程序复核；如与官方评分标准有出入，以官方为准。配置云同步后，进度自动上传，家长可远程查看。</div></footer>
 <div class="toast" id="toast"></div>
 <script>
 'use strict';
@@ -448,6 +449,9 @@ function IT(id){if(!ST.it[id])ST.it[id]={a:0,w:0,ok:0};return ST.it[id]}
 
 /* ================= 判定 ================= */
 function checkSpec(sp,val){
+  if(sp&&sp.t==='ineq'){var UI=canonIneq(val),TI=canonIneq(sp.target);var oki=ineqEq(UI,TI)?1:0;var mI=oki?'不等式正确':((UI&&TI&&!UI.err&&!TI.err&&UI.st!==TI.st)?'注意开闭：边界值本身取不取得到——该用严格号（< >）还是含等号（≤ ≥）？':'再核方向与边界：代一个测试值回原不等式检验');return{ok:oki,msg:mI}}
+  if(sp&&sp.noParen&&/[()]/.test(String(val)))return{ok:0,msg:'请给出去括号、合并同类项后的最简展开式'};
+  if(sp&&sp.stripEq){var vS=String(val);if(vS.indexOf('=')>=0)val=vS.slice(vS.lastIndexOf('=')+1)}
   if(sp.t==='num'){
     var s=String(val);var u;
     if(/pi|π/i.test(s)){u=evalExpr(s,[],[])}else{u=parseNum(s)}
@@ -658,13 +662,14 @@ function renderGrid(q,part,host){
 function canonIneq(s){
   s=String(s).replace(/\s/g,'').replace(/≥|⩾|=>/g,'>=').replace(/≤|⩽|=</g,'<=').replace(/−/g,'-').toLowerCase();
   if(!s)return{err:'empty'};
-  var dir=null,i=-1;
+  var dir=null,i=-1,w=2;
   if(s.indexOf('>=')>=0){dir='ge';i=s.indexOf('>=')}
   else if(s.indexOf('<=')>=0){dir='le';i=s.indexOf('<=')}
-  else if(s.indexOf('>')>=0||s.indexOf('<')>=0)return{err:'strict'};
+  else if(s.indexOf('>')>=0){dir='gt';i=s.indexOf('>');w=1}
+  else if(s.indexOf('<')>=0){dir='lt';i=s.indexOf('<');w=1}
   else if(s.indexOf('=')>=0)return{err:'eq'};
   else return{err:'none'};
-  var L=s.slice(0,i),R=s.slice(i+2);
+  var L=s.slice(0,i),R=s.slice(i+w);
   if(!L||!R)return{err:'form'};
   function lin(e){
     var c=evalExpr(e,['x','y'],[0,0]);
@@ -677,12 +682,12 @@ function canonIneq(s){
   var l=lin(L),r=lin(R);
   if(!l||!r)return{err:'form'};
   var A=l[0]-r[0],B=l[1]-r[1],C=r[2]-l[2]; /* Ax+By ⋈ C */
-  if(dir==='le'){A=-A;B=-B;C=-C}          /* 统一为 >= */
+  if(dir==='le'||dir==='lt'){A=-A;B=-B;C=-C}          /* 统一为 >= */
   var m=Math.max(Math.abs(A),Math.abs(B));
   if(m<1e-9)return{err:'novar'};
-  return{a:A/m,b:B/m,c:C/m};
+  return{a:A/m,b:B/m,c:C/m,st:(dir==='gt'||dir==='lt')?1:0};
 }
-function ineqEq(u,t){return u&&t&&!u.err&&!t.err&&Math.abs(u.a-t.a)<1e-6&&Math.abs(u.b-t.b)<1e-6&&Math.abs(u.c-t.c)<1e-6}
+function ineqEq(u,t){return u&&t&&!u.err&&!t.err&&u.st===t.st&&Math.abs(u.a-t.a)<1e-6&&Math.abs(u.b-t.b)<1e-6&&Math.abs(u.c-t.c)<1e-6}
 
 function renderBlanks(q,part,host){
   var wrap=el('div');var ins=[],marks=[];
@@ -725,7 +730,7 @@ function renderIneqSet(q,part,host){
       var hit=-1;
       for(var j=0;j<T.length;j++){if(!used[j]&&ineqEq(u,T[j])){hit=j;break}}
       if(hit>=0){used[hit]=1;marks[k].textContent='✓'}
-      else{marks[k].textContent='✗';all=0;if(u&&u.err==='strict')strict=1}
+      else{marks[k].textContent='✗';all=0;if(u&&!u.err&&u.st)strict=1}
     });
     fb(fbn,all,all?'':(strict?'注意 at least / 最多都含等号——用 >= 或 <=':'三条各对应一句条件：至少 6 辆 → x+y≥6；大车不多于小车 → y≤x；小车最多 8 → x≤8'));
     afterAttempt(q,part,all?1:0);
@@ -836,6 +841,208 @@ function renderLPShade(q,part,host){
   if(IT(part.id).ok){shade();fb(fbn,1,'此前已作对')}
 }
 
+/* ===== 卷四专属：判定与渲染扩展 v2 ===== */
+function renderDraw(q,part,host){
+  var G=part.grid,s=17,PL=30,PT=12,PB=24,PR=14;
+  var W=PL+(G.x2-G.x1)*s+PR,H=PT+(G.y2-G.y1)*s+PB;
+  function px(x){return PL+(x-G.x1)*s} function py(y){return PT+(G.y2-y)*s}
+  var sv='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:'+(W+16)+'px;touch-action:manipulation"><g stroke="#E4E6EA" stroke-width="1">';
+  var i,j;
+  for(i=G.x1;i<=G.x2;i++)sv+='<line x1="'+px(i)+'" y1="'+py(G.y1)+'" x2="'+px(i)+'" y2="'+py(G.y2)+'"/>';
+  for(j=G.y1;j<=G.y2;j++)sv+='<line x1="'+px(G.x1)+'" y1="'+py(j)+'" x2="'+px(G.x2)+'" y2="'+py(j)+'"/>';
+  sv+='</g><line x1="'+px(G.x1)+'" y1="'+py(0)+'" x2="'+px(G.x2)+'" y2="'+py(0)+'" stroke="#1D1D1F" stroke-width="1.4"/><line x1="'+px(0)+'" y1="'+py(G.y1)+'" x2="'+px(0)+'" y2="'+py(G.y2)+'" stroke="#1D1D1F" stroke-width="1.4"/>';
+  for(i=G.x1;i<=G.x2;i++)if(i&&i%2===0)sv+='<text x="'+(px(i)-4)+'" y="'+(py(0)+12)+'" font-size="8.5" fill="#6E6E73">'+i+'</text>';
+  for(j=G.y1;j<=G.y2;j++)if(j&&j%2===0)sv+='<text x="'+(px(0)-17)+'" y="'+(py(j)+3)+'" font-size="8.5" fill="#6E6E73">'+j+'</text>';
+  sv+='<text x="'+(px(G.x2)+3)+'" y="'+(py(0)+4)+'" font-size="10.5" font-style="italic">x</text><text x="'+(px(0)+5)+'" y="'+(py(G.y2)+4)+'" font-size="10.5" font-style="italic">y</text>';
+  (part.shapes||[]).forEach(function(S){
+    sv+='<polygon points="'+S.pts.map(function(p){return px(p[0])+','+py(p[1])}).join(' ')+'" fill="rgba(0,113,227,.10)" stroke="#1D1D1F" stroke-width="1.5"/>';
+    sv+='<text x="'+px(S.lab[0])+'" y="'+py(S.lab[1])+'" font-size="11.5" font-style="italic" font-weight="700">'+S.name+'</text>';
+  });
+  sv+='<g id="dp-'+part.id+'"></g><g id="dimg-'+part.id+'"></g><rect id="cap-'+part.id+'" x="0" y="0" width="'+W+'" height="'+H+'" fill="transparent" style="cursor:crosshair"/></svg>';
+  var box=el('div');box.innerHTML=sv;host.appendChild(box);
+  var SV=box.querySelector('svg');var picked=[];
+  function paint(){
+    var g=box.querySelector('#dp-'+part.id),h='';
+    if(picked.length>=2)h+='<polygon points="'+picked.map(function(p){return px(p[0])+','+py(p[1])}).join(' ')+'" fill="rgba(0,113,227,.12)" stroke="#0071E3" stroke-width="1.5" stroke-dasharray="5 3"/>';
+    picked.forEach(function(p){h+='<circle cx="'+px(p[0])+'" cy="'+py(p[1])+'" r="3.4" fill="#0071E3"/>'});
+    g.innerHTML=h;
+  }
+  box.querySelector('#cap-'+part.id).addEventListener('click',function(ev){
+    var r=SV.getBoundingClientRect();
+    var mx=(ev.clientX-r.left)*W/r.width,my=(ev.clientY-r.top)*H/r.height;
+    var gx=Math.round((mx-PL)/s+G.x1),gy=Math.round(G.y2-(my-PT)/s);
+    if(gx<G.x1||gx>G.x2||gy<G.y1||gy>G.y2)return;
+    for(var k=0;k<picked.length;k++)if(picked[k][0]===gx&&picked[k][1]===gy){picked.splice(k,1);paint();return}
+    if(picked.length>=part.target.length){toast('顶点已够 '+part.target.length+' 个——再点已选点可取消');return}
+    picked.push([gx,gy]);paint();
+  });
+  var btn=el('button','btn btn-blue btn-mini','检查作图'),clr=el('button','btn btn-ghost btn-mini','清除'),fbn=el('div','fb');
+  function key(a){return a.map(function(p){return p[0]+','+p[1]}).sort().join(';')}
+  function drawOK(){box.querySelector('#dimg-'+part.id).innerHTML='<polygon points="'+part.target.map(function(p){return px(p[0])+','+py(p[1])}).join(' ')+'" fill="rgba(48,209,88,.18)" stroke="#30D158" stroke-width="1.8"/>'}
+  btn.onclick=function(){
+    if(picked.length!==part.target.length){toast('需要标出 '+part.target.length+' 个顶点');return}
+    var ok=key(picked)===key(part.target);
+    if(ok)drawOK();
+    fb(fbn,ok,ok?'像的位置全部正确':(part.hint||'逐个顶点套变换规则，再整体核对'));
+    afterAttempt(q,part,ok?1:0);
+  };
+  clr.onclick=function(){picked=[];paint()};
+  var row=el('div','inrow');row.appendChild(btn);row.appendChild(clr);host.appendChild(row);host.appendChild(fbn);
+  if(IT(part.id).ok){drawOK();fb(fbn,1,'此前已作对')}
+}
+
+function renderDescT(q,part,host){
+  var wrap=el('div');
+  var tr=el('div','inrow');tr.appendChild(el('span','unit','变换类型：'));
+  var chosen=null,tb=[];
+  part.types.forEach(function(t,i){
+    var b=el('button','btn btn-ghost btn-mini',t);
+    b.onclick=function(){chosen=i;tb.forEach(function(x){x.style.background=''});b.style.background='#CFE5FF'};
+    tb.push(b);tr.appendChild(b);
+  });
+  wrap.appendChild(tr);
+  var ins=[],marks=[];
+  (part.rows||[]).forEach(function(row){
+    var r=el('div','inrow');
+    row.forEach(function(b){
+      if(b.pre)r.appendChild(el('span','unit',b.pre));
+      var inp=el('input','inp '+(b.w||'w-xs'));inp.placeholder=b.ph||'';
+      ins.push({i:inp,b:b});r.appendChild(inp);
+      var mk=el('span','unit');mk.style.minWidth='16px';marks.push(mk);r.appendChild(mk);
+      if(b.post)r.appendChild(el('span','unit',b.post));
+    });
+    wrap.appendChild(r);
+  });
+  var dirSel=null,db=[];
+  if(part.dir){
+    var dr=el('div','inrow');dr.appendChild(el('span','unit','方向：'));
+    part.dir.opts.forEach(function(t,i){
+      var b=el('button','btn btn-ghost btn-mini',t);
+      b.onclick=function(){dirSel=i;db.forEach(function(x){x.style.background=''});b.style.background='#CFE5FF'};
+      db.push(b);dr.appendChild(b);
+    });
+    wrap.appendChild(dr);
+  }
+  var btn=el('button','btn btn-blue btn-mini','检查全部'),fbn=el('div','fb');
+  btn.onclick=function(){
+    var all=1;
+    if(chosen!==part.correct)all=0;
+    var angVal=null;
+    ins.forEach(function(o,k){
+      if(o.b.comboAng){angVal=parseNum(o.i.value);marks[k].textContent='';return}
+      var rr=checkSpec(o.b.spec,o.i.value);marks[k].textContent=rr.ok?'✓':'✗';if(!rr.ok)all=0;
+    });
+    if(part.combo){
+      var hit=part.combo.some(function(c){return Math.abs(angVal-c[0])<1e-9&&dirSel===c[1]});
+      ins.forEach(function(o,k){if(o.b.comboAng)marks[k].textContent=hit?'✓':'✗'});
+      if(!hit)all=0;
+      if(dirSel==null)all=0;
+    }
+    fb(fbn,all,all?'描述完整正确（类型 + 全部参数）':(chosen!==part.correct?'先定类型：整体变大/变小是放大；转向是旋转；翻面是反射；平移不改朝向':(part.hint||'类型对了——逐个参数再核（带 ✗ 的重看）')));
+    afterAttempt(q,part,all?1:0);
+  };
+  var rw=el('div','inrow');rw.appendChild(btn);wrap.appendChild(rw);wrap.appendChild(fbn);host.appendChild(wrap);
+  if(IT(part.id).ok)fb(fbn,1,'此前已全对');
+}
+
+function renderTangent(q,part,host){
+  var X1=-3,X2=3,Y1=-12,Y2=20,sx=46,sy=6.6,PL=40,PT=12,PB=26,PR=16;
+  var W=PL+(X2-X1)*sx+PR,H=PT+(Y2-Y1)*sy+PB;
+  function px(x){return PL+(x-X1)*sx} function py(y){return PT+(Y2-y)*sy}
+  function fx(x){return x*x*x-4*x+4}
+  var sv='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:'+(W+16)+'px;touch-action:manipulation"><g stroke="#E9EAED" stroke-width="1">';
+  var i,j;
+  for(i=X1;i<=X2;i++)sv+='<line x1="'+px(i)+'" y1="'+py(Y1)+'" x2="'+px(i)+'" y2="'+py(Y2)+'"/>';
+  for(j=Y1;j<=Y2;j+=4)sv+='<line x1="'+px(X1)+'" y1="'+py(j)+'" x2="'+px(X2)+'" y2="'+py(j)+'"/>';
+  sv+='</g><line x1="'+px(X1)+'" y1="'+py(0)+'" x2="'+px(X2)+'" y2="'+py(0)+'" stroke="#1D1D1F" stroke-width="1.4"/><line x1="'+px(0)+'" y1="'+py(Y1)+'" x2="'+px(0)+'" y2="'+py(Y2)+'" stroke="#1D1D1F" stroke-width="1.4"/>';
+  for(i=X1;i<=X2;i++)if(i)sv+='<text x="'+(px(i)-4)+'" y="'+(py(0)+13)+'" font-size="9" fill="#6E6E73">'+i+'</text>';
+  for(j=Y1;j<=Y2;j+=4)if(j)sv+='<text x="'+(px(0)-(j<0?24:18))+'" y="'+(py(j)+3)+'" font-size="9" fill="#6E6E73">'+j+'</text>';
+  var d='M';
+  for(var xx=X1;xx<=X2+1e-9;xx+=0.06)d+=(xx>X1?' L':'')+' '+px(xx).toFixed(1)+','+py(fx(xx)).toFixed(1);
+  sv+='<path d="'+d+'" fill="none" stroke="#1D1D1F" stroke-width="1.9"/>';
+  sv+='<circle cx="'+px(-2)+'" cy="'+py(4)+'" r="4.5" fill="none" stroke="#C56A00" stroke-width="1.8"/><text x="'+(px(-2)-30)+'" y="'+(py(4)-8)+'" font-size="10" fill="#C56A00">(−2, 4)</text>';
+  sv+='<g id="tg-'+part.id+'" opacity="0"><line x1="'+px(-3)+'" y1="'+py(fx(-2)+8*(-3+2))+'" x2="'+px(0.5)+'" y2="'+py(fx(-2)+8*(0.5+2))+'" stroke="#30D158" stroke-width="1.6" stroke-dasharray="6 4"/><text x="'+(px(-1.2))+'" y="'+(py(11))+'" font-size="10" fill="#30D158">真切线 斜率 8</text></g>';
+  sv+='<g id="tl-'+part.id+'"></g>';
+  sv+='<rect id="tcap-'+part.id+'" x="0" y="0" width="'+W+'" height="'+H+'" fill="transparent" style="cursor:crosshair"/></svg>';
+  var box=el('div');box.innerHTML=sv;host.appendChild(box);
+  var SV=box.querySelector('svg');var pts=[];
+  var info=el('div','fb');info.style.display='block';info.textContent='在图上点两个点拉出一条直线（贴着曲线在 (−2, 4) 处"只擦不穿"）';
+  function paint(){
+    var g=box.querySelector('#tl-'+part.id),h='';
+    pts.forEach(function(p){h+='<circle cx="'+px(p[0])+'" cy="'+py(p[1])+'" r="3.4" fill="#0071E3"/>'});
+    if(pts.length===2){
+      var m=(pts[1][1]-pts[0][1])/(pts[1][0]-pts[0][0]);
+      var yA=pts[0][1]+m*(X1-pts[0][0]),yB=pts[0][1]+m*(X2-pts[0][0]);
+      h+='<line x1="'+px(X1)+'" y1="'+py(yA)+'" x2="'+px(X2)+'" y2="'+py(yB)+'" stroke="#0071E3" stroke-width="1.8"/>';
+      info.textContent='当前直线斜率 ≈ '+(Math.round(m*100)/100)+'　（重新点第一下可另画）';
+    }
+    g.innerHTML=h;
+  }
+  box.querySelector('#tcap-'+part.id).addEventListener('click',function(ev){
+    var r=SV.getBoundingClientRect();
+    var mx=(ev.clientX-r.left)*W/r.width,my=(ev.clientY-r.top)*H/r.height;
+    var gx=(mx-PL)/sx+X1,gy=Y2-(my-PT)/sy;
+    if(gx<X1||gx>X2||gy<Y1||gy>Y2)return;
+    if(pts.length>=2)pts=[];
+    pts.push([gx,gy]);paint();
+  });
+  var btn=el('button','btn btn-blue btn-mini','检查切线'),clr=el('button','btn btn-ghost btn-mini','清除'),fbn=el('div','fb');
+  btn.onclick=function(){
+    if(pts.length<2){toast('先点两个点拉出直线');return}
+    var dx=pts[1][0]-pts[0][0];
+    if(Math.abs(dx)<0.35){fb(fbn,0,'两点太近或近乎竖直——把两点拉开些再试');afterAttempt(q,part,0);return}
+    var m=(pts[1][1]-pts[0][1])/dx;
+    var yAt=pts[0][1]+m*(-2-pts[0][0]);
+    var touch=Math.abs(yAt-4)<=1.2;
+    var slope=m>=part.glo&&m<=part.ghi;
+    var ok=touch&&slope;
+    if(ok){var g=box.querySelector('#tg-'+part.id);g.style.transition='opacity .5s';g.setAttribute('opacity','1')}
+    fb(fbn,ok,ok?'合格的切线：斜率 '+(Math.round(m*100)/100)+' 落在评分带 ['+part.glo+', '+part.ghi+'] 内':(!touch?'这条线没有贴到点 (−2, 4)——切线必须经过切点附近':'过点了，但斜率 '+(Math.round(m*100)/100)+' 出带：太陡会切进曲线、太缓会离开曲线，让它"只擦过"'));
+    afterAttempt(q,part,ok?1:0);
+  };
+  clr.onclick=function(){pts=[];paint();info.textContent='在图上点两个点拉出一条直线'};
+  var row=el('div','inrow');row.appendChild(btn);row.appendChild(clr);
+  host.appendChild(info);host.appendChild(row);host.appendChild(fbn);
+  if(IT(part.id).ok){var g0=box.querySelector('#tg-'+part.id);g0.setAttribute('opacity','1');fb(fbn,1,'此前已作对')}
+}
+
+function renderJudge(q,part,host){
+  var wrap=el('div');var state=part.items.map(function(){return{ag:null,rs:null}});
+  part.items.forEach(function(it,idx){
+    var card=el('div');card.style.cssText='border:1px solid #E4E6EA;border-radius:10px;padding:10px 12px;margin:8px 0';
+    card.appendChild(el('div','part-label','陈述 '+(idx+1)+'：'+it.stmt));
+    var ar=el('div','inrow');var ab=[];
+    ['同意 Agree','不同意 Disagree'].forEach(function(t,i){
+      var b=el('button','btn btn-ghost btn-mini',t);
+      b.onclick=function(){state[idx].ag=i;ab.forEach(function(x){x.style.background=''});b.style.background='#CFE5FF'};
+      ab.push(b);ar.appendChild(b);
+    });
+    card.appendChild(ar);
+    card.appendChild(el('div','unit','理由：'));
+    var rr=el('div');var rb=[];
+    it.reasons.forEach(function(o,i){
+      var b=el('button','opt','<b>'+String.fromCharCode(65+i)+'.</b> '+o[0]);
+      b.onclick=function(){state[idx].rs=i;rb.forEach(function(x){x.style.borderColor=''});b.style.borderColor='#0071E3'};
+      rb.push(b);rr.appendChild(b);
+    });
+    card.appendChild(rr);wrap.appendChild(card);
+  });
+  var btn=el('button','btn btn-blue btn-mini','检查全部'),fbn=el('div','fb');
+  btn.onclick=function(){
+    var all=1,msgs=[];
+    part.items.forEach(function(it,idx){
+      var s=state[idx];
+      if(s.ag==null||s.rs==null){all=0;msgs.push('陈述 '+(idx+1)+' 未答完');return}
+      var okA=s.ag===it.agree,okR=it.reasons[s.rs][1]===1;
+      if(!(okA&&okR)){all=0;msgs.push('陈述 '+(idx+1)+(okA?' 判断对但理由不成立：'+(it.reasons[s.rs][2]||'该理由用错了统计量'):' 判断方向有误——盯住箱中线（中位数）与箱宽/须长（离散度）'))}
+    });
+    fb(fbn,all,all?'两条判断与理由全部正确':msgs.join('；'));
+    afterAttempt(q,part,all?1:0);
+  };
+  var rw=el('div','inrow');rw.appendChild(btn);wrap.appendChild(rw);wrap.appendChild(fbn);host.appendChild(wrap);
+  if(IT(part.id).ok)fb(fbn,1,'此前已全对');
+}
+
 function renderPart(q,part,host){
   if(part.label)host.appendChild(el('div','part-label',part.label));
   if(part.t==='mcq')renderMCQ(q,part,host);
@@ -848,6 +1055,10 @@ function renderPart(q,part,host){
   else if(part.t==='ineqset')renderIneqSet(q,part,host);
   else if(part.t==='tblseq')renderTblseq(q,part,host);
   else if(part.t==='lpshade')renderLPShade(q,part,host);
+  else if(part.t==='draw')renderDraw(q,part,host);
+  else if(part.t==='desct')renderDescT(q,part,host);
+  else if(part.t==='tan')renderTangent(q,part,host);
+  else if(part.t==='judge')renderJudge(q,part,host);
   else renderInput(q,part,host);
 }
 /* ================= 变式 ================= */
@@ -983,7 +1194,120 @@ var ANIM={
    +'<g id="c10s" opacity="0"><text x="20" y="122" font-size="12" fill="#C56A00">= 2²　 3²　　4²　　5²　→ 平移的平方族</text></g>'
    +'<text id="c10g" x="20" y="142" font-size="13" opacity="0">第 n 项 = (n+1)²　（用 n=1 回代：2²=4 ✓）</text>'
    +'</svg><div class="figcap">先做差/找型，再写通项，最后回代 n=1 验证——三步闭环</div>';
-   ['c10d','c10f','c10s','c10g'].forEach(function(id,i){sd(0,150+i*760,function(){var e=box.querySelector('#'+id);e.style.transition='opacity .55s';e.style.opacity=1})});}
+   ['c10d','c10f','c10s','c10g'].forEach(function(id,i){sd(0,150+i*760,function(){var e=box.querySelector('#'+id);e.style.transition='opacity .55s';e.style.opacity=1})});},
+ d1:function(fig,box){
+   box.innerHTML='';var s=8.6,PL=68,PT=10;
+   function X(x){return PL+(x+7)*s}function Y(y){return PT+(7-y)*s}
+   function poly(pts,st,fl){return '<polygon points="'+pts.map(function(p){return X(p[0])+','+Y(p[1])}).join(' ')+'" fill="'+fl+'" stroke="'+st+'" stroke-width="1.5"/>'}
+   var A=[[-4,5],[-4,2],[-3,2]],T=[[4,-1],[4,-4],[5,-4]],R=[[-4,-4],[-4,-7],[-3,-4]],B=[[-2,5],[-2,-4],[1,-4]],C=[[5,6],[2,6],[2,5]];
+   var g='<svg viewBox="0 0 260 150" width="100%" style="max-width:430px"><g stroke="#EEE" stroke-width=".6">';
+   for(var i=-7;i<=6;i++)g+='<line x1="'+X(i)+'" y1="'+Y(-8)+'" x2="'+X(i)+'" y2="'+Y(7)+'"/>';
+   for(var j=-8;j<=7;j++)g+='<line x1="'+X(-7)+'" y1="'+Y(j)+'" x2="'+X(6)+'" y2="'+Y(j)+'"/>';
+   g+='</g><line x1="'+X(-7)+'" y1="'+Y(0)+'" x2="'+X(6)+'" y2="'+Y(0)+'" stroke="#999"/><line x1="'+X(0)+'" y1="'+Y(-8)+'" x2="'+X(0)+'" y2="'+Y(7)+'" stroke="#999"/>';
+   g+=poly(A,'#1D1D1F','rgba(0,113,227,.15)');
+   g+='<g id="dA1" opacity="0"><line x1="'+X(-4)+'" y1="'+Y(5)+'" x2="'+X(4)+'" y2="'+Y(-1)+'" stroke="#C56A00" stroke-dasharray="4 3" marker-end="none"/>'+poly(T,'#C56A00','rgba(197,106,0,.14)')+'<text x="'+X(3.4)+'" y="'+Y(-4.8)+'" font-size="8" fill="#C56A00">平移(8,−6)</text></g>';
+   g+='<g id="dA2" opacity="0"><line x1="'+X(-7)+'" y1="'+Y(-1)+'" x2="'+X(6)+'" y2="'+Y(-1)+'" stroke="#AF52DE" stroke-dasharray="5 3"/>'+poly(R,'#AF52DE','rgba(175,82,222,.14)')+'<text x="'+X(-6.8)+'" y="'+Y(-1.4)+'" font-size="8" fill="#AF52DE">y=−1 镜</text></g>';
+   g+='<g id="dA3" opacity="0"><line x1="'+X(-5)+'" y1="'+Y(5)+'" x2="'+X(1)+'" y2="'+Y(-4)+'" stroke="#30D158" stroke-dasharray="3 3"/>'+poly(B,'#30D158','rgba(48,209,88,.10)')+'<circle cx="'+X(-5)+'" cy="'+Y(5)+'" r="2.5" fill="#30D158"/><text x="'+X(-6.9)+'" y="'+Y(6)+'" font-size="8" fill="#30D158">放大×3 心(−5,5)</text></g>';
+   g+='<g id="dA4" opacity="0">'+poly(C,'#FF375F','rgba(255,55,95,.12)')+'<circle cx="'+X(1)+'" cy="'+Y(1)+'" r="2.5" fill="#FF375F"/><path d="M '+X(-1)+' '+Y(3)+' A 25 25 0 0 1 '+X(3)+' '+Y(3)+'" fill="none" stroke="#FF375F" stroke-width="1.3" marker-end="none"/><text x="'+X(1.4)+'" y="'+Y(2.4)+'" font-size="8" fill="#FF375F">绕(1,1)顺时针90°</text></g>';
+   g+='</svg><div id="dAt" class="anim-cap">形状 A（左上蓝）：四个变换各就各位</div>';
+   box.innerHTML=g;
+   var cap=box.querySelector('#dAt');
+   var st=[['dA1','(a) 平移：每个顶点 +(8, −6)，形状朝向不变'],['dA2','(b) 反射：到镜线 y=−1 的距离相等、方向相反'],['dA3','(c) A→B 放大：从中心 (−5,5) 出发的射线上，距离 ×3'],['dA4','(d) A→C 旋转：绕 (1,1) 顺时针 90°（等价于逆时针 270°）']];
+   st.forEach(function(o,i){setTimeout(function(){var e=box.querySelector('#'+o[0]);e.style.transition='opacity .55s';e.setAttribute('opacity','1');cap.textContent=o[1]},900+i*1500)});
+ },
+ d2:function(fig,box){
+   box.innerHTML='';
+   var h='<div style="font-size:13px;line-height:1.9">';
+   h+='<div id="dB1" style="opacity:0">雅典时间比柏林<b>快 1 小时</b>（09:00 ↔ 08:00）</div>';
+   h+='<div id="dB2" style="opacity:0">起飞 13:15（雅典）＝ <b>12:15（柏林时）</b></div>';
+   h+='<div id="dB3" style="opacity:0">降落 15:05（柏林时）→ 航时 = 15:05 − 12:15 = <b>2 h 50 min</b></div>';
+   h+='<div id="dB4" style="opacity:0">平均速度 = 1802 ÷ 2<sup>50</sup>⁄<sub>60</sub> = 1802 ÷ 17⁄6 = <b>636 km/h</b></div></div>';
+   box.innerHTML=h;
+   ['dB1','dB2','dB3','dB4'].forEach(function(id,i){setTimeout(function(){var e=box.querySelector('#'+id);e.style.transition='opacity .5s';e.style.opacity=1},600+i*1400)});
+ },
+ d3:function(fig,box){
+   box.innerHTML='';
+   var h='<svg viewBox="0 0 300 120" width="100%" style="max-width:430px">';
+   h+='<line x1="20" y1="100" x2="290" y2="100" stroke="#1D1D1F"/>';
+   h+='<rect x="60" y="100" width="40" height="0" fill="rgba(0,113,227,.35)" stroke="#0071E3" id="dC1"><animate attributeName="height" from="0" to="65" dur=".7s" begin="0.5s" fill="freeze"/><animate attributeName="y" from="100" to="35" dur=".7s" begin="0.5s" fill="freeze"/></rect>';
+   h+='<text x="62" y="30" font-size="9" fill="#0071E3" opacity="0" id="dC1t">60–100：频数24 宽40 → fd=0.6 → 高10.8cm</text>';
+   h+='<rect x="180" y="100" width="60" height="0" fill="rgba(48,209,88,.35)" stroke="#30D158" id="dC2"><animate attributeName="height" from="0" to="14.4" dur=".7s" begin="3.2s" fill="freeze"/><animate attributeName="y" from="100" to="85.6" dur=".7s" begin="3.2s" fill="freeze"/></rect>';
+   h+='<text x="150" y="78" font-size="9" fill="#30D158" opacity="0" id="dC2t">160–220：fd=8/60=0.1333… → ×18 = 2.4cm</text>';
+   h+='</svg><div class="anim-cap" id="dCc">直方图比的是"频数密度"，不是频数</div>';
+   box.innerHTML=h;
+   setTimeout(function(){box.querySelector('#dC1t').style.transition='opacity .4s';box.querySelector('#dC1t').style.opacity=1;box.querySelector('#dCc').textContent='定标：0.6 个密度 ↔ 10.8 cm，所以 1 密度 = 18 cm'},1400);
+   setTimeout(function(){box.querySelector('#dC2t').style.transition='opacity .4s';box.querySelector('#dC2t').style.opacity=1;box.querySelector('#dCc').textContent='新柱高 = 密度 × 18 = 8/60 × 18 = 2.4 cm'},3600);
+ },
+ d4:function(fig,box){
+   box.innerHTML='';var cx=120,cy=95,r=72;
+   function P(a){return[cx+r*Math.cos(a*Math.PI/180),cy-r*Math.sin(a*Math.PI/180)]}
+   var A=P(270),C=P(90),D=P(228),B=P(20);
+   var h='<svg viewBox="0 0 320 200" width="100%" style="max-width:430px">';
+   h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="#1D1D1F" stroke-width="1.6"/><circle cx="'+cx+'" cy="'+cy+'" r="2" fill="#1D1D1F"/><text x="'+(cx+5)+'" y="'+(cy-4)+'" font-size="10">O</text>';
+   [['A',A,0,14],['C',C,0,-6],['D',D,-14,4],['B',B,8,4]].forEach(function(o){h+='<circle cx="'+o[1][0]+'" cy="'+o[1][1]+'" r="2.4" fill="#1D1D1F"/><text x="'+(o[1][0]+o[2])+'" y="'+(o[1][1]+o[3])+'" font-size="11" font-style="italic">'+o[0]+'</text>'});
+   h+='<g id="dD1" opacity="0"><line x1="'+B[0]+'" y1="'+B[1]+'" x2="'+A[0]+'" y2="'+A[1]+'" stroke="#0071E3" stroke-width="1.4"/><line x1="'+B[0]+'" y1="'+B[1]+'" x2="'+D[0]+'" y2="'+D[1]+'" stroke="#0071E3" stroke-width="1.4"/><text x="'+(B[0]-30)+'" y="'+(B[1]+2)+'" font-size="9" fill="#0071E3">21°</text></g>';
+   h+='<g id="dD2" opacity="0"><line x1="'+C[0]+'" y1="'+C[1]+'" x2="'+A[0]+'" y2="'+A[1]+'" stroke="#999" stroke-dasharray="4 3"/><line x1="'+C[0]+'" y1="'+C[1]+'" x2="'+D[0]+'" y2="'+D[1]+'" stroke="#C56A00" stroke-width="1.4"/><text x="'+(C[0]-24)+'" y="'+(C[1]+16)+'" font-size="9" fill="#C56A00">同弧∠ACD=21°</text><text x="'+(D[0]+2)+'" y="'+((D[1]+C[1])/2)+'" font-size="9" fill="#C56A00">12</text></g>';
+   h+='<g id="dD3" opacity="0"><line x1="'+D[0]+'" y1="'+D[1]+'" x2="'+A[0]+'" y2="'+A[1]+'" stroke="#30D158" stroke-width="1.4"/><rect x="'+(D[0]+4)+'" y="'+(D[1]-10)+'" width="7" height="7" fill="none" stroke="#30D158" transform="rotate(24 '+D[0]+' '+D[1]+')"/><text x="'+(D[0]-6)+'" y="'+(D[1]+18)+'" font-size="9" fill="#30D158">半圆上的圆周角=90°</text></g>';
+   h+='<g id="dD4" opacity="0"><text x="196" y="26" font-size="10" fill="#1D1D1F">cos21° = 12/AC</text><text x="196" y="42" font-size="10">AC = 12.855…（直径）</text><text x="196" y="58" font-size="10">r = 6.428…</text><text x="196" y="74" font-size="10" font-weight="700">面积 = πr² ≈ 129.8</text></g>';
+   h+='</svg><div class="anim-cap" id="dDc">四步链：同弧 → 半圆 → 余弦 → 面积</div>';
+   box.innerHTML=h;
+   var caps=['①∠ABD=21°（B 处圆周角）','②同弧 AD：∠ACD 也是 21°','③AC 过圆心是直径 → ∠ADC=90°','④直角三角形里 cos21°=12/AC → AC 即直径 → 面积 ≈130'];
+   ['dD1','dD2','dD3','dD4'].forEach(function(id,i){setTimeout(function(){var e=box.querySelector('#'+id);e.style.transition='opacity .55s';e.setAttribute('opacity','1');box.querySelector('#dDc').textContent=caps[i]},700+i*1600)});
+ },
+ d5:function(fig){
+   ['dg5t','dg5r','dg5l'].forEach(function(id,i){setTimeout(function(){var e=fig.querySelector('#'+id);if(e){e.style.transition='opacity .6s';e.setAttribute('opacity','1')}},700+i*1600)});
+ },
+ d6:function(fig){
+   ['dg6n','dg6c','dg6a'].forEach(function(id,i){setTimeout(function(){var e=fig.querySelector('#'+id);if(e){e.style.transition='opacity .6s';e.setAttribute('opacity','1')}},700+i*1700)});
+ },
+ d7:function(fig,box){
+   box.innerHTML='';
+   var h='<svg viewBox="0 0 340 130" width="100%" style="max-width:430px">';
+   function dia(n,ox){
+     var s='',d=13;
+     for(var r=1;r<n;r++)for(var c=0;c<r;c++)s+='<circle cx="'+(ox+(n-1)*d/2-(r-1)*d/2+c*d)+'" cy="'+(18+(r-1)*d)+'" r="4" fill="#1D1D1F"/>';
+     for(var i=0;i<n;i++)for(var j=0;j<n;j++)s+='<circle cx="'+(ox+j*d)+'" cy="'+(18+(n-1)*d+i*d)+'" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/>';
+     return '<g id="dG'+n+'" opacity="0">'+s+'<text x="'+ox+'" y="122" font-size="8.5">n='+n+'：白'+(n*n)+' 黑'+(n*(n-1)/2)+'</text></g>';
+   }
+   h+=dia(1,16)+dia(2,64)+dia(3,130)+dia(4,215)+'</svg><div class="anim-cap" id="dGc">白点是 n×n 方阵，黑点是上面的三角塔</div>';
+   box.innerHTML=h;
+   [1,2,3,4].forEach(function(n,i){setTimeout(function(){var e=box.querySelector('#dG'+n);e.style.transition='opacity .5s';e.setAttribute('opacity','1');if(n===4)box.querySelector('#dGc').textContent='白 n²，黑 1+2+…+(n−1)=½(n²−n)，总 ½n(3n−1)'},600+i*1200)});
+ },
+ d8:function(fig,box){
+   box.innerHTML='';
+   var rows=[['r² + 200r − 323 = 0：a=1, b=200, c=−323'],['判别式 b²−4ac = 40000 + 1292 = 41292'],['√41292 = 203.203…'],['r = (−200 + 203.203…)/2 = 1.6016… → <b>1.60</b>（2 d.p.，负根 −201.6 舍）']];
+   var h='<div style="font-size:13px;line-height:2">';
+   rows.forEach(function(r,i){h+='<div id="dH'+i+'" style="opacity:0">'+r[0]+'</div>'});
+   box.innerHTML=h+'</div>';
+   rows.forEach(function(_,i){setTimeout(function(){var e=box.querySelector('#dH'+i);e.style.transition='opacity .5s';e.style.opacity=1},600+i*1400)});
+ },
+ d9:function(fig,box){
+   box.innerHTML='';
+   var h='<svg viewBox="0 0 330 150" width="100%" style="max-width:430px" font-size="9.5">';
+   h+='<g id="dI1" opacity="0"><line x1="30" y1="70" x2="110" y2="35" stroke="#0071E3"/><line x1="30" y1="70" x2="110" y2="108" stroke="#999"/><text x="52" y="42">红 15/25</text><text x="52" y="102">非红 10/25</text></g>';
+   h+='<g id="dI2" opacity="0"><line x1="118" y1="108" x2="195" y2="88" stroke="#999"/><line x1="118" y1="108" x2="195" y2="130" stroke="#FF375F"/><text x="132" y="88">红 15/24</text><text x="128" y="130">非红 9/24</text></g>';
+   h+='<g id="dI3" opacity="0"><text x="210" y="132" fill="#FF375F">两支都非红：10/25 × 9/24 = 3/20</text></g>';
+   h+='<g id="dI4" opacity="0"><text x="210" y="60" font-weight="700">至少一红 = 1 − 3/20 = 17/20</text><text x="210" y="76" fill="#6E6E73">（分母 25→24：不放回）</text></g>';
+   h+='</svg><div class="anim-cap" id="dIc">"至少一个"走补集最省：先算"一个都不是"</div>';
+   box.innerHTML=h;
+   ['dI1','dI2','dI3','dI4'].forEach(function(id,i){setTimeout(function(){var e=box.querySelector('#'+id);e.style.transition='opacity .5s';e.setAttribute('opacity','1')},600+i*1400)});
+ },
+ d10:function(fig,box){
+   box.innerHTML='';var PL=30,PT=10,w=270,hh=90,cy=PT+hh/2;
+   function X(d){return PL+d/360*w}
+   function Y(t){var v=Math.max(-3,Math.min(3,t));return cy-v*hh/6}
+   var h='<svg viewBox="0 0 320 130" width="100%" style="max-width:430px">';
+   h+='<line x1="'+PL+'" y1="'+cy+'" x2="'+(PL+w)+'" y2="'+cy+'" stroke="#1D1D1F"/>';
+   [0,90,180,270,360].forEach(function(d){h+='<line x1="'+X(d)+'" y1="'+(cy-3)+'" x2="'+X(d)+'" y2="'+(cy+3)+'" stroke="#1D1D1F"/><text x="'+(X(d)-8)+'" y="'+(cy+16)+'" font-size="8">'+d+'°</text>'});
+   h+='<g id="dJ1" opacity="0"><line x1="'+X(90)+'" y1="'+PT+'" x2="'+X(90)+'" y2="'+(PT+hh)+'" stroke="#FF375F" stroke-dasharray="4 3"/><line x1="'+X(270)+'" y1="'+PT+'" x2="'+X(270)+'" y2="'+(PT+hh)+'" stroke="#FF375F" stroke-dasharray="4 3"/><text x="'+(X(90)-22)+'" y="'+(PT+8)+'" font-size="8" fill="#FF375F">渐近线</text></g>';
+   var seg='';[[0,89.2],[90.8,269.2],[270.8,360]].forEach(function(rg){var d='M';for(var t=rg[0];t<=rg[1];t+=2)d+=(t>rg[0]?' L':'')+' '+X(t).toFixed(1)+','+Y(Math.tan(t*Math.PI/180)).toFixed(1);seg+='<path d="'+d+'" fill="none" stroke="#0071E3" stroke-width="1.7"/>'});
+   h+='<g id="dJ2" opacity="0">'+seg+'</g>';
+   h+='<g id="dJ3" opacity="0"><line x1="'+PL+'" y1="'+Y(-1.4)+'" x2="'+(PL+w)+'" y2="'+Y(-1.4)+'" stroke="#30D158" stroke-dasharray="6 3"/><text x="'+(PL+2)+'" y="'+(Y(-1.4)-4)+'" font-size="8" fill="#30D158">tan x = −1.4</text><circle cx="'+X(125.5)+'" cy="'+Y(-1.4)+'" r="3" fill="#30D158"/><circle cx="'+X(305.5)+'" cy="'+Y(-1.4)+'" r="3" fill="#30D158"/><text x="'+(X(125.5)-14)+'" y="'+(Y(-1.4)+14)+'" font-size="8" fill="#30D158">125.5°</text><text x="'+(X(305.5)-14)+'" y="'+(Y(-1.4)+14)+'" font-size="8" fill="#30D158">305.5°</text></g>';
+   h+='</svg><div class="anim-cap" id="dJc">先画骨架：过 0/180/360，90 与 270 处竖直渐近线</div>';
+   box.innerHTML=h;
+   var caps=['骨架：渐近线 x=90°, 270°','三段都是"左低右高"往渐近线冲','参考角 tan⁻¹1.4≈54.5° → 180−54.5=125.5，360−54.5=305.5'];
+   ['dJ1','dJ2','dJ3'].forEach(function(id,i){setTimeout(function(){var e=box.querySelector('#'+id);e.style.transition='opacity .55s';e.setAttribute('opacity','1');box.querySelector('#dJc').textContent=caps[i]},700+i*1600)});
+ },
 };
 </script>
 <script>
@@ -1059,14 +1383,14 @@ function exportReport(){
     papers[P.key]={name:P.name,code:P.code,answered:a,of:P.items,right:r,mastered:m,ofQ:P.qs.length,review:rev,items:items};
     TA+=a;TR+=r;TM+=m;TREV+=rev;
   });
-  var rep={schema:'simon_school_math_v3',exported:new Date().toISOString(),opened:ST.meta.opened,
+  var rep={schema:'simon_school_math_v4',exported:new Date().toISOString(),opened:ST.meta.opened,
     summary:{answered:TA,right:TR,mastered:TM,review:TREV},papers:papers,variants:ST.qv};
   var d=new Date();var pad=function(x){return (x<10?'0':'')+x};
   var fn=''+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'_Simon数学专项_学习报告.json';
   var link=document.createElement('a');
   link.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(rep,null,2));
   link.download=fn;document.body.appendChild(link);link.click();document.body.removeChild(link);
-  toast('学习报告已导出（含卷一 · 卷二 · 卷三）');
+  toast('学习报告已导出（含卷一 · 卷二 · 卷三 · 卷四）');
 }
 window.exportReport=exportReport;
 </script>
@@ -1631,15 +1955,346 @@ vg:function(){var ty=pick(['ar','sq','geo']);
  return{stem:'数列：'+g+', …　求第 n 项。',part:{t:'expr',vars:['n'],target:tg3,ph:'用 n 表示'},sol:'相邻比恒为 2，首项 '+(2*cc)+' → '+cc+'·2ⁿ',_t:tg3}}}
 ];
 
+var QS4=[
+{n:1,topic:'几何变换四连',marks:10,anim:'d1',
+stem:'The grid shows shapes A, B and C. Answer all four parts on the grids below.',
+gloss:'translation 平移（列向量：上加下减）· reflection 反射（到镜线等距）· rotation 旋转（心 + 角 + 方向缺一不可）· enlargement 放大（心 + 比例系数）· image 像 · map A onto B 把 A 变到 B',
+parts:[
+ {id:'d1a',label:'(a) Draw the image of shape A after a translation by the vector <span style="display:inline-block;vertical-align:middle;text-align:center;line-height:1.02;font-style:italic">8<br>−6</span> .　[2]',
+  t:'draw',grid:{x1:-7,x2:6,y1:-8,y2:7},
+  shapes:[{name:'A',pts:[[-4,5],[-4,2],[-3,2]],lab:[-5.6,3.4]},{name:'B',pts:[[-2,5],[-2,-4],[1,-4]],lab:[-1.5,0.6]},{name:'C',pts:[[5,6],[2,6],[2,5]],lab:[3.2,7]}],
+  target:[[4,-1],[4,-4],[5,-4]],
+  hint:'每个顶点 x 坐标 +8、y 坐标 −6：(−4,5)→(4,−1)，其余两点同理'},
+ {id:'d1b',label:'(b) Draw the image of shape A after a reflection in the line y = −1.　[2]',
+  t:'draw',grid:{x1:-7,x2:6,y1:-8,y2:7},
+  shapes:[{name:'A',pts:[[-4,5],[-4,2],[-3,2]],lab:[-5.6,3.4]},{name:'B',pts:[[-2,5],[-2,-4],[1,-4]],lab:[-1.5,0.6]},{name:'C',pts:[[5,6],[2,6],[2,5]],lab:[3.2,7]}],
+  target:[[-4,-4],[-4,-7],[-3,-4]],
+  hint:'镜线 y=−1：点 (x,y) 的像是 (x, −2−y)。到镜线的竖直距离相等、方向相反'},
+ {id:'d1c',label:'(c) Describe fully the single transformation that maps shape A onto shape B.　[3]',
+  t:'desct',types:['Translation 平移','Reflection 反射','Rotation 旋转','Enlargement 放大'],correct:3,
+  rows:[[{pre:'scale factor（比例系数）',spec:{t:'num',ans:3,tol:0},w:'w-xs'}],[{pre:'centre（中心）(',spec:{t:'num',ans:-5,tol:0},w:'w-xs'},{pre:'，',spec:{t:'num',ans:5,tol:0},w:'w-xs',post:')'}]],
+  hint:'B 的边长是 A 的 3 倍 → 放大。中心：连 A、B 对应顶点画直线，交点即中心'},
+ {id:'d1d',label:'(d) Describe fully the single transformation that maps shape A onto shape C.　[3]',
+  t:'desct',types:['Translation 平移','Reflection 反射','Rotation 旋转','Enlargement 放大'],correct:2,
+  rows:[[{pre:'angle（角度）',comboAng:1,w:'w-xs',post:'°'}],[{pre:'centre（中心）(',spec:{t:'num',ans:1,tol:0},w:'w-xs'},{pre:'，',spec:{t:'num',ans:1,tol:0},w:'w-xs',post:')'}]],
+  dir:{opts:['clockwise 顺时针','anticlockwise 逆时针']},combo:[[90,0],[270,1]],
+  hint:'A 的竖直长边到 C 变成水平 → 旋转 90°。用描图纸感：绕 (1,1) 顺转 90°（等价逆转 270°）'}
+],
+steps:['(a)(b) 作图题拿分要点：<b>逐顶点</b>套规则，最后连线核形状与朝向。平移不改朝向；反射会"翻面"。',
+'(c) 判类型看两件事：大小变没变（变了→放大/缩小）、朝向翻没翻（翻了→反射）。B 与 A 相似、边长比 3:1 → Enlargement。中心找法：连对应点 (−4,5)–(−2,5) 与 (−4,2)–(−2,−4) 两条直线，交于 <b>(−5, 5)</b>；scale factor = 3。',
+'(d) A→C 大小不变、竖边变横边 → 旋转 90°。中心 (1,1)：验证 (−4,5)→绕(1,1)顺转90°→(5,6) ✓。"describe fully" = 类型 + 角度与方向 + 中心，三样缺一即扣分。顺时针 90° 与逆时针 270° 等价，两种都给分。'],
+finalTxt:'<b>答案卡</b>　(a) 像 (4,−1)(4,−4)(5,−4)　(b) 像 (−4,−4)(−4,−7)(−3,−4)　(c) Enlargement, scale factor 3, centre (−5,5)　(d) Rotation, 90° clockwise（或 270° anticlockwise）, centre (1,1)',
+card:{m:'变换描述三件套：类型 + 全部参数；作图逐顶点套规则，最后核形状朝向。',mo:['旋转 90°/180° 的坐标规则','放大中心：连对应点找交点','负比例系数的放大']},
+vg:function(){var a=ri(-2,2),b=ri(-2,2),p=a+ri(1,3),q=b+ri(1,3),cw=ri(0,1);var ix=cw?a+(q-b):a-(q-b),iy=cw?b-(p-a):b+(p-a);var wx=cw?a-(q-b):a+(q-b),wy=cw?b+(p-a):b-(p-a);return{stem:'点 P('+p+', '+q+') 绕中心 ('+a+', '+b+') '+(cw?'顺时针':'逆时针')+'旋转 90°，像的坐标是？',part:{t:'mcq',opts:[['('+ix+', '+iy+')',1,''],['('+wx+', '+wy+')',0,'方向反了——这是'+(cw?'逆':'顺')+'时针的结果。'],['('+(2*a-p)+', '+(2*b-q)+')',0,'这是绕中心旋转 180° 的像。'],['('+(p+1)+', '+(q-1)+')',0,'旋转不是平移——要绕中心转，不是整体挪。']]},sol:'相对坐标 ('+(p-a)+', '+(q-b)+') '+(cw?'顺':'逆')+'转 90° → ('+(ix-a)+', '+(iy-b)+')，加回中心得 ('+ix+', '+iy+')'}}},
+
+{n:2,topic:'比例 · 百分数 · 时区速率',marks:10,anim:'d2',
+stem:'A plane has 14 First Class seats, 70 Premium seats and 168 Economy seats.',
+gloss:'ratio in simplest form 最简整数比 · percentage reduction 百分比降幅（÷ 原值）· local time 当地时 · average speed 平均速度 = 总路程 ÷ 总时间',
+parts:[
+ {id:'d2a',label:'(a) Find the ratio First Class : Premium : Economy in its simplest form.　[2]',
+  t:'blanks',rows:[[{spec:{t:'num',ans:1,tol:0},w:'w-xs'},{pre:' : ',spec:{t:'num',ans:5,tol:0},w:'w-xs'},{pre:' : ',spec:{t:'num',ans:12,tol:0},w:'w-xs'}]],
+  hint:'三数同除以最大公约数 14'},
+ {id:'d2b1',label:'(b)(i) Ticket costs are in the ratio First : Premium : Economy = 14 : 6 : 5. A Premium ticket costs $114. Find the cost of a First Class ticket and an Economy ticket.　[3]',
+  t:'blanks',rows:[[{pre:'First Class $',spec:{t:'num',ans:266,tol:0},w:'w-s'}],[{pre:'Economy $',spec:{t:'num',ans:95,tol:0},w:'w-s'}]],
+  hint:'一份 = 114 ÷ 6 = 19，再乘 14 与 5'},
+ {id:'d2b2',label:'(b)(ii) For an afternoon flight the Premium ticket is reduced from $114 to $96.90. Calculate the percentage reduction.　[2]',
+  t:'num',ans:15,tol:0.01,unit:'%',ph:'降幅 %',
+  hint:'(114 − 96.90) ÷ 114 × 100，分母是原价'},
+ {id:'d2c1',label:'(c) When it is 09 00 in Athens it is 08 00 in Berlin. A plane leaves Athens at 13 15 and arrives in Berlin at 15 05 local time. (i) Find the flight time.　[1]',
+  t:'blanks',rows:[[{spec:{t:'num',ans:2,tol:0},w:'w-xs',post:'h'},{spec:{t:'num',ans:50,tol:0},w:'w-xs',post:'min'}]],
+  hint:'把两端换到同一时区再相减：13 15 雅典 = 12 15 柏林'},
+ {id:'d2c2',label:'(c)(ii) The distance from Athens to Berlin is 1802 km. Calculate the average speed in km/h.　[2]',
+  t:'num',ans:636,tol:0.5,unit:'km/h',ph:'平均速度',
+  hint:'2h50min = 17/6 小时；1802 ÷ (17/6)'}
+],
+steps:['(a) 14 : 70 : 168，公约数 14 → <b>1 : 5 : 12</b>。最简比里不能留小数或公因数。',
+'(b)(i) 比例的"单位份额"法：Premium 占 6 份 = $114 → 1 份 = $19 → First = 14×19 = <b>$266</b>，Economy = 5×19 = <b>$95</b>。',
+'(b)(ii) 百分比降幅永远除以<b>原值</b>：(114−96.90)/114 = 17.1/114 = <b>15%</b>。',
+'(c)(i) 时区题先统一时钟：雅典比柏林快 1 小时，起飞 13 15（雅典）即 12 15（柏林）。15 05 − 12 15 = <b>2 h 50 min</b>。',
+'(c)(ii) 速度 = 路程 ÷ 时间，时间要化成小时：2 h 50 min = 2⁵⁰⁄₆₀ = 17/6 h。1802 ÷ 17/6 = 1802 × 6/17 = <b>636 km/h</b>。'],
+finalTxt:'<b>答案卡</b>　(a) 1 : 5 : 12　(b)(i) First $266，Economy $95　(ii) 15%　(c)(i) 2 h 50 min　(ii) 636 km/h',
+card:{m:'比例先找『一份』；时区先统一时钟；速度 = 路程 ÷ 小时（分钟必须化成小时）。',mo:['三项比化简','已知一份反推整体','跨零点的时差计算']},
+vg:function(){var off=pick([-2,-1,1,2]);var dh=ri(8,14),dm=pick([0,15,30,45]);var fh=ri(2,4),fm=pick([5,20,35,50]);var ah=dh+off+fh+Math.floor((dm+fm)/60),am=(dm+fm)%60;function two(n){return(n<10?'0':'')+n}var mins=fh*60+fm;return{stem:'甲城比乙城'+(off>0?'慢':'快')+' '+Math.abs(off)+' 小时。飞机 '+two(dh)+' '+two(dm)+'（甲城时间）起飞，'+two(ah)+' '+two(am)+'（乙城时间）到达。飞行了多少<b>分钟</b>？',part:{t:'num',ans:mins,tol:0,ph:'分钟数'},sol:'到达换回甲城时间 '+two(ah-off)+' '+two(am)+'，减去 '+two(dh)+' '+two(dm)+' = '+fh+' h '+fm+' min = '+mins+' 分钟'}}},
+
+{n:3,topic:'箱线图 · 均值 · 累积频率 · 直方图',marks:11,anim:'d3',
+stem:'A group of women and a group of men recorded the times they spent exercising in one week.',
+gloss:'box-and-whisker plot 箱线图（须端=极值，箱=四分位，中线=中位数）· variation 离散程度（看 IQR / 极差，不看中位数）· cumulative frequency 累积频率 · percentile 百分位 · frequency density 频数密度 = 频数 ÷ 组距',
+parts:[
+ {id:'d3a',label:'(a) The box-and-whisker plots show the two sets of times. For each statement, choose agree or disagree and give the reason.　[2]<div class="fig" style="margin:10px 0 2px"><svg viewBox="0 0 330 132" width="100%" style="max-width:330px"><line x1="36" y1="112" x2="309" y2="112" stroke="#1D1D1F" stroke-width="1.3"/><g font-size="8.5" fill="#6E6E73"><text x="33" y="124">0</text><text x="68" y="124">60</text><text x="103" y="124">120</text><text x="142" y="124">180</text><text x="181" y="124">240</text><text x="220" y="124">300</text><text x="259" y="124">360</text><text x="298" y="124">420</text></g><g stroke="#6E6E73" stroke-width="1"><line x1="36" y1="112" x2="36" y2="108"/><line x1="75" y1="112" x2="75" y2="108"/><line x1="114" y1="112" x2="114" y2="108"/><line x1="153" y1="112" x2="153" y2="108"/><line x1="192" y1="112" x2="192" y2="108"/><line x1="231" y1="112" x2="231" y2="108"/><line x1="270" y1="112" x2="270" y2="108"/><line x1="309" y1="112" x2="309" y2="108"/></g><text x="160" y="132" font-size="8.5" fill="#6E6E73">Time (minutes)</text><g stroke="#0071E3" stroke-width="1.6" fill="rgba(0,113,227,.10)"><line x1="55.5" y1="34" x2="71.75" y2="34"/><line x1="55.5" y1="24" x2="55.5" y2="44"/><rect x="71.75" y="20" width="97.5" height="28"/><line x1="97.75" y1="20" x2="97.75" y2="48"/><line x1="169.25" y1="34" x2="250.5" y2="34"/><line x1="250.5" y1="24" x2="250.5" y2="44"/></g><text x="256" y="38" font-size="9.5" fill="#0071E3">Women</text><g stroke="#30D158" stroke-width="1.6" fill="rgba(48,209,88,.10)"><line x1="49" y1="80" x2="65.25" y2="80"/><line x1="49" y1="70" x2="49" y2="90"/><rect x="65.25" y="66" width="68.25" height="28"/><line x1="88" y1="66" x2="88" y2="94"/><line x1="133.5" y1="80" x2="227.75" y2="80"/><line x1="227.75" y1="70" x2="227.75" y2="90"/></g><text x="234" y="84" font-size="9.5" fill="#30D158">Men</text></svg></div>',
+  t:'judge',items:[
+   {stmt:'"On average, the women spent less time exercising than the men."（女性平均锻炼时间更少）',agree:1,
+    reasons:[['女性的中位数（约 95 min）大于男性（约 80 min）——箱中线更靠右，平均水平其实更高',1],
+     ['女性的最大值更大，说明女性平均更多',0,'极值代表个别人，不代表平均水平'],
+     ['女性的箱更宽，所以平均更少',0,'箱宽是离散程度（IQR），与平均水平无关'],
+     ['两组人数不同，无法比较',0,'箱线图比较的是分布位置，与样本量无关']]},
+   {stmt:'"The times for the women show less variation than the times for the men."（女性的时间波动更小）',agree:1,
+    reasons:[['男性的四分位距与极差都更小（IQR 105 vs 150，极差 275 vs 300）——波动更小的是男性',1],
+     ['女性中位数更大，所以更集中',0,'中位数是位置量，不度量波动'],
+     ['女性的须更长说明数据更多',0,'须长反映的是范围，且与"数据更多"无关'],
+     ['两组波动一样，因为轴相同',0,'共用坐标轴不代表分布相同']]}],
+  hint:'两条都不同意：比"平均"盯箱中线（中位数）；比"波动"盯箱宽（IQR）与须长（极差）'},
+ {id:'d3b1',label:'(b) The table shows the times, t minutes, of 100 children.<div style="overflow-x:auto;margin:8px 0"><table class="mini"><tr><th>Time (t min)</th><th>0&lt;t≤60</th><th>60&lt;t≤100</th><th>100&lt;t≤160</th><th>160&lt;t≤220</th><th>220&lt;t≤320</th></tr><tr><td>Frequency</td><td>41</td><td>24</td><td>23</td><td>8</td><td>4</td></tr></table></div>(i) Calculate an estimate of the mean time.　[4]',
+  t:'num',lo:87.35,hi:87.45,unit:'min',ph:'均值估计',rmsg:'各组取中点（30, 80, 130, 190, 270），中点×频数求和后 ÷ 100',
+  hint:'分组数据的均值 = Σ(中点×频数) ÷ 总频数'},
+ {id:'d3b2a',label:'(ii) The cumulative frequency diagram shows the same information. Use it to estimate (a) the 60th percentile.　[1]<div class="fig" style="margin:10px 0 2px"><svg viewBox="0 0 341 208" width="100%" style="max-width:341px"><g stroke="#EDEDEF" stroke-width="1"><line x1="46" y1="10" x2="46" y2="180"/><line x1="92.8" y1="10" x2="92.8" y2="180"/><line x1="139.6" y1="10" x2="139.6" y2="180"/><line x1="186.4" y1="10" x2="186.4" y2="180"/><line x1="233.2" y1="10" x2="233.2" y2="180"/><line x1="280" y1="10" x2="280" y2="180"/><line x1="326.8" y1="10" x2="326.8" y2="180"/><line x1="46" y1="180" x2="326.8" y2="180"/><line x1="46" y1="146" x2="326.8" y2="146"/><line x1="46" y1="112" x2="326.8" y2="112"/><line x1="46" y1="78" x2="326.8" y2="78"/><line x1="46" y1="44" x2="326.8" y2="44"/><line x1="46" y1="10" x2="326.8" y2="10"/></g><line x1="46" y1="10" x2="46" y2="180" stroke="#1D1D1F" stroke-width="1.3"/><line x1="46" y1="180" x2="326.8" y2="180" stroke="#1D1D1F" stroke-width="1.3"/><g font-size="8.5" fill="#6E6E73"><text x="42" y="192">0</text><text x="86" y="192">60</text><text x="131" y="192">120</text><text x="178" y="192">180</text><text x="225" y="192">240</text><text x="272" y="192">300</text><text x="319" y="192">360</text><text x="30" y="183">0</text><text x="26" y="149">20</text><text x="26" y="115">40</text><text x="26" y="81">60</text><text x="26" y="47">80</text><text x="22" y="13">100</text></g><text x="130" y="204" font-size="8.5" fill="#6E6E73">Time (minutes)</text><text x="6" y="90" font-size="8.5" fill="#6E6E73" transform="rotate(-90 12 96)">Cumulative frequency</text><path d="M 46.0,180.0 L 49.9,173.9 L 53.8,167.9 L 57.7,162.0 L 61.6,156.0 L 65.5,150.2 L 69.4,144.4 L 73.3,138.6 L 77.2,132.8 L 81.1,127.2 L 85.0,121.5 L 88.9,115.9 L 92.8,110.3 L 96.7,104.7 L 100.6,99.1 L 104.5,93.5 L 108.4,88.0 L 112.3,82.9 L 116.2,78.0 L 120.1,73.5 L 124.0,69.5 L 127.9,65.7 L 131.8,61.9 L 135.7,58.2 L 139.6,54.5 L 143.5,50.9 L 147.4,47.4 L 151.3,44.1 L 155.2,40.9 L 159.1,37.9 L 163.0,35.2 L 166.9,32.7 L 170.8,30.4 L 174.7,28.4 L 178.6,26.5 L 182.5,24.9 L 186.4,23.6 L 190.3,22.5 L 194.2,21.4 L 198.1,20.4 L 202.0,19.5 L 205.9,18.7 L 209.8,18.0 L 213.7,17.4 L 217.6,16.8 L 221.5,16.3 L 225.4,15.8 L 229.3,15.3 L 233.2,14.8 L 237.1,14.3 L 241.0,13.8 L 244.9,13.4 L 248.8,12.9 L 252.7,12.5 L 256.6,12.1 L 260.5,11.7 L 264.4,11.4 L 268.3,11.1 L 272.2,10.8 L 276.1,10.6 L 280.0,10.4 L 283.9,10.2 L 287.8,10.1 L 291.7,10.0 L 295.6,10.0 L 299.5,10.0 L 303.4,10.0 L 307.3,10.0 L 311.2,10.0 L 315.1,10.0 L 319.0,10.0 L 322.9,10.0 L 326.8,10.0" fill="none" stroke="#0071E3" stroke-width="1.8"/></svg></div>',
+  t:'num',lo:89,hi:91,unit:'min',ph:'第 60 百分位',rmsg:'从纵轴 60 水平画到曲线，再垂直读横轴',
+  hint:'100 人的第 60 百分位 → 累积频率 = 60 的位置'},
+ {id:'d3b2b',label:'(ii)(b) the number of children who spent more than 3 hours exercising.　[2]',
+  t:'num',lo:7.9,hi:8.1,ph:'人数',rmsg:'3 小时 = 180 分钟；曲线在 180 处读出累积 92 人，答案是 100 − 92',
+  hint:'"超过"要用总数去减累积值'},
+ {id:'d3b3',label:'(iii) A histogram is drawn from the table. The bar for 60&lt;t≤100 has height 10.8 cm. Calculate the height of the bar for 160&lt;t≤220.　[2]',
+  t:'num',lo:2.39,hi:2.41,unit:'cm',ph:'柱高',
+  hint:'先算两组的频数密度（频数÷组距），高度与密度成正比：0.6 密度 ↔ 10.8 cm'}
+],
+steps:['(a) 箱线图两问的标准句式：比"平均"引用<b>中位数</b>（Women 约 95 &gt; Men 约 80，故第一句不同意）；比"波动"引用 <b>IQR 或极差</b>（Men 105/275 均小于 Women 150/300，故第二句也不同意）。理由必须点名统计量，只说"看起来"不给分。',
+'(b)(i) 分组均值：中点 30, 80, 130, 190, 270；Σfm = 41×30+24×80+23×130+8×190+4×270 = 1230+1920+2990+1520+1080 = 8740 → 8740 ÷ 100 = <b>87.4 min</b>。',
+'(ii)(a) 第 60 百分位 = 累积 60 人对应的时间：从 60 水平入、曲线转竖直、读得 <b>90 min</b>。(b) 3 h = 180 min，曲线在 180 处累积 92 → 超过的有 100 − 92 = <b>8 人</b>。"more than" 一律用总数减。',
+'(iii) 直方图等高不等宽时比的是频数密度：60–100 组密度 = 24/40 = 0.6 对应 10.8 cm → 1 密度 = 18 cm。160–220 组密度 = 8/60 = 0.1333… → 高 = 0.1333×18 = <b>2.4 cm</b>。'],
+finalTxt:'<b>答案卡</b>　(a) 两条均 Disagree（①女性中位数更大 ②男性 IQR/极差更小）　(b)(i) 87.4 min　(ii)(a) 90 min　(ii)(b) 8 人　(iii) 2.4 cm',
+card:{m:'箱线图比较：平均看中位线、波动看 IQR 与极差；直方图纵轴是频数密度。',mo:['由 CF 曲线读中位数与四分位','分组数据中点法求均值','等密度定标换算柱高']},
+vg:function(){var f1=pick([18,24,30]),w1=pick([40,50]),h1=pick([9,10.8,12]);var f2=pick([6,8,9]),w2=pick([60,75]);var k=h1/(f1/w1);var ans=Math.round(f2/w2*k*100)/100;return{stem:'直方图中，组 [a, a+'+w1+') 的频数为 '+f1+'、柱高 '+h1+' cm。另一组宽 '+w2+'、频数 '+f2+'，求该组柱高（cm）。',part:{t:'num',ans:ans,tol:0.01,ph:'柱高 cm'},sol:'密度1 = '+f1+'/'+w1+' ↔ '+h1+' cm → 1 密度 = '+(Math.round(k*100)/100)+' cm；密度2 = '+f2+'/'+w2+' → 高 = '+ans+' cm'}}},
+
+{n:4,topic:'界值 · 平行四边形 · 圆 · 扇形',marks:18,anim:'d4',
+stem:'All diagrams are NOT TO SCALE.',
+gloss:'upper bound 上界（+半个精度单位）· parallelogram 平行四边形 · isosceles 等腰 · trapezium 梯形（面积 = ½(上底+下底)×高）· angle in semicircle 半圆上的圆周角 = 90° · same segment 同弧圆周角相等 · sector 扇形（弧长 = x/360 × 2πr）',
+parts:[
+ {id:'d4a',label:'(a) A rectangle measures 8.5 cm by 10.7 cm, both correct to 1 decimal place. Calculate the upper bound of the perimeter.　[3]',
+  t:'num',ans:38.6,tol:0.01,unit:'cm',ph:'周长上界',
+  hint:'1 d.p. 的上界各 +0.05：2×(8.55 + 10.75)'},
+ {id:'d4b1',label:'(b) ABDF is a parallelogram and BCDE is a straight line. AF = 12 cm, AB = 9 cm, angle CFD = 40° and angle FDE = 80°.<div class="fig" style="margin:10px 0 2px"><svg viewBox="0 0 340 190" width="100%" style="max-width:340px"><text x="262" y="14" font-size="10" fill="#6E6E73">NOT TO SCALE</text><line x1="40" y1="150" x2="300" y2="150" stroke="#1D1D1F" stroke-width="1.5"/><line x1="70" y1="150" x2="90.3" y2="34.8" stroke="#1D1D1F" stroke-width="1.5"/><line x1="90.3" y1="34.8" x2="246.3" y2="34.8" stroke="#1D1D1F" stroke-width="1.5"/><line x1="246.3" y1="34.8" x2="226" y2="150" stroke="#1D1D1F" stroke-width="1.5"/><line x1="246.3" y1="34.8" x2="109" y2="150" stroke="#1D1D1F" stroke-width="1.3"/><line x1="90.3" y1="34.8" x2="90.3" y2="150" stroke="#6E6E73" stroke-width="1.1" stroke-dasharray="5 3"/><path d="M 233.2,107.4 A 15,15 0 0 1 238.5,113" fill="none" stroke="#1D1D1F" stroke-width="1"/><path d="M 240,115 A 18,18 0 0 1 244,132" fill="none" stroke="#1D1D1F" stroke-width="1"/><text x="60" y="164" font-size="12" font-style="italic">B</text><text x="105" y="164" font-size="12" font-style="italic">C</text><text x="222" y="164" font-size="12" font-style="italic">D</text><text x="296" y="164" font-size="12" font-style="italic">E</text><text x="82" y="28" font-size="12" font-style="italic">A</text><text x="248" y="28" font-size="12" font-style="italic">F</text><text x="160" y="30" font-size="11">12 cm</text><text x="56" y="96" font-size="11">9 cm</text><text x="150" y="102" font-size="11">9 cm</text><text x="94" y="100" font-size="11" font-style="italic">h</text><text x="222" y="104" font-size="11">40°</text><text x="248" y="140" font-size="11">80°</text></svg></div>(i) Calculate the height, h, of the parallelogram.　[2]',
+  t:'num',lo:8.85,hi:8.87,unit:'cm',ph:'h = ?',
+  hint:'斜边 9 与底线夹 80°（AB ∥ FD）：h = 9 sin 80°'},
+ {id:'d4b2',label:'(ii) Explain why triangle CDF is isosceles. 选出完整的说理链。　[2]',
+  t:'mcq',opts:[
+   ['∠FDE = 80° 且 BCDE 是直线 → ∠FDC = 180° − 80° = 100°；△CDF 内角和：∠DCF = 180° − 100° − 40° = 40° = ∠CFD → 两个底角相等，故等腰',1,''],
+   ['FD = FC，因为它们都连着 F',0,'"都连着 F"不是相等的理由——必须先证角相等或量出边相等。'],
+   ['∠DCF = 40° 因为与 ∠CFD 是对顶角',0,'这两个角不在对顶位置。相等的原因是内角和，不是对顶。'],
+   ['平行四边形的对角相等，所以 △CDF 等腰',0,'∠CFD 与 ∠FDE 不是平行四边形的一组对角；C 甚至不是平行四边形的顶点。']],
+  hint:'先用直线 BCDE 求出 ∠FDC，再用三角形内角和逼出第三个角'},
+ {id:'d4b3',label:'(iii) Calculate the area of the trapezium ABCF.　[3]',
+  t:'num',lo:66.44,hi:66.51,unit:'cm²',ph:'面积',
+  hint:'BC ∥ AF（都在两平行线上）：BC = BD − CD = 12 − 9 = 3。面积 = ½(3 + 12) × h'},
+ {id:'d4c',label:'(c) A, B, C and D are points on the circle, centre O. Angle ABD = 21° and CD = 12 cm. Calculate the area of the circle.　[5]<div class="fig" style="margin:10px 0 2px"><svg viewBox="0 0 300 236" width="100%" style="max-width:300px"><text x="222" y="14" font-size="10" fill="#6E6E73">NOT TO SCALE</text><circle cx="150" cy="118" r="88" fill="none" stroke="#1D1D1F" stroke-width="1.5"/><circle cx="150" cy="118" r="2.4" fill="#1D1D1F"/><line x1="150" y1="30" x2="91.1" y2="183.4" stroke="#1D1D1F" stroke-width="1.3"/><line x1="232.7" y1="87.9" x2="150" y2="206" stroke="#1D1D1F" stroke-width="1.3"/><line x1="232.7" y1="87.9" x2="91.1" y2="183.4" stroke="#1D1D1F" stroke-width="1.3"/><line x1="150" y1="30" x2="150" y2="206" stroke="#1D1D1F" stroke-width="1.2" stroke-dasharray="6 4"/><path d="M 218.4,108.3 A 25,25 0 0 1 217.9,127" fill="none" stroke="#1D1D1F" stroke-width="1"/><text x="146" y="24" font-size="12" font-style="italic">C</text><text x="146" y="220" font-size="12" font-style="italic">A</text><text x="76" y="192" font-size="12" font-style="italic">D</text><text x="239" y="86" font-size="12" font-style="italic">B</text><text x="155" y="114" font-size="11" font-style="italic">O</text><text x="200" y="122" font-size="11">21°</text><text x="106" y="106" font-size="11">12 cm</text></svg></div>',
+  t:'num',lo:129.5,hi:130.05,unit:'cm²',ph:'圆面积',
+  hint:'同弧 AD：∠ACD = ∠ABD = 21°；AC 过圆心 → ∠ADC = 90° → cos 21° = 12/AC'},
+ {id:'d4d',label:'(d) A square with side 8 cm and a sector with radius 9.5 cm and angle x° have equal perimeters. Calculate x.　[3]<div class="fig" style="margin:10px 0 2px"><svg viewBox="0 0 320 130" width="100%" style="max-width:320px"><text x="242" y="14" font-size="10" fill="#6E6E73">NOT TO SCALE</text><rect x="34" y="30" width="82" height="82" fill="none" stroke="#1D1D1F" stroke-width="1.5"/><text x="66" y="126" font-size="11">8 cm</text><path d="M 200,110 L 200,20 A 90,90 0 0 1 262,42 Z" fill="none" stroke="#1D1D1F" stroke-width="1.5"/><text x="204" y="60" font-size="11">9.5 cm</text><text x="206" y="102" font-size="11" font-style="italic">x°</text></svg></div>',
+  t:'num',lo:78.35,hi:78.45,ph:'x = ?',
+  hint:'扇形周长 = 两条半径 + 弧：2×9.5 + x/360 × 2π×9.5 = 32'}
+],
+steps:['(a) 1 d.p. 数据的上界各加 0.05：周长上界 = 2×(8.55+10.75) = 2×19.3 = <b>38.6 cm</b>。界值题千万别加 0.5。',
+'(b)(i) AB ∥ FD，故 AB 与底线 BCDE 的夹角也是 80° → h = 9 sin 80° = <b>8.86 cm</b>。(ii) BCDE 直线 → ∠FDC = 180−80 = 100°；内角和给 ∠DCF = 180−100−40 = 40° = ∠CFD → 两底角相等 → <b>等腰</b>（对边 FD = DC = 9 顺带成立）。(iii) BC = BD − CD = 12 − 9 = 3；梯形 ABCF 的两平行边是 BC=3 与 AF=12，面积 = ½(3+12)×8.863 = <b>66.5 cm²</b>。',
+'(c) 五分大题走"定理链"：①同弧 AD → ∠ACD = ∠ABD = 21°；②AC 是直径 → 半圆上的圆周角 ∠ADC = 90°；③直角三角形 ACD 中 cos 21° = 邻/斜 = 12/AC → AC = 12/cos21° = 12.855…（这就是直径）；④r = 6.428 → 面积 = πr² = <b>129.8 ≈ 130 cm²</b>。',
+'(d) 等周长方程：4×8 = 2×9.5 + (x/360)×2π×9.5 → 32 − 19 = 13 = 0.16581x → x = <b>78.4</b>。扇形周长最易漏"两条半径"。'],
+finalTxt:'<b>答案卡</b>　(a) 38.6 cm　(b)(i) 8.86 cm　(ii) ∠FDC=100°→∠DCF=40°=∠CFD 等腰　(iii) 66.5 cm²　(c) ≈130 cm²（129.6–129.8）　(d) x = 78.4',
+card:{m:'界值 1 d.p. 加减 0.05；圆题先找直径或同弧；扇形周长别漏两条半径。',mo:['下界组合（差用上减下）','圆心角 = 2×圆周角混合链','已知弧长反求角']},
+vg:function(){var s=pick([6,7,9,10]),r=pick([7,8,10,11]);var x=(4*s-2*r)*180/(Math.PI*r);while(x<=15||x>=340){s=pick([6,7,9,10]);r=pick([7,8,10,11]);x=(4*s-2*r)*180/(Math.PI*r)}var ans=Math.round(x*10)/10;return{stem:'正方形边长 '+s+' cm，扇形半径 '+r+' cm、圆心角 x°，两者周长相等。求 x（保留 1 位小数）。',part:{t:'num',lo:ans-0.15,hi:ans+0.15,ph:'x = ?'},sol:'4×'+s+' = 2×'+r+' + x/360 × 2π×'+r+' → x = ('+(4*s)+'−'+(2*r)+')×180/(π×'+r+') = '+ans}}},
+
+{n:5,topic:'函数图象：读图 · 切线 · 交点',marks:12,anim:'d5',
+stem:'The diagram shows the graph of y = f(x) for −3 ≤ x ≤ 3.',
+fig:'<svg viewBox="0 0 332 250" width="100%" style="max-width:332px"><g stroke="#E9EAED" stroke-width="1"><line x1="40" y1="12" x2="40" y2="223.2"/><line x1="86" y1="12" x2="86" y2="223.2"/><line x1="132" y1="12" x2="132" y2="223.2"/><line x1="178" y1="12" x2="178" y2="223.2"/><line x1="224" y1="12" x2="224" y2="223.2"/><line x1="270" y1="12" x2="270" y2="223.2"/><line x1="316" y1="12" x2="316" y2="223.2"/><line x1="40" y1="223.2" x2="316" y2="223.2"/><line x1="40" y1="196.8" x2="316" y2="196.8"/><line x1="40" y1="170.4" x2="316" y2="170.4"/><line x1="40" y1="144" x2="316" y2="144"/><line x1="40" y1="117.6" x2="316" y2="117.6"/><line x1="40" y1="91.2" x2="316" y2="91.2"/><line x1="40" y1="64.8" x2="316" y2="64.8"/><line x1="40" y1="38.4" x2="316" y2="38.4"/><line x1="40" y1="12" x2="316" y2="12"/></g><line x1="40" y1="144" x2="316" y2="144" stroke="#1D1D1F" stroke-width="1.4"/><line x1="178" y1="12" x2="178" y2="223.2" stroke="#1D1D1F" stroke-width="1.4"/><g font-size="9" fill="#6E6E73"><text x="82" y="156">-2</text><text x="128" y="156">-1</text><text x="220" y="156">1</text><text x="266" y="156">2</text><text x="312" y="156">3</text><text x="36" y="156">-3</text><text x="160" y="15">20</text><text x="160" y="41">16</text><text x="160" y="68">12</text><text x="164" y="94">8</text><text x="164" y="121">4</text><text x="158" y="200">-8</text><text x="152" y="226">-12</text></g><path d="M 40.0,216.6 L 45.5,199.2 L 51.0,183.5 L 56.6,169.3 L 62.1,156.7 L 67.6,145.5 L 73.1,135.6 L 78.6,127.1 L 84.2,119.8 L 89.7,113.6 L 95.2,108.6 L 100.7,104.5 L 106.2,101.5 L 111.8,99.3 L 117.3,97.9 L 122.8,97.3 L 128.3,97.4 L 133.8,98.1 L 139.4,99.3 L 144.9,101.1 L 150.4,103.2 L 155.9,105.7 L 161.4,108.4 L 167.0,111.4 L 172.5,114.4 L 178.0,117.6 L 183.5,120.8 L 189.0,123.8 L 194.6,126.8 L 200.1,129.5 L 205.6,132.0 L 211.1,134.1 L 216.6,135.9 L 222.2,137.1 L 227.7,137.8 L 233.2,137.9 L 238.7,137.3 L 244.2,135.9 L 249.8,133.7 L 255.3,130.7 L 260.8,126.6 L 266.3,121.6 L 271.8,115.4 L 277.4,108.1 L 282.9,99.6 L 288.4,89.7 L 293.9,78.5 L 299.4,65.9 L 305.0,51.7 L 310.5,36.0 L 316.0,18.6" fill="none" stroke="#1D1D1F" stroke-width="1.9"/><g id="dg5t" opacity="0"><line x1="40" y1="170.4" x2="159.6" y2="33.1" stroke="#30D158" stroke-width="1.7" stroke-dasharray="7 4"/><circle cx="86" cy="117.6" r="4" fill="none" stroke="#30D158" stroke-width="1.8"/><text x="96" y="52" font-size="9.5" fill="#30D158">切线：只擦过 (−2, 4)，斜率≈8</text></g><g id="dg5r" opacity="0"><line x1="63" y1="144" x2="109" y2="144" stroke="#C56A00" stroke-width="1.4"/><line x1="109" y1="144" x2="109" y2="91.2" stroke="#C56A00" stroke-width="1.4"/><text x="76" y="140" font-size="9" fill="#C56A00">run 1</text><text x="112" y="120" font-size="9" fill="#C56A00">rise 8</text></g><g id="dg5l" opacity="0"><line x1="40" y1="196.8" x2="316" y2="117.6" stroke="#AF52DE" stroke-width="1.7"/><circle cx="47" cy="194.8" r="4" fill="#AF52DE"/><text x="54" y="208" font-size="9.5" fill="#AF52DE">y=2x−2 与曲线唯一交点 x≈−2.85</text></g></svg>',
+gloss:'gradient 斜率（rise ÷ run）· tangent 切线（只触不穿）· estimate 估计（读图允许区间）· suitable straight line 辅助直线：解 f(x)=g(x) 即找两图象交点',
+parts:[
+ {id:'d5a1',label:'(a)(i) Solve f(x) = 14.　[1]',
+  t:'num',lo:2.7,hi:2.8,ph:'x ≈ ?',rmsg:'从 y=14 水平画到曲线，垂直落到 x 轴读数（2.7–2.8 均给分）',
+  hint:'y = 14 的水平线与曲线只有一个交点，在右侧上升段'},
+ {id:'d5a2',label:'(a)(ii) By drawing a suitable tangent, find an estimate of the gradient of the graph at the point (−2, 4).　在下图直接作切线：　[3]',
+  t:'tan',glo:6,ghi:10,
+  hint:'让直线在 (−2,4) 处"只擦过"曲线：太陡会穿进去，太缓会离开。评分带 6–10'},
+ {id:'d5a3',label:'(a)(iii) By drawing a suitable straight line on the grid, solve f(x) = 2x − 2 for −3 ≤ x ≤ 3.（在上方题图想象画出 y = 2x − 2，读交点）　[3]',
+  t:'num',lo:-2.9,hi:-2.8,ph:'x ≈ ?',rmsg:'画直线 y=2x−2（过 (0,−2)、斜率 2），与曲线唯一交点在左下段',
+  hint:'解 f(x)=g(x) 的图象法：画 y=g(x)，交点的 x 就是解。此题只有一个交点'},
+ {id:'d5b',label:'(b) The curve y = 2x² − 2x − 7 and the line y = 3x + 5 intersect at points A and B. Find the coordinates of A and B.　[5]',
+  t:'blanks',rows:[[{pre:'A (',spec:{t:'num',ans:4,tol:0},w:'w-xs'},{pre:'，',spec:{t:'num',ans:17,tol:0},w:'w-xs',post:')'}],[{pre:'B (',spec:{t:'num',ans:-1.5,tol:0},w:'w-xs'},{pre:'，',spec:{t:'num',ans:0.5,tol:0},w:'w-xs',post:')'}]],
+  hint:'联立：2x² − 2x − 7 = 3x + 5 → 2x² − 5x − 12 = 0 → (2x + 3)(x − 4) = 0'}
+],
+steps:['(a)(i) 读图题：水平线 y=14 进、竖直线出，x ≈ <b>2.75</b>（2.7–2.8 全给分）。读图答案写成区间内任意值即可。',
+'(a)(ii) 切线三步：①尺子贴住 (−2,4)；②旋转到"只擦不穿"；③取切线上相距远的两点算 rise/run。真实斜率是 8，评分带 <b>6–10</b>——所以别追求完美，贴住点最关键。',
+'(a)(iii) "画合适的直线解方程"= 把 f(x) = 2x−2 看成两图象求交：画 y=2x−2（截距 −2、斜率 2），与曲线在左下唯一相交，读 x ≈ <b>−2.85</b>（−2.9 至 −2.8）。注意 cao：这一问不接受方程解析解以外的粗读。',
+'(b) 联立消 y：2x²−2x−7 = 3x+5 → 2x²−5x−12 = 0。十字相乘：(2x+3)(x−4)=0 → x = 4 或 −1.5。回代直线求 y（更省）：x=4→y=17；x=−1.5→y=0.5。<b>A(4, 17)，B(−1.5, 0.5)</b>。五分题：联立 1 分、因式 2 分、两点坐标 2 分。'],
+finalTxt:'<b>答案卡</b>　(a)(i) 2.7–2.8　(ii) 切线过 (−2,4)，斜率 6–10（真值 8）　(iii) x ≈ −2.85（−2.9 至 −2.8）　(b) A(4, 17)，B(−1.5, 0.5)',
+card:{m:'读图答案给在区间即可；切线『只擦不穿』；解 f(x)=g(x) 就画 y=g(x) 读交点。',mo:['由图象解不等式 f(x)>k','切线斜率的正负与增减性','二次与直线联立用判别式']},
+vg:function(){var m=pick([1,3]),bq=ri(2,5),c1=ri(1,3);var A=2,B=-(2*bq-m),C=-m*bq;/*(2x+m)(x-b)=2x^2+(m-2b)x-mb*/var s='2x² '+((m-2*bq)>=0?'+ ':'− ')+Math.abs(m-2*bq)+'x − '+(m*bq)+' = 0';return{stem:'解方程 '+s+'，写出<b>较大</b>的根。',part:{t:'num',ans:bq,tol:0,ph:'较大根'},sol:'十字相乘：(2x + '+m+')(x − '+bq+') = 0 → x = '+bq+' 或 −'+m+'/2，较大根 '+bq}}}
+];
+
+QS4=QS4.concat([
+{n:6,topic:'余弦定理 · 方位角 · 面积',marks:14,anim:'d6',
+stem:'The diagram shows a field, ABCD, on horizontal ground. BC = 192 m, CD = 287.9 m, BD = 168 m and AD = 205.8 m.',
+fig:'<svg viewBox="0 0 400 215" width="100%" style="max-width:400px"><text x="322" y="14" font-size="10" fill="#6E6E73">NOT TO SCALE</text><line x1="335.7" y1="190.0" x2="200" y2="190" stroke="#1D1D1F" stroke-width="1.4"/><line x1="200" y1="190" x2="107.4" y2="152.6" stroke="#1D1D1F" stroke-width="1.4"/><line x1="107.4" y1="152.6" x2="253.8" y2="121.2" stroke="#1D1D1F" stroke-width="1.4"/><line x1="253.8" y1="121.2" x2="335.7" y2="190.0" stroke="#1D1D1F" stroke-width="1.4"/><line x1="200" y1="190" x2="253.8" y2="121.2" stroke="#1D1D1F" stroke-width="1.4"/><line x1="200" y1="190" x2="200" y2="128" stroke="#1D1D1F" stroke-width="1.1" stroke-dasharray="5 3"/><path d="M 196,134 L 200,126 L 204,134" fill="none" stroke="#1D1D1F" stroke-width="1.1"/><text x="205" y="132" font-size="9.5">North</text><path d="M 200.0,164.0 A 26,26 0 0 1 216.0,169.5" fill="none" stroke="#1D1D1F" stroke-width="1"/><text x="210" y="172" font-size="10">38°</text><text x="237" y="160" font-size="10">168 m</text><text x="148" y="187" font-size="10">192 m</text><text x="167" y="129" font-size="10">287.9 m</text><text x="307" y="156" font-size="10">205.8 m</text><text x="186" y="196" font-size="12" font-style="italic">B</text><text x="255.8" y="113.2" font-size="12" font-style="italic">D</text><text x="343.7" y="196.0" font-size="12" font-style="italic">A</text><text x="91.4" y="150.6" font-size="12" font-style="italic">C</text><g id="dg6c" opacity="0"><path d="M 181.5,182.5 A 20,20 0 0 1 212.3,174.2" fill="none" stroke="#C56A00" stroke-width="1.3"/><path d="M 218.5,166.4 A 30,30 0 1 1 172.2,178.8" fill="none" stroke="#AF52DE" stroke-width="1.3"/><text x="152" y="176" font-size="9" fill="#C56A00">106°</text><text x="226" y="216" font-size="9" fill="#AF52DE">顺时针绕到 BC：38−106+360 = 292.0°</text></g><g id="dg6a" opacity="0"><line x1="335.7" y1="190.0" x2="335.7" y2="130" stroke="#30D158" stroke-width="1.1" stroke-dasharray="5 3"/><path d="M 313.7,190.0 A 22,22 0 0 1 318.8,175.9" fill="none" stroke="#30D158" stroke-width="1.3"/><text x="292" y="176" font-size="9" fill="#30D158">∠DAB≈40.0° → 方位 270+40 = 310.0°</text></g></svg>',
+gloss:'bearing 方位角（从正北顺时针量，三位数写法）· cosine rule 余弦定理 cos B = (a²+c²−b²)/2ac · sine rule 正弦定理 · due east 正东 · hectare 公顷 = 10 000 m²',
+parts:[
+ {id:'d6a1',label:'(a)(i) Calculate angle CBD and show that it rounds to 106.0°, correct to 1 decimal place.（结构化两空：先给 cos 值，再给角度）　[4]',
+  t:'blanks',rows:[[{pre:'cos∠CBD =',spec:{t:'num',lo:-0.2765,hi:-0.2745,rmsg:'(192² + 168² − 287.9²) ÷ (2×192×168)，注意 287.9² 在分子里带负号'},w:'w-s'}],[{pre:'∠CBD =',spec:{t:'num',lo:105.95,hi:106.05,rmsg:'cos⁻¹(−0.2755…) ≈ 106.01°，保留 1 d.p. 即 106.0'},w:'w-s',post:'°'}]],
+  hint:'求"夹角"用余弦定理的角形式：对边是 CD = 287.9。show 题必须先写 cos 值再取反余弦'},
+ {id:'d6a2',label:'(a)(ii) The bearing of D from B is 038°. Find the bearing of C from B.　[1]',
+  t:'num',lo:291.9,hi:292.05,ph:'方位角',rmsg:'C 在 BD 的另一侧：38° − 106° = −68° → +360° = 292.0°',
+  hint:'从北顺时针转到 BD 是 38°；C 在 D 的逆时针方向 106°，越过正北要加 360'},
+ {id:'d6a3',label:'(a)(iii) A is due east of B. Calculate the bearing of D from A.　[5]',
+  t:'num',lo:309.95,hi:310.09,ph:'方位角',rmsg:'∠DBA = 90−38 = 52°；正弦定理 sin A = 168 sin52°/205.8 → ∠DAB ≈ 40.0°；方位 = 270 + 40.0 = 310.0',
+  hint:'A 在正东 → ∠DBA = 90° − 38° = 52°。△ABD 里用正弦定理求 ∠DAB，再从 A 的正北顺时针数：西方向是 270°'},
+ {id:'d6b1',label:'(b)(i) Calculate the area of triangle BCD.　[2]',
+  t:'num',lo:15495,hi:15506,unit:'m²',ph:'面积',rmsg:'½ × 192 × 168 × sin106° ≈ 15 502',
+  hint:'两边一夹角：½ab sinC，角就用 (a)(i) 的 106°'},
+ {id:'d6b2',label:'(b)(ii) Tomas buys the triangular part BCD at $35 750 per hectare. Calculate the amount he pays, correct to the nearest $100.　[2]',
+  t:'num',lo:55395,hi:55405,unit:'$',ph:'金额',rmsg:'15 502 m² = 1.5502 公顷 → ×35 750 = 55 419 → 取整到百位 55 400',
+  hint:'1 公顷 = 10 000 m²。最后一步"取整到最近的 $100"是采分点'}
+],
+steps:['(a)(i) 四分的 show 题按链给分：写出 cos∠CBD = (192²+168²−287.9²)/(2×192×168)（M2）→ 算得 −0.2755…（A1，评分带 −0.276 至 −0.275）→ cos⁻¹ 得 106.01…°，四舍五入 <b>106.0°</b>（A1）。show 题最忌只写答案。',
+'(a)(ii) 方位角只从正北顺时针量：BD 在 038°，C 与 D 隔着 106° 且在逆时针一侧 → 38 − 106 = −68 → 加 360 得 <b>292.0°</b>。画个小北针立刻看清，凭空心算最容易给成 144°。',
+'(a)(iii) 五分综合：①A 正东 → ∠DBA = 90 − 38 = 52°；②△ABD 中正弦定理：sin∠DAB = 168 sin52°/205.8 = 0.6431 → ∠DAB = 40.0°；③从 A 看 D 在西偏北 → 方位 = 270 + 40.0 = <b>310.0°</b>。',
+'(b)(i) ½ × 192 × 168 × sin106° = <b>15 500 m²</b>（15 501–15 503 均可）。(ii) 换公顷再乘价：1.5502 × 35 750 = 55 419 → <b>$55 400</b>（取整到百）。'],
+finalTxt:'<b>答案卡</b>　(a)(i) cos = −0.2755 → 106.0°　(ii) 292.0°　(iii) 310.0°　(b)(i) ≈15 500 m²　(ii) $55 400',
+card:{m:'方位角一律从正北顺时针量三位数；求夹角用余弦定理角形式；面积 ½ab sinC。',mo:['反向方位角 ±180°','正弦定理求角要查钝角可能','公顷 ↔ 平方米换算']},
+vg:function(){var t=pick([37,52,63,118,205,247,296,334]);var ans=(t+180)%360;return{stem:'从 P 看 Q 的方位角是 '+('00'+t).slice(-3)+'°。求从 Q 看 P 的方位角。',part:{t:'num',ans:ans,tol:0,ph:'三位数方位角'},sol:'反向方位角 = 原角 ± 180°（结果保持在 0–360）：'+t+(t<180?' + 180 = ':' − 180 = ')+ans+'°'}}},
+
+{n:7,topic:'点阵数列：n² 与三角数',marks:11,anim:'d7',
+stem:'These are the first four diagrams of a sequence made from white dots and black dots.',
+fig:'<svg viewBox="0 0 350 130" width="100%" style="max-width:350px"><circle cx="20" cy="16" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><text x="16" y="122" font-size="8.5" fill="#6E6E73">Diagram 1</text><circle cx="76.5" cy="16" r="4" fill="#1D1D1F"/><circle cx="70" cy="29" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="83" cy="29" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="70" cy="42" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="83" cy="42" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><text x="66" y="122" font-size="8.5" fill="#6E6E73">Diagram 2</text><circle cx="151.0" cy="16" r="4" fill="#1D1D1F"/><circle cx="144.5" cy="29" r="4" fill="#1D1D1F"/><circle cx="157.5" cy="29" r="4" fill="#1D1D1F"/><circle cx="138" cy="42" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="151" cy="42" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="164" cy="42" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="138" cy="55" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="151" cy="55" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="164" cy="55" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="138" cy="68" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="151" cy="68" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="164" cy="68" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><text x="134" y="122" font-size="8.5" fill="#6E6E73">Diagram 3</text><circle cx="245.5" cy="16" r="4" fill="#1D1D1F"/><circle cx="239.0" cy="29" r="4" fill="#1D1D1F"/><circle cx="252.0" cy="29" r="4" fill="#1D1D1F"/><circle cx="232.5" cy="42" r="4" fill="#1D1D1F"/><circle cx="245.5" cy="42" r="4" fill="#1D1D1F"/><circle cx="258.5" cy="42" r="4" fill="#1D1D1F"/><circle cx="226" cy="55" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="239" cy="55" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="252" cy="55" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="265" cy="55" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="226" cy="68" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="239" cy="68" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="252" cy="68" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="265" cy="68" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="226" cy="81" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="239" cy="81" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="252" cy="81" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="265" cy="81" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="226" cy="94" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="239" cy="94" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="252" cy="94" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><circle cx="265" cy="94" r="4" fill="#fff" stroke="#1D1D1F" stroke-width="1.2"/><text x="222" y="122" font-size="8.5" fill="#6E6E73">Diagram 4</text></svg>',
+gloss:'sequence 数列 · nth term 通项 · triangular numbers 三角数 1,3,6,10（= ½n(n+1)）· simplest form 最简形式 · cubic 三次（第三阶差恒定）',
+parts:[
+ {id:'d7a',label:'(a) Complete the table for Diagram 5 and Diagram 6.　[2]',
+  t:'blanks',rows:[[{pre:'白点：D5 =',spec:{t:'num',ans:25,tol:0},w:'w-xs'},{pre:'　D6 =',spec:{t:'num',ans:36,tol:0},w:'w-xs'}],[{pre:'黑点：D5 =',spec:{t:'num',ans:10,tol:0},w:'w-xs'},{pre:'　D6 =',spec:{t:'num',ans:15,tol:0},w:'w-xs'}],[{pre:'总数：D5 =',spec:{t:'num',ans:35,tol:0},w:'w-xs'},{pre:'　D6 =',spec:{t:'num',ans:51,tol:0},w:'w-xs'}]],
+  hint:'白点是平方数；黑点是三角数 0,1,3,6,10,…（每次多加一行）'},
+ {id:'d7b',label:'(b) Write an expression, in terms of n, for the number of white dots in Diagram n.　[1]',
+  t:'expr',vars:['n'],target:'n^2',ph:'如 n^2',maxLen:6,
+  hint:'1, 4, 9, 16 → ？'},
+ {id:'d7c1',label:'(c) The total number of dots in Diagram n is ½n(3n − 1). (i) Find the total number of dots in Diagram 8.　[1]',
+  t:'num',ans:92,tol:0,ph:'总点数',
+  hint:'代 n = 8：½ × 8 × 23'},
+ {id:'d7c2',label:'(c)(ii) Find an expression for the number of black dots in Diagram n. Give your answer in its simplest form.　[2]',
+  t:'expr',vars:['n'],target:'(n^2-n)/2',ph:'如 (n^2-n)/2 或 0.5n^2-0.5n',
+  hint:'黑 = 总 − 白 = ½n(3n−1) − n²，展开合并'},
+ {id:'d7d',label:'(d) T is the total number of dots used to make all of the first n diagrams, and T = an³ + bn². Find a and b. Show your working.　[5]',
+  t:'blanks',rows:[[{pre:'a =',spec:{t:'num',ans:0.5,tol:0},w:'w-xs'},{pre:'　b =',spec:{t:'num',ans:0.5,tol:0},w:'w-xs'}]],
+  hint:'累计前 1 图 T(1)=1、前 2 图 T(2)=1+5=6 → 联立 a+b=1 与 8a+4b=6'}
+],
+steps:['(a) 白点方阵 n×n → 25, 36；黑点是三角塔，每层多 1 → 10, 15；总数 = 白 + 黑 → 35, 51。',
+'(b) 1,4,9,16 是平方数 → 白点 = <b>n²</b>。',
+'(c)(i) ½×8×(24−1) = 4×23 = <b>92</b>。(ii) 黑 = ½n(3n−1) − n² = (3n²−n)/2 − n² = <b>½(n² − n)</b>，即三角数 ½n(n−1)。"最简"意味着必须合并完。',
+'(d) 累计和 T(n)：T(1)=1，T(2)=1+5=6。代入 T=an³+bn²：a+b=1；8a+4b=6。消元：8a+4b−4(a+b)=6−4 → 4a=2 → <b>a=½</b>，回代 <b>b=½</b>。核验 T(3)=½×27+½×9=18=1+5+12 ✓。五分题：两条方程 2 分、解出各 1 分、过程 1 分。'],
+finalTxt:'<b>答案卡</b>　(a) 25/36 · 10/15 · 35/51　(b) n²　(c)(i) 92　(ii) ½(n²−n)　(d) a = ½，b = ½',
+card:{m:'数列先认形：平方数、三角数；累计和 T(n) 用最小的几个 n 联立定系数。',mo:['二次通项：二阶差恒定','由通项反推某项位置','分段图形数列计数']},
+vg:function(){var kk=ri(5,12);var tot=kk*(3*kk-1)/2;return{stem:'某数列第 n 图的总点数为 ½n(3n − 1)。求第 '+kk+' 图的总点数。',part:{t:'num',ans:tot,tol:0,ph:'总点数'},sol:'½ × '+kk+' × (3×'+kk+' − 1) = ½ × '+kk+' × '+(3*kk-1)+' = '+tot}}},
+
+{n:8,topic:'代数七连：因式 · 不等式 · 指数 · 方程 · 展开 · 复利',marks:18,anim:'d8',
+stem:'Answer all parts. Show your working.',
+gloss:'factorise completely 完全因式分解（提尽公因式）· inequality 不等式（除负数要翻号）· expand and simplify 展开并合并 · compound interest 复利 P(1+r/100)ⁿ · to 2 decimal places 保留两位小数',
+parts:[
+ {id:'d8a',label:'(a) Factorise completely.　3a²b − ab²　[2]',
+  t:'expr',vars:['a','b'],target:'a*b*(3*a-b)',ph:'如 ab(3a-b)',needParen:true,parenMin:1,maxLen:9,
+  hint:'两项的公因式是 ab；"completely" 提示公因式必须提到底'},
+ {id:'d8b',label:'(b) Solve the inequality.　3x + 12 &lt; 5x − 3　[2]',
+  t:'ineq',target:'x>7.5',ph:'如 x>7.5',
+  hint:'移项：12 + 3 < 5x − 3x。原式是严格小于，解也保持严格'},
+ {id:'d8c',label:'(c) Simplify.　(3x²y⁴)³　[2]',
+  t:'expr',vars:['x','y'],target:'27*x^6*y^12',ph:'如 27x^6y^12',maxLen:10,
+  hint:'括号整体的立方：系数 3³，指数各乘 3'},
+ {id:'d8d',label:'(d) Solve.　2/x = 6/(2 − x)　[3]',
+  t:'num',ans:0.5,tol:0.000001,ph:'x = ?',
+  hint:'交叉相乘：2(2 − x) = 6x'},
+ {id:'d8e',label:'(e) Expand and simplify.　(x − 2)(x + 5)(2x − 1)　[3]',
+  t:'expr',vars:['x'],target:'2*x^3+5*x^2-23*x+10',noParen:1,maxLen:22,ph:'如 2x^3+5x^2-23x+10',
+  hint:'先乘前两个括号得 x²+3x−10，再整体乘 (2x−1)，最后合并同类项'},
+ {id:'d8f1',label:'(f) Alan invests $200 at r% per year compound interest. After 2 years the investment is worth $206.46. (i) Show that r² + 200r − 323 = 0. 选出无缺环的推导链：　[3]',
+  t:'mcq',opts:[
+   ['200(1 + r/100)² = 206.46 → 展开 (1+r/100)² = 1 + 2r/100 + r²/10000 → 两边 ×10000 再 ÷…：整理得 r² + 200r + 10000 = 10323 → r² + 200r − 323 = 0',1,''],
+   ['200 + 2r = 206.46 → r² + 200r − 323 = 0',0,'这是单利（每年加同样的利息）；复利要平方 (1+r/100)²，而且这一步也推不出目标方程。'],
+   ['200(1 + r/100) = 206.46 → 移项即得',0,'只乘了一年。两年复利是乘两次 (1+r/100)。'],
+   ['206.46 − 200 = 6.46 = r² + 200r + 323',0,'常数项符号错了：整理后应是 −323，而且 6.46 要先 ×10000/200 才进方程。']],
+  hint:'复利两年 = 本金 × (1 + r/100)²，展开完全平方后清分母'},
+ {id:'d8f2',label:'(f)(ii) Solve r² + 200r − 323 = 0 to find the rate of interest. Give your answer correct to 2 decimal places.　[3]',
+  t:'num',ans:1.6,tol:0.002,ph:'r = ?（2 d.p.）',rmsg:'求根公式：r = (−200 + √(40000+1292))/2 = (−200 + 203.203…)/2 = 1.60（负根舍去；保留 2 位小数）',
+  hint:'a=1, b=200, c=−323。利率取正根，最后写成两位小数'}
+],
+steps:['(a) 公因式 ab：3a²b − ab² = <b>ab(3a − b)</b>。只提 a 或只提 b 都拿不满——"completely"。',
+'(b) 3x + 12 < 5x − 3 → 15 < 2x → <b>x > 7.5</b>。原式是 <，解保持严格不等号；写成 x ≥ 7.5 要扣。',
+'(c) 幂的乘方：(3x²y⁴)³ = 3³ x⁶ y¹² = <b>27x⁶y¹²</b>。系数也要立方，别写成 9。',
+'(d) 交叉相乘：2(2−x) = 6x → 4 − 2x = 6x → 4 = 8x → <b>x = ½</b>。回代查分母：x=½ 时两边都有意义 ✓。',
+'(e) 分两步：(x−2)(x+5) = x²+3x−10；再 ×(2x−1)：2x³+6x²−20x −x²−3x+10 = <b>2x³ + 5x² − 23x + 10</b>。三括号展开最稳的路线是"先二后一"。',
+'(f)(i) 复利模型 200(1+r/100)² = 206.46。完全平方展开 → 1 + r/50 + r²/10000 = 1.0323 → ×10000：10000 + 200r + r² = 10323 → <b>r² + 200r − 323 = 0</b>。(ii) 求根公式：判别式 = 40000 + 1292 = 41292，√ = 203.203…，r = (−200+203.203)/2 = 1.6016… → <b>1.60</b>（cao：必须两位小数，1.6 或 1.602 都不算达标写法）。'],
+finalTxt:'<b>答案卡</b>　(a) ab(3a−b)　(b) x > 7.5　(c) 27x⁶y¹²　(d) x = ½　(e) 2x³+5x²−23x+10　(f)(i) 见链　(ii) r = 1.60',
+card:{m:'『completely / simplify / 2 d.p.』都是评分指令，逐字满足才拿满。',mo:['指数律混合化简','分式方程解完验分母非零','复利反问年数（逐年试）']},
+vg:function(){var p=ri(1,4),q=ri(1,5),r=pick([1,3]);var c3=2,c2=2*(q-p)-r,c1=-2*p*q-r*(q-p),c0=p*q*r;function T(c,pw){if(c===0)return'';var s=(c>0?'+':'-')+(Math.abs(c)===1&&pw?'':Math.abs(c));return s+(pw?('x'+(pw>1?'^'+pw:'')):'')}var tg='2*x^3'+(c2?((c2>0?'+':'')+c2+'*x^2'):'')+(c1?((c1>0?'+':'')+c1+'*x'):'')+((c0>0?'+':'')+c0);var disp=('2x³'+T(c2,2).replace('x^2','x²')+T(c1,1)+T(c0,0)).replace(/\+/g,' + ').replace(/-/g,' − ');return{stem:'展开并化简：(x − '+p+')(x + '+q+')(2x − '+r+')',part:{t:'expr',vars:['x'],target:tg,noParen:1,maxLen:26,ph:'ax^3+bx^2+cx+d'},sol:'先乘前两括号 x²+'+(q-p)+'x−'+(p*q)+'，再乘 (2x−'+r+') 合并 → '+disp}}},
+
+{n:9,topic:'韦恩图 · 概率（放回 / 不放回）',marks:12,anim:'d9',
+stem:'There are 32 students in a class. 5 do not study any languages. 15 study German (G) and 18 study Spanish (S).',
+gloss:'Venn diagram 韦恩图 · universal set ξ 全集 · intersection 交集 · conditional 条件概率（分母换成条件组）· with replacement 放回（分母不变）· without replacement 不放回（分母 −1）· at least one 至少一个（用补集）',
+parts:[
+ {id:'d9a1',label:'(a)(i) Complete the Venn diagram.　[2]<div class="fig" style="margin:10px 0 2px"><svg viewBox="0 0 300 150" width="100%" style="max-width:300px"><rect x="12" y="12" width="276" height="126" fill="none" stroke="#1D1D1F" stroke-width="1.3"/><text x="18" y="28" font-size="12">ξ</text><circle cx="115" cy="78" r="46" fill="rgba(0,113,227,.07)" stroke="#0071E3" stroke-width="1.5"/><circle cx="180" cy="78" r="46" fill="rgba(48,209,88,.07)" stroke="#30D158" stroke-width="1.5"/><text x="78" y="40" font-size="12" font-style="italic" fill="#0071E3">G</text><text x="208" y="40" font-size="12" font-style="italic" fill="#30D158">S</text><text x="84" y="82" font-size="10" fill="#6E6E73">仅G</text><text x="139" y="82" font-size="10" fill="#6E6E73">G∩S</text><text x="196" y="82" font-size="10" fill="#6E6E73">仅S</text><text x="238" y="126" font-size="10" fill="#6E6E73">圈外</text></svg></div>',
+  t:'blanks',rows:[[{pre:'仅 G：',spec:{t:'num',ans:9,tol:0},w:'w-xs'},{pre:'　G∩S：',spec:{t:'num',ans:6,tol:0},w:'w-xs'}],[{pre:'仅 S：',spec:{t:'num',ans:12,tol:0},w:'w-xs'},{pre:'　圈外：',spec:{t:'num',ans:5,tol:0},w:'w-xs'}]],
+  hint:'学语言的共 32−5=27 人；交集 = 15+18−27'},
+ {id:'d9a2',label:'(a)(ii) A student is chosen at random. Find the probability that the student studies Spanish but not German.　[1]',
+  t:'frac',fn:3,fd:8,ph:'如 a/b 最简分数',
+  hint:'"仅 S"的人数 ÷ 全班 32'},
+ {id:'d9a3',label:'(a)(iii) A student who studies German is chosen at random. Find the probability that this student also studies Spanish.　[1]',
+  t:'frac',fn:2,fd:5,ph:'a/b 最简',
+  hint:'条件概率：分母换成"学德语的 15 人"'},
+ {id:'d9b',label:'(b) A bag contains 54 red marbles and some blue marbles. 36% of the marbles are red. Find the number of blue marbles.　[2]',
+  t:'num',ans:96,tol:0,ph:'蓝球数',
+  hint:'54 是总数的 36% → 总数 = 54 ÷ 0.36'},
+ {id:'d9c1',label:'(c) A bag contains 15 red beads and 10 yellow beads. Ariana picks a bead, records it and replaces it, then picks again. (i) Find the probability that she picks two red beads.　[2]',
+  t:'frac',fn:9,fd:25,ph:'a/b 最简',
+  hint:'放回：两次都是 15/25 = 3/5'},
+ {id:'d9c2',label:'(c)(ii) Find the probability that she does not pick two red beads.　[1]',
+  t:'frac',fn:16,fd:25,ph:'a/b 最简',
+  hint:'补集：1 − (i)'},
+ {id:'d9d',label:'(d) A box contains 15 red, 8 yellow and 2 green pencils. Two pencils are picked at random without replacement. Find the probability that at least one pencil is red.　[3]',
+  t:'frac',fn:17,fd:20,ph:'a/b 最简',
+  hint:'"至少一红"走补集：1 − P(两支都非红)。非红共 10 支，不放回分母 25→24'}
+],
+steps:['(a)(i) 先算圈内总人数 32 − 5 = 27；交集 = 15 + 18 − 27 = <b>6</b> → 仅 G = 9，仅 S = 12，外 5。四格加起来必须回到 32。',
+'(ii) 仅 S ÷ 全班 = 12/32 = <b>3/8</b>。(iii) 条件概率换分母："在学德语的人里" → 6/15 = <b>2/5</b>。',
+'(b) 54 = 36% × 总数 → 总数 = 150 → 蓝 = 150 − 54 = <b>96</b>。别把 150 当成答案。',
+'(c) 放回意味着两次独立同分布：(i) (15/25)² = (3/5)² = <b>9/25</b>；(ii) 补集 1 − 9/25 = <b>16/25</b>。',
+'(d) 不放回 + "至少一个" = 补集最快：P(两支都非红) = 10/25 × 9/24 = 90/600 = 3/20 → 1 − 3/20 = <b>17/20</b>。直接正着算要加五种情况，容易漏。'],
+finalTxt:'<b>答案卡</b>　(a)(i) 9 / 6 / 12 / 5　(ii) 3/8　(iii) 2/5　(b) 96　(c)(i) 9/25　(ii) 16/25　(d) 17/20',
+card:{m:'韦恩先用圈内总数定交集；条件概率换分母；『至少一个』走补集。',mo:['三集合韦恩图','不放回抽同色两个','由概率反推球数']},
+vg:function(){var r=pick([6,8,9,12]),o=pick([4,5,6,10]);var N=r+o;var num=o*(o-1),den=N*(N-1);var pn=den-num,pd=den;var g=gcd(pn,pd);pn/=g;pd/=g;return{stem:'袋中有 '+r+' 个红球和 '+o+' 个白球，不放回地取两个。求"至少一个红球"的概率（最简分数）。',part:{t:'frac',fn:pn,fd:pd,ph:'a/b'},sol:'补集：P(无红) = '+o+'/'+N+' × '+(o-1)+'/'+(N-1)+' = '+num+'/'+den+' → 1 − 它 = '+pn+'/'+pd}}},
+
+{n:10,topic:'微分 · 切线方程 · tan 图象',marks:14,anim:'d10',
+stem:'The diagram shows a sketch of the curve y = x² + 3x − 4.',
+gloss:'differentiate 求导（xⁿ → nxⁿ⁻¹）· tangent 切线（斜率 = 该点导数值）· sketch 草图（形状与关键点，不要求刻度）· asymptote 渐近线 · period 周期（tan 的周期是 180°）',
+parts:[
+ {id:'d10a1',label:'(a)(i) Find the coordinates of the points A, B and C.　[4]<div class="fig" style="margin:10px 0 2px"><svg viewBox="0 0 320 190" width="100%" style="max-width:320px"><text x="244" y="12" font-size="10" fill="#6E6E73">NOT TO SCALE</text><line x1="14" y1="96" x2="306" y2="96" stroke="#1D1D1F" stroke-width="1.3"/><line x1="210" y1="14" x2="210" y2="182" stroke="#1D1D1F" stroke-width="1.3"/><path d="M 30.0,54.0 L 37.2,63.5 L 44.4,72.5 L 51.6,80.9 L 58.8,88.7 L 66.0,96.0 L 73.2,102.7 L 80.4,108.9 L 87.6,114.5 L 94.8,119.5 L 102.0,124.0 L 109.2,127.9 L 116.4,131.3 L 123.6,134.1 L 130.8,136.3 L 138.0,138.0 L 145.2,139.1 L 152.4,139.7 L 159.6,139.7 L 166.8,139.1 L 174.0,138.0 L 181.2,136.3 L 188.4,134.1 L 195.6,131.3 L 202.8,127.9 L 210.0,124.0 L 217.2,119.5 L 224.4,114.5 L 231.6,108.9 L 238.8,102.7 L 246.0,96.0 L 253.2,88.7 L 260.4,80.9 L 267.6,72.5 L 274.8,63.5 L 282.0,54.0 L 289.2,43.9" fill="none" stroke="#1D1D1F" stroke-width="1.8"/><circle cx="66.0" cy="96.0" r="3" fill="#1D1D1F"/><text x="60" y="88" font-size="11.5" font-style="italic">A</text><circle cx="246.0" cy="96.0" r="3" fill="#1D1D1F"/><text x="252" y="88" font-size="11.5" font-style="italic">B</text><circle cx="210.0" cy="124.0" r="3" fill="#1D1D1F"/><text x="218" y="128" font-size="11.5" font-style="italic">C</text><text x="199" y="90" font-size="11.5" font-style="italic">O</text><text x="292" y="90" font-size="10" font-style="italic">x</text><text x="216" y="22" font-size="10" font-style="italic">y</text></svg></div>',
+  t:'blanks',rows:[[{pre:'A (',spec:{t:'num',ans:-4,tol:0},w:'w-xs'},{pre:'，',spec:{t:'num',ans:0,tol:0},w:'w-xs',post:')'}],[{pre:'B (',spec:{t:'num',ans:1,tol:0},w:'w-xs'},{pre:'，',spec:{t:'num',ans:0,tol:0},w:'w-xs',post:')'}],[{pre:'C (',spec:{t:'num',ans:0,tol:0},w:'w-xs'},{pre:'，',spec:{t:'num',ans:-4,tol:0},w:'w-xs',post:')'}]],
+  hint:'x 轴交点：解 x²+3x−4=0（十字相乘）；y 轴交点：代 x=0'},
+ {id:'d10a2',label:'(a)(ii) Differentiate x² + 3x − 4.　[2]',
+  t:'expr',vars:['x'],target:'2*x+3',ph:'如 2x+3',maxLen:6,
+  hint:'逐项求导：x²→2x，3x→3，常数→0'},
+ {id:'d10a3',label:'(a)(iii) Find the equation of the tangent to the curve at the point (2, 6).　[3]',
+  t:'expr',vars:['x'],target:'7*x-8',stripEq:1,maxLen:10,ph:'如 y=7x-8',
+  hint:'斜率 = 导数在 x=2 的值 = 2(2)+3 = 7；再用点斜式过 (2,6)'},
+ {id:'d10b1',label:'(b)(i) Sketch the graph of y = tan x for 0° ≤ x ≤ 360°. 选出正确草图：　[2]',
+  t:'mcq',opts:[
+   ['<svg viewBox="0 0 132 66" width="128"><line x1="6" y1="33" x2="126" y2="33" stroke="#6E6E73" stroke-width="1"/><line x1="36" y1="31" x2="36" y2="35" stroke="#6E6E73"/><line x1="66" y1="31" x2="66" y2="35" stroke="#6E6E73"/><line x1="96" y1="31" x2="96" y2="35" stroke="#6E6E73"/><line x1="126" y1="31" x2="126" y2="35" stroke="#6E6E73"/><text x="30" y="64" font-size="6.5" fill="#6E6E73">90</text><text x="88" y="64" font-size="6.5" fill="#6E6E73">270</text><path d="M 6.0,33.0 L 7.3,32.3 L 8.7,31.5 L 10.0,30.8 L 11.3,30.0 L 12.7,29.2 L 14.0,28.3 L 15.3,27.4 L 16.7,26.4 L 18.0,25.4 L 19.3,24.2 L 20.7,22.9 L 22.0,21.3 L 23.3,19.6 L 24.7,17.4 L 26.0,14.8 L 27.3,11.5 L 28.7,7.0 L 30.0,5.7 L 31.3,5.7 L 32.7,5.7 L 34.0,5.7 L 35.3,5.7" fill="none" stroke="#1D1D1F" stroke-width="1.4"/><path d="M 36.7,60.3 L 38.0,60.3 L 39.3,60.3 L 40.7,60.3 L 42.0,60.3 L 43.3,59.0 L 44.7,54.5 L 46.0,51.2 L 47.3,48.6 L 48.7,46.4 L 50.0,44.7 L 51.3,43.1 L 52.7,41.8 L 54.0,40.6 L 55.3,39.6 L 56.7,38.6 L 58.0,37.7 L 59.3,36.8 L 60.7,36.0 L 62.0,35.2 L 63.3,34.5 L 64.7,33.7 L 66.0,33.0 L 67.3,32.3 L 68.7,31.5 L 70.0,30.8 L 71.3,30.0 L 72.7,29.2 L 74.0,28.3 L 75.3,27.4 L 76.7,26.4 L 78.0,25.4 L 79.3,24.2 L 80.7,22.9 L 82.0,21.3 L 83.3,19.6 L 84.7,17.4 L 86.0,14.8 L 87.3,11.5 L 88.7,7.0 L 90.0,5.7 L 91.3,5.7 L 92.7,5.7 L 94.0,5.7 L 95.3,5.7" fill="none" stroke="#1D1D1F" stroke-width="1.4"/><path d="M 96.7,60.3 L 98.0,60.3 L 99.3,60.3 L 100.7,60.3 L 102.0,60.3 L 103.3,59.0 L 104.7,54.5 L 106.0,51.2 L 107.3,48.6 L 108.7,46.4 L 110.0,44.7 L 111.3,43.1 L 112.7,41.8 L 114.0,40.6 L 115.3,39.6 L 116.7,38.6 L 118.0,37.7 L 119.3,36.8 L 120.7,36.0 L 122.0,35.2 L 123.3,34.5 L 124.7,33.7 L 126.0,33.0" fill="none" stroke="#1D1D1F" stroke-width="1.4"/><line x1="36.0" y1="4" x2="36.0" y2="58" stroke="#FF375F" stroke-width="0.9" stroke-dasharray="3 2"/><line x1="96.0" y1="4" x2="96.0" y2="58" stroke="#FF375F" stroke-width="0.9" stroke-dasharray="3 2"/></svg>',1,''],
+   ['<svg viewBox="0 0 132 66" width="128"><line x1="6" y1="33" x2="126" y2="33" stroke="#6E6E73" stroke-width="1"/><line x1="36" y1="31" x2="36" y2="35" stroke="#6E6E73"/><line x1="66" y1="31" x2="66" y2="35" stroke="#6E6E73"/><line x1="96" y1="31" x2="96" y2="35" stroke="#6E6E73"/><line x1="126" y1="31" x2="126" y2="35" stroke="#6E6E73"/><text x="30" y="64" font-size="6.5" fill="#6E6E73">90</text><text x="88" y="64" font-size="6.5" fill="#6E6E73">270</text><path d="M 6.0,33.0 L 8.0,30.6 L 10.0,28.2 L 12.0,25.9 L 14.0,23.6 L 16.0,21.5 L 18.0,19.4 L 20.0,17.5 L 22.0,15.8 L 24.0,14.3 L 26.0,13.0 L 28.0,11.9 L 30.0,11.0 L 32.0,10.4 L 34.0,10.0 L 36.0,9.9 L 38.0,10.0 L 40.0,10.4 L 42.0,11.0 L 44.0,11.9 L 46.0,13.0 L 48.0,14.3 L 50.0,15.8 L 52.0,17.5 L 54.0,19.4 L 56.0,21.5 L 58.0,23.6 L 60.0,25.9 L 62.0,28.2 L 64.0,30.6 L 66.0,33.0 L 68.0,35.4 L 70.0,37.8 L 72.0,40.1 L 74.0,42.4 L 76.0,44.6 L 78.0,46.6 L 80.0,48.5 L 82.0,50.2 L 84.0,51.7 L 86.0,53.0 L 88.0,54.1 L 90.0,55.0 L 92.0,55.6 L 94.0,56.0 L 96.0,56.1 L 98.0,56.0 L 100.0,55.6 L 102.0,55.0 L 104.0,54.1 L 106.0,53.0 L 108.0,51.7 L 110.0,50.2 L 112.0,48.5 L 114.0,46.6 L 116.0,44.6 L 118.0,42.4 L 120.0,40.1 L 122.0,37.8 L 124.0,35.4 L 126.0,33.0" fill="none" stroke="#1D1D1F" stroke-width="1.4"/></svg>',0,'这是 sin 曲线——光滑波浪、无渐近线。tan 在 90° 与 270° 处必须"上天入地"。'],
+   ['<svg viewBox="0 0 132 66" width="128"><line x1="6" y1="33" x2="126" y2="33" stroke="#6E6E73" stroke-width="1"/><line x1="36" y1="31" x2="36" y2="35" stroke="#6E6E73"/><line x1="66" y1="31" x2="66" y2="35" stroke="#6E6E73"/><line x1="96" y1="31" x2="96" y2="35" stroke="#6E6E73"/><line x1="126" y1="31" x2="126" y2="35" stroke="#6E6E73"/><text x="30" y="64" font-size="6.5" fill="#6E6E73">90</text><text x="88" y="64" font-size="6.5" fill="#6E6E73">270</text><path d="M 8.0,5.7 L 9.3,5.7 L 10.7,5.7 L 12.0,5.7 L 13.3,7.0 L 14.7,11.5 L 16.0,14.8 L 17.3,17.4 L 18.7,19.6 L 20.0,21.3 L 21.3,22.9 L 22.7,24.2 L 24.0,25.4 L 25.3,26.4 L 26.7,27.4 L 28.0,28.3 L 29.3,29.2 L 30.7,30.0 L 32.0,30.8 L 33.3,31.5 L 34.7,32.3 L 36.0,33.0 L 37.3,33.7 L 38.7,34.5 L 40.0,35.2 L 41.3,36.0 L 42.7,36.8 L 44.0,37.7 L 45.3,38.6 L 46.7,39.6 L 48.0,40.6 L 49.3,41.8 L 50.7,43.1 L 52.0,44.7 L 53.3,46.4 L 54.7,48.6 L 56.0,51.2 L 57.3,54.5 L 58.7,59.0 L 60.0,60.3 L 61.3,60.3 L 62.7,60.3 L 64.0,60.3" fill="none" stroke="#1D1D1F" stroke-width="1.4"/><path d="M 68.0,5.7 L 69.3,5.7 L 70.7,5.7 L 72.0,5.7 L 73.3,7.0 L 74.7,11.5 L 76.0,14.8 L 77.3,17.4 L 78.7,19.6 L 80.0,21.3 L 81.3,22.9 L 82.7,24.2 L 84.0,25.4 L 85.3,26.4 L 86.7,27.4 L 88.0,28.3 L 89.3,29.2 L 90.7,30.0 L 92.0,30.8 L 93.3,31.5 L 94.7,32.3 L 96.0,33.0 L 97.3,33.7 L 98.7,34.5 L 100.0,35.2 L 101.3,36.0 L 102.7,36.8 L 104.0,37.7 L 105.3,38.6 L 106.7,39.6 L 108.0,40.6 L 109.3,41.8 L 110.7,43.1 L 112.0,44.7 L 113.3,46.4 L 114.7,48.6 L 116.0,51.2 L 117.3,54.5 L 118.7,59.0 L 120.0,60.3 L 121.3,60.3 L 122.7,60.3 L 124.0,60.3" fill="none" stroke="#1D1D1F" stroke-width="1.4"/><line x1="6.0" y1="4" x2="6.0" y2="58" stroke="#FF375F" stroke-width="0.9" stroke-dasharray="3 2"/><line x1="66.0" y1="4" x2="66.0" y2="58" stroke="#FF375F" stroke-width="0.9" stroke-dasharray="3 2"/><line x1="126.0" y1="4" x2="126.0" y2="58" stroke="#FF375F" stroke-width="0.9" stroke-dasharray="3 2"/></svg>',0,'渐近线位置错了：这是 0°/180°/360° 处竖直、且往下走的形状（更像 cot）。tan 的渐近线在 90° 与 270°。'],
+   ['<svg viewBox="0 0 132 66" width="128"><line x1="6" y1="33" x2="126" y2="33" stroke="#6E6E73" stroke-width="1"/><line x1="36" y1="31" x2="36" y2="35" stroke="#6E6E73"/><line x1="66" y1="31" x2="66" y2="35" stroke="#6E6E73"/><line x1="96" y1="31" x2="96" y2="35" stroke="#6E6E73"/><line x1="126" y1="31" x2="126" y2="35" stroke="#6E6E73"/><text x="30" y="64" font-size="6.5" fill="#6E6E73">90</text><text x="88" y="64" font-size="6.5" fill="#6E6E73">270</text><path d="M 6.0,33.0 L 7.3,33.7 L 8.7,34.5 L 10.0,35.2 L 11.3,36.0 L 12.7,36.8 L 14.0,37.7 L 15.3,38.6 L 16.7,39.6 L 18.0,40.6 L 19.3,41.8 L 20.7,43.1 L 22.0,44.7 L 23.3,46.4 L 24.7,48.6 L 26.0,51.2 L 27.3,54.5 L 28.7,59.0 L 30.0,60.3 L 31.3,60.3 L 32.7,60.3 L 34.0,60.3 L 35.3,60.3" fill="none" stroke="#1D1D1F" stroke-width="1.4"/><path d="M 36.7,5.7 L 38.0,5.7 L 39.3,5.7 L 40.7,5.7 L 42.0,5.7 L 43.3,7.0 L 44.7,11.5 L 46.0,14.8 L 47.3,17.4 L 48.7,19.6 L 50.0,21.3 L 51.3,22.9 L 52.7,24.2 L 54.0,25.4 L 55.3,26.4 L 56.7,27.4 L 58.0,28.3 L 59.3,29.2 L 60.7,30.0 L 62.0,30.8 L 63.3,31.5 L 64.7,32.3 L 66.0,33.0 L 67.3,33.7 L 68.7,34.5 L 70.0,35.2 L 71.3,36.0 L 72.7,36.8 L 74.0,37.7 L 75.3,38.6 L 76.7,39.6 L 78.0,40.6 L 79.3,41.8 L 80.7,43.1 L 82.0,44.7 L 83.3,46.4 L 84.7,48.6 L 86.0,51.2 L 87.3,54.5 L 88.7,59.0 L 90.0,60.3 L 91.3,60.3 L 92.7,60.3 L 94.0,60.3 L 95.3,60.3" fill="none" stroke="#1D1D1F" stroke-width="1.4"/><path d="M 96.7,5.7 L 98.0,5.7 L 99.3,5.7 L 100.7,5.7 L 102.0,5.7 L 103.3,7.0 L 104.7,11.5 L 106.0,14.8 L 107.3,17.4 L 108.7,19.6 L 110.0,21.3 L 111.3,22.9 L 112.7,24.2 L 114.0,25.4 L 115.3,26.4 L 116.7,27.4 L 118.0,28.3 L 119.3,29.2 L 120.7,30.0 L 122.0,30.8 L 123.3,31.5 L 124.7,32.3 L 126.0,33.0" fill="none" stroke="#1D1D1F" stroke-width="1.4"/><line x1="36.0" y1="4" x2="36.0" y2="58" stroke="#FF375F" stroke-width="0.9" stroke-dasharray="3 2"/><line x1="96.0" y1="4" x2="96.0" y2="58" stroke="#FF375F" stroke-width="0.9" stroke-dasharray="3 2"/></svg>',0,'渐近线对了但方向反了：tan 每一段都是从左往右<b>上升</b>。']],
+  hint:'三看：过 (0,0)(180,0)(360,0)；渐近线 x=90°, 270°；每段左低右高'},
+ {id:'d10b2',label:'(b)(ii) Solve the equation 5 tan x = −7 for 0° ≤ x ≤ 360°.　[3]',
+  t:'blanks',rows:[[{pre:'x =',spec:{t:'num',lo:125.45,hi:125.6,rmsg:'参考角 tan⁻¹(1.4)=54.46°；tan 为负在第二象限：180 − 54.46'},w:'w-s',post:'°'},{pre:'　或 x =',spec:{t:'num',lo:305.45,hi:305.6,rmsg:'第四象限：360 − 54.46'},w:'w-s',post:'°'}]],
+  hint:'tan x = −1.4；tan 为负在第二、四象限，两解相差 180°'}
+],
+steps:['(a)(i) x 轴交点解 x²+3x−4 = 0 → (x+4)(x−1)=0 → x = −4, 1；y 轴交点 x=0 → y = −4。对照草图：<b>A(−4, 0)、B(1, 0)、C(0, −4)</b>。位置要与图上的字母对号。',
+'(ii) 逐项：d/dx(x²)=2x，d/dx(3x)=3，常数消失 → <b>2x + 3</b>。',
+'(iii) 切线斜率 = 导数值：m = 2(2)+3 = 7；过 (2,6)：y − 6 = 7(x − 2) → <b>y = 7x − 8</b>。核验：x=2 → y=6 ✓。',
+'(b)(i) tan 草图三要素：过 0/180/360 的零点、90 与 270 的竖直渐近线、每段上升。评分就按"四段里对几段 + 关键性质"来。',
+'(ii) 5 tan x = −7 → tan x = −1.4。参考角 tan⁻¹1.4 = 54.46°；负 tan 落在第二、四象限：x = 180 − 54.46 = <b>125.5°</b>，x = 360 − 54.46 = <b>305.5°</b>。tan 的两解永远相差 180°，可作自检。'],
+finalTxt:'<b>答案卡</b>　(a)(i) A(−4,0) B(1,0) C(0,−4)　(ii) 2x+3　(iii) y = 7x − 8　(b)(i) 渐近线 90°/270°、过零 0/180/360、段段上升　(ii) 125.5° 与 305.5°',
+card:{m:'导数就是切线斜率；tan 周期 180°、渐近线在 90° 与 270°；负值解落二、四象限。',mo:['驻点：令导数为零','法线：斜率取负倒数','sin/cos 方程按象限找双解']},
+vg:function(){var k=pick([1,3,5]),m=pick([2,4]),t=ri(1,3);var mm=2*t+k;var cc=(t*t+k*t-m)-mm*t;var tg=mm+'*x'+(cc>=0?'+'+cc:cc);var disp='y = '+mm+'x '+(cc>=0?'+ '+cc:'− '+Math.abs(cc));return{stem:'求曲线 y = x² + '+k+'x − '+m+' 在 x = '+t+' 处切线的方程（形如 y = mx + c）。',part:{t:'expr',vars:['x'],target:tg,stripEq:1,maxLen:12,ph:'如 y='+mm+'x'+(cc>=0?'+':'')+cc},sol:'导数 2x+'+k+' 在 x='+t+' 取 '+mm+'；切点 ('+t+', '+(t*t+k*t-m)+') → '+disp}}}
+]);
+
 /* ===== 多卷装配与启动 ===== */
 var PAPERS=[
  {key:'a',name:'卷一',code:'0580/21/O/N/19',items:31,qs:QS},
  {key:'b',name:'卷二',code:'0580/21/O/N/20',items:32,qs:QS2},
- {key:'c',name:'卷三',code:'0580/41/O/N/19',items:51,qs:QS3}
+ {key:'c',name:'卷三',code:'0580/41/O/N/19',items:51,qs:QS3},
+ {key:'d',name:'卷四',code:'0580/41/O/N/20',items:53,qs:QS4}
 ];
 QS.forEach(function(q){q.key=String(q.n)});
 QS2.forEach(function(q){q.key='b'+q.n});
 QS3.forEach(function(q){q.key='c'+q.n});
+QS4.forEach(function(q){q.key='d'+q.n});
 var CUR=PAPERS[0];
 function showPaper(i){
   i=+i;if(!(i>=0&&i<PAPERS.length))i=0;
@@ -1653,11 +2308,11 @@ function showPaper(i){
 $('#tab0').onclick=function(){showPaper(0)};
 $('#tab1').onclick=function(){showPaper(1)};
 $('#tab2').onclick=function(){showPaper(2)};
+$('#tab3').onclick=function(){showPaper(3)};
 showPaper(ST.meta.tab);
 save();
-window.__M={ST:function(){return ST},checkSpec:checkSpec,QS:QS,QS2:QS2,QS3:QS3,PAPERS:PAPERS,showPaper:showPaper,SKEY:SKEY,dash:dash,IT:IT,canonIneq:canonIneq,ineqEq:ineqEq,numEq:numEq,exprEq:exprEq,fracEq:fracEq};
+window.__M={ST:function(){return ST},checkSpec:checkSpec,QS:QS,QS2:QS2,QS3:QS3,QS4:QS4,PAPERS:PAPERS,showPaper:showPaper,SKEY:SKEY,dash:dash,IT:IT,canonIneq:canonIneq,ineqEq:ineqEq,numEq:numEq,exprEq:exprEq,fracEq:fracEq};
 </script>
-
 <script>
 'use strict';
 /* ===== 云同步 v2 · 漫游版：云为主档案，本机为缓存 ===== */
@@ -1764,5 +2419,6 @@ window.__SYNC={schedule:schedule,push:push};
 (function(){var e=document.getElementById('syncPill');if(e)e.onclick=function(){push(function(ok,msg){toast(ok?'已手动同步':'同步失败：'+msg)})}})();
 pull(function(){if(tk()){paint('ok',null);setTimeout(function(){push()},2500)}});
 })();
-</script>\n</body>
+</script>
+</body>
 </html>

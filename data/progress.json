@@ -1,18 +1,19 @@
 {
  "v": 2,
- "ts": "2026-07-06T13:06:08.131Z",
- "from": "math",
+ "ts": "2026-07-07T08:06:43.754Z",
+ "from": "study",
  "keys": {
   "simon_summer_v1": {
    "meta": {
     "created": "2026-07-05",
     "view": "listen",
-    "opened": 6,
+    "opened": 8,
     "rate": "1"
    },
    "activity": {
     "2026-07-05": true,
-    "2026-07-06": true
+    "2026-07-06": true,
+    "2026-07-07": true
    },
    "answers": {
     "ecu_u0l0_q0": {
@@ -113,7 +114,7 @@
     },
     "ls_s5": {
      "best": 80,
-     "n": 1,
+     "n": 2,
      "last": 80
     }
    },
@@ -1029,6 +1030,6 @@
  "summerSummary": {
   "covered": 24,
   "total": 202,
-  "last": "2026-07-06"
+  "last": "2026-07-07"
  }
 }

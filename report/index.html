@@ -111,6 +111,10 @@ function render(data){
   }
   if(sm)bx.appendChild(board('暑期自学系统',[['练习点覆盖',sm.covered,sm.total]].concat(sm.last?[['最近学习',sm.last,'']]:[])));
   else bx.appendChild(el('div','card','<h2>暑期自学系统</h2><div class="empty">尚未开始</div>'));
+  /* 中文写作 */
+  var ch=data.chineseSummary;
+  if(!ch&&data.keys&&data.keys.simon_chinese_v1&&data.keys.simon_chinese_v1.meta){var cm2=data.keys.simon_chinese_v1.meta;ch={pct:cm2.pct||0,done:cm2.doneLevels||0,last:cm2.lastLevel||''}}
+  if(ch)bx.appendChild(board('中文写作 · 范式训练场',[['进度',(ch.pct||0)+'%',''],['已通关',ch.done||0,''],['最近关卡',(ch.last||'—'),'']]));
   /* 数学专项：原始档案重建（权威），摘要兜底 */
   var rec=data.keys?reconstructMath(data.keys.simon_school_math_v1):null;
   var sums={};(data.mathSummary||[]).forEach(function(s){sums[s.key]=s});

@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中文写作 · 范式训练场 — Simon 学习中心</title>
+<style>
+:root{
+  --bg:#F4F5F2; --card:#FFFFFF; --ink:#1C1D1F; --sub:#6E6E73;
+  --hair:#DADCD6; --soft:#FAFAF8; --track:#E7E8E3;
+  --blue:#0071E3; --ok:#1D8A43; --okbg:#E4F9EA; --bad:#D93025; --badbg:#FDEBEA;
+  --amber:#C56A00; --ambbg:#FFF4E3;
+  --qi:#5B7A6A; --cheng:#0071E3; --zhuan:#2C5F7C; --he:#B3402A;
+  --qibg:#EDF2EF; --chengbg:#E8F2FF; --zhuanbg:#E9F0F4; --hebg:#F9ECE8;
+  --serif:"Noto Serif SC","Songti SC","STSong","SimSun",serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:820px;margin:0 auto;padding:0 20px}
+button{font:inherit}
+.top{border-bottom:1px solid var(--hair);background:rgba(244,245,242,.88);backdrop-filter:saturate(180%) blur(20px);position:sticky;top:0;z-index:40}
+.top-in{display:flex;align-items:center;justify-content:space-between;padding:11px 0;gap:10px}
+.back{font-size:15px;color:var(--blue);text-decoration:none;white-space:nowrap}
+.back::before{content:"‹ "}
+.brand{font-size:12.5px;color:var(--sub);text-align:right}
+.topbtns{display:flex;gap:8px;align-items:center}
+.btn{font-size:14px;font-weight:500;border:0;border-radius:99px;padding:8px 18px;cursor:pointer;transition:opacity .15s}
+.btn:hover{opacity:.85}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-ghost{background:var(--track);color:var(--ink)}
+.btn-zhu{background:var(--he);color:#fff}
+.btn-mini{font-size:13px;padding:6px 14px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.hero{padding:38px 0 10px}
+.eyebrow{font-size:12px;font-weight:600;color:var(--sub);letter-spacing:.14em;margin-bottom:8px}
+.hero h1{font-family:var(--serif);font-size:clamp(28px,5.6vw,40px);font-weight:700;letter-spacing:.02em}
+.hero .sub{margin-top:8px;font-size:15.5px;color:var(--sub);max-width:60ch}
+.dash{background:var(--card);border-radius:20px;padding:20px 22px;margin:20px 0 14px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 28px rgba(0,0,0,.05);display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.ringbox{position:relative;width:92px;height:92px;flex:none}
+.ringbox svg{transform:rotate(-90deg)}
+.ringlab{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ringlab b{font-size:20px;font-weight:700;letter-spacing:-.02em}
+.ringlab span{font-size:10.5px;color:var(--sub)}
+.dnums{display:flex;gap:22px;flex-wrap:wrap;flex:1;min-width:220px}
+.dn b{font-size:20px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.dn span{display:block;font-size:12px;color:var(--sub);margin-top:1px}
+.dbtns{display:flex;gap:8px;flex-wrap:wrap}
+.note{background:var(--ambbg);border-radius:16px;padding:13px 18px;margin:0 0 14px;font-size:13.5px;line-height:1.8}
+.note b{color:var(--amber)}
+.rvbar{background:var(--ambbg);border-radius:16px;padding:13px 18px;margin:0 0 14px;font-size:13.5px;display:none}
+.rvbar b{color:var(--amber)}
+.rv-chip{display:inline-block;background:#fff;border:1px solid #EAD9BF;border-radius:99px;padding:3px 12px;margin:5px 6px 0 0;font-size:13px;cursor:pointer}
+.stage{margin:26px 0 6px;display:flex;align-items:center;gap:12px}
+.seal{font-family:var(--serif);font-size:20px;font-weight:700;color:#fff;width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:inset 0 0 0 2px rgba(255,255,255,.35)}
+.stage h2{font-family:var(--serif);font-size:19px;font-weight:700}
+.stage .ssub{font-size:12.5px;color:var(--sub)}
+.map{position:relative;margin:10px 0 4px;padding-left:19px}
+.map::before{content:"";position:absolute;left:38px;top:8px;bottom:8px;width:2px;background:var(--hair);border-radius:2px}
+.lvrow{position:relative;display:flex;align-items:center;gap:14px;padding:7px 0;cursor:pointer;border-radius:14px}
+.lvrow:hover .lvcard{border-color:#C9CCC4}
+.lvdot{width:40px;height:40px;border-radius:50%;background:var(--card);border:2px solid var(--hair);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex:none;z-index:1;color:var(--sub);font-variant-numeric:tabular-nums}
+.lvrow.done .lvdot{border-color:transparent;color:#fff}
+.lvrow.cur .lvdot{border-color:var(--ink);color:var(--ink);box-shadow:0 0 0 4px rgba(28,29,31,.08)}
+.lvrow.lock{cursor:not-allowed}
+.lvrow.lock .lvdot{background:var(--track);color:#B4B6B0}
+.lvcard{flex:1;background:var(--card);border:1px solid transparent;border-radius:16px;padding:10px 16px;box-shadow:0 1px 2px rgba(0,0,0,.03);display:flex;align-items:center;gap:12px;min-width:0}
+.lvrow.lock .lvcard{background:transparent;box-shadow:none;border:1px dashed var(--hair)}
+.lvt{font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lvs{font-size:12.5px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lvmeta{margin-left:auto;flex:none;display:flex;gap:6px;align-items:center}
+.tagw{font-size:11px;font-weight:600;border-radius:99px;padding:2px 9px;background:var(--hebg);color:var(--he)}
+.lvpct{font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums}
+.lv-head{padding:32px 0 6px}
+.crumb{font-size:13.5px;color:var(--blue);cursor:pointer;display:inline-block;margin-bottom:10px}
+.crumb::before{content:"‹ "}
+.lv-eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;margin-bottom:6px}
+.lv-head h1{font-family:var(--serif);font-size:clamp(24px,4.6vw,32px);font-weight:700}
+.lv-goal{margin-top:8px;font-size:14.5px;color:var(--sub)}
+.blk{background:var(--card);border-radius:20px;padding:24px 26px;margin:16px 0;box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 28px rgba(0,0,0,.05)}
+.blk h3{font-size:16.5px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.kicker{font-size:11px;font-weight:700;letter-spacing:.1em;border-radius:99px;padding:2.5px 10px;flex:none}
+.k-learn{background:var(--chengbg);color:var(--cheng)}
+.k-play{background:var(--qibg);color:var(--qi)}
+.k-quiz{background:var(--zhuanbg);color:var(--zhuan)}
+.k-write{background:var(--hebg);color:var(--he)}
+.blk p{font-size:15px;margin:9px 0}
+.blk .tip{font-size:13px;color:var(--sub);background:var(--soft);border-radius:12px;padding:9px 14px;margin:10px 0}
+.spk{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--blue);background:var(--chengbg);border:0;border-radius:99px;padding:4px 12px;cursor:pointer;vertical-align:middle;margin:0 2px}
+.spk:hover{opacity:.8}
+body.novoice .spk{display:none}
+.pairrow{display:flex;gap:10px;align-items:stretch;margin:8px 0;flex-wrap:wrap}
+.pr{flex:1;min-width:200px;border-radius:12px;padding:9px 14px;font-size:14.5px}
+.pr b{display:block;font-size:11px;letter-spacing:.08em;margin-bottom:3px}
+.pr-oral{background:var(--badbg)}
+.pr-oral b{color:var(--bad)}
+.pr-formal{background:var(--okbg)}
+.pr-formal b{color:var(--ok)}
+.q{border:1px solid var(--hair);border-radius:16px;padding:16px 18px;margin:13px 0;background:var(--soft)}
+.q-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:9px}
+.q-num{font-size:13px;font-weight:700;background:var(--ink);color:#fff;border-radius:8px;padding:2px 9px}
+.st{font-size:11.5px;font-weight:600;border-radius:99px;padding:2.5px 10px;margin-left:auto}
+.st0{background:var(--track);color:var(--sub)}
+.st1{background:var(--ambbg);color:var(--amber)}
+.st2{background:var(--okbg);color:var(--ok)}
+.stem{font-size:15.5px;line-height:1.75}
+.stem .blank{display:inline-block;min-width:64px;border-bottom:2px solid var(--ink);text-align:center;font-weight:700;color:var(--he)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+@media(max-width:620px){.opts{grid-template-columns:1fr}}
+.opt{text-align:left;font-size:14.5px;border:1.5px solid var(--hair);background:#fff;border-radius:13px;padding:10px 14px;cursor:pointer;transition:border-color .15s,background .15s}
+.opt:hover{border-color:#B9BCB4}
+.opt.sel-ok{border-color:var(--ok);background:var(--okbg)}
+.opt.sel-bad{border-color:var(--bad);background:var(--badbg)}
+.opt.dim{opacity:.5;pointer-events:none}
+.verdict{font-size:14px;font-weight:600;margin-top:10px;display:none}
+.verdict.v-ok{color:var(--ok);display:block}
+.verdict.v-bad{color:var(--bad);display:block}
+.exp{display:none;font-size:13.5px;line-height:1.8;background:#fff;border:1px solid var(--hair);border-radius:12px;padding:11px 14px;margin-top:10px}
+.exp.show{display:block}
+.exp b{color:var(--he)}
+.qbtns{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.mastery{font-size:12.5px;color:var(--sub)}
+.slotbox{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.slot{border:1.6px dashed var(--hair);border-radius:12px;min-height:46px;padding:8px 12px;font-size:14.5px;display:flex;align-items:center;gap:9px;background:#fff;cursor:pointer}
+.slot .sn{font-size:12px;font-weight:700;color:var(--sub);flex:none;width:20px}
+.slot.filled{border-style:solid;cursor:pointer}
+.slot.s-ok{border-color:var(--ok);background:var(--okbg)}
+.slot.s-bad{border-color:var(--bad);background:var(--badbg)}
+.pool{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}
+.chipbtn{border:1.5px solid var(--hair);background:#fff;border-radius:12px;padding:8px 13px;font-size:14px;cursor:pointer;text-align:left;transition:transform .12s}
+.chipbtn:hover{border-color:#B9BCB4}
+.chipbtn.used{opacity:.28;pointer-events:none}
+.rrow{border:1px solid var(--hair);border-radius:13px;background:#fff;padding:10px 14px;margin:9px 0}
+.rrow .rtxt{font-size:14.5px;line-height:1.75}
+.rpick{display:flex;gap:7px;margin-top:8px;flex-wrap:wrap}
+.rpill{font-size:12.5px;font-weight:600;border:1.5px solid var(--hair);background:var(--soft);border-radius:99px;padding:4px 13px;cursor:pointer}
+.rpill.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.rrow.r-ok{border-color:var(--ok);background:var(--okbg)}
+.rrow.r-bad{border-color:var(--bad);background:var(--badbg)}
+.radarbox{border:1px solid var(--hair);border-radius:14px;background:#fff;padding:16px 18px;font-size:15.5px;line-height:2.15;margin:12px 0}
+.tok{cursor:pointer;border-radius:6px;padding:1px 2px;transition:background .12s}
+.tok:hover{background:var(--track)}
+.tok.sel{background:#FFE9A8;box-shadow:inset 0 0 0 1.5px #E3B341}
+.tok.hit{background:var(--okbg);box-shadow:inset 0 0 0 1.5px var(--ok)}
+.tok.miss{background:var(--badbg);box-shadow:inset 0 0 0 1.5px var(--bad)}
+.tok.fa{background:var(--ambbg);box-shadow:inset 0 0 0 1.5px var(--amber)}
+.abgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+@media(max-width:640px){.abgrid{grid-template-columns:1fr}}
+.abcard{border:1.6px solid var(--hair);border-radius:14px;background:#fff;padding:14px 16px;font-size:14.5px;line-height:1.85;cursor:pointer;transition:border-color .15s}
+.abcard:hover{border-color:#B9BCB4}
+.abcard .ablab{font-size:12px;font-weight:800;color:var(--sub);letter-spacing:.1em;margin-bottom:6px}
+.abcard.sel-ok{border-color:var(--ok);background:var(--okbg)}
+.abcard.sel-bad{border-color:var(--bad);background:var(--badbg)}
+.flipgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:11px;margin:12px 0}
+.fc{perspective:900px;height:168px;cursor:pointer}
+.fci{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.fc.flip .fci{transform:rotateY(180deg)}
+.fcf,.fcb{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:12px 13px;display:flex;flex-direction:column}
+.fcf{background:#fff;border:1px solid var(--hair);align-items:center;justify-content:center}
+.fcf .fname{font-family:var(--serif);font-size:21px;font-weight:700}
+.fcf .fhint{font-size:11px;color:var(--sub);margin-top:6px}
+.fcb{background:var(--ink);color:#fff;transform:rotateY(180deg);font-size:12px;line-height:1.65;overflow:auto}
+.fcb b{color:#F5C24B}
+@media(prefers-reduced-motion:reduce){.fci{transition:none}}
+.xwrap{border:1px solid var(--hair);border-radius:16px;background:#fff;padding:20px 22px;margin:12px 0}
+.xbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.xtitle{font-family:var(--serif);font-size:17px;font-weight:700}
+.xp{font-size:15px;line-height:2.0;margin:12px 0;position:relative;border-left:3px solid transparent;padding-left:12px;transition:border-color .3s}
+.xroletag{display:none;font-size:11px;font-weight:700;letter-spacing:.08em;border-radius:99px;padding:2px 10px;margin-bottom:5px}
+.xon .xroletag{display:inline-block}
+.xon .xp.role-intro{border-color:var(--qi)}
+.xon .xp.role-body{border-color:var(--cheng)}
+.xon .xp.role-turn{border-color:var(--zhuan)}
+.xon .xp.role-end{border-color:var(--he)}
+.xnote{display:none;font-size:12.5px;color:var(--sub);background:var(--soft);border-radius:10px;padding:7px 12px;margin:6px 0 2px}
+.xon .xnote{display:block}
+.xu{border-bottom:2px dotted transparent}
+.xon .xu{border-bottom-color:var(--he);cursor:help}
+.quote{font-family:var(--serif);background:var(--soft);border-left:3px solid var(--ink);border-radius:0 12px 12px 0;padding:13px 17px;font-size:15px;line-height:2.0;margin:12px 0}
+.quote .src{display:block;font-size:12px;color:var(--sub);margin-top:7px;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+.wtool{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0}
+.timer{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;background:var(--ink);color:#fff;border-radius:10px;padding:4px 12px;display:none}
+.timer.show{display:inline-block}
+.timer.over{background:var(--bad)}
+.ess{width:100%;min-height:260px;border:1.5px solid var(--hair);border-radius:14px;padding:14px 16px;font:inherit;font-size:15.5px;line-height:1.9;resize:vertical;background:#fff}
+.ess:focus{outline:none;border-color:var(--blue)}
+.wc{font-size:12.5px;color:var(--sub);margin-top:6px;font-variant-numeric:tabular-nums}
+.ckrow{display:flex;gap:9px;align-items:flex-start;margin:7px 0;font-size:14px}
+.ckrow input{margin-top:4px;width:16px;height:16px;accent-color:var(--ok);flex:none}
+.model{display:none;margin-top:14px}
+.model.show{display:block}
+.codexbtn{position:fixed;right:18px;bottom:18px;z-index:50;background:var(--he);color:#fff;border:0;border-radius:99px;padding:11px 19px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(179,64,42,.35);display:flex;gap:7px;align-items:center}
+.codexbtn .cnt{background:rgba(255,255,255,.25);border-radius:99px;padding:1px 9px;font-size:12.5px;font-variant-numeric:tabular-nums}
+.codexbtn.pulse{animation:cpulse 1.6s ease-in-out 3}
+@keyframes cpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+@media(prefers-reduced-motion:reduce){.codexbtn.pulse{animation:none}}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,94vw);background:var(--bg);z-index:60;box-shadow:-14px 0 44px rgba(0,0,0,.18);transform:translateX(105%);transition:transform .3s cubic-bezier(.2,.7,.2,1);display:flex;flex-direction:column}
+.drawer.open{transform:translateX(0)}
+@media(prefers-reduced-motion:reduce){.drawer{transition:none}}
+.dhead{padding:16px 18px 10px;border-bottom:1px solid var(--hair);display:flex;align-items:center;gap:10px}
+.dhead h2{font-family:var(--serif);font-size:19px;flex:1}
+.dclose{border:0;background:var(--track);border-radius:99px;width:32px;height:32px;font-size:16px;cursor:pointer}
+.dtabs{display:flex;gap:6px;padding:10px 16px;flex-wrap:wrap;border-bottom:1px solid var(--hair)}
+.dtab{font-size:12.5px;font-weight:600;border:1px solid var(--hair);background:var(--card);border-radius:99px;padding:5px 12px;cursor:pointer}
+.dtab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.dbody{flex:1;overflow:auto;padding:14px 16px 30px}
+.ccard{background:var(--card);border:1px solid var(--hair);border-radius:15px;padding:13px 15px;margin:0 0 11px;position:relative}
+.ccard.locked{opacity:.5}
+.ccard .cseal{position:absolute;top:11px;right:12px;font-family:var(--serif);font-size:11px;font-weight:700;color:#fff;background:var(--he);border-radius:5px;padding:2px 6px}
+.ccard h4{font-family:var(--serif);font-size:16px;margin-bottom:4px;padding-right:44px}
+.ccard .csub{font-size:12px;color:var(--sub);margin-bottom:6px}
+.ccard .cbody{font-size:13px;line-height:1.8}
+.ccard .cbody b{color:var(--he)}
+.ccard details{margin-top:6px}
+.ccard summary{font-size:12.5px;color:var(--blue);cursor:pointer}
+.locknote{font-size:12px;color:var(--sub)}
+.dim-scrim{position:fixed;inset:0;background:rgba(0,0,0,.28);z-index:55;opacity:0;pointer-events:none;transition:opacity .25s}
+.dim-scrim.on{opacity:1;pointer-events:auto}
+.fb{font-size:14px;font-weight:600;margin-top:10px}
+.fb.ok{color:var(--ok)}
+.fb.bad{color:var(--bad)}
+.divider{height:1px;background:var(--hair);margin:16px 0}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;font-size:14px;border-radius:99px;padding:10px 22px;z-index:80;transition:transform .3s;max-width:88vw;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.view{display:none}
+.view.on{display:block}
+.foot{border-top:1px solid var(--hair);margin-top:44px;padding:22px 0 34px;font-size:12px;color:var(--sub);line-height:1.9}
+.pillrow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.pill{font-size:12.5px;background:var(--track);border-radius:99px;padding:4px 13px;color:var(--sub)}
+kbd.hl{font-family:inherit;background:var(--hebg);color:var(--he);border-radius:6px;padding:1px 7px;font-weight:700}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap top-in">
+  <a class="back" href="../index.html">学习门户</a>
+  <div class="topbtns">
+    <button class="btn btn-ghost btn-mini" id="btnReview">复习队列 <span id="rvN">0</span></button>
+    <button class="btn btn-ghost btn-mini" id="btnExport">导出学习报告</button>
+  </div>
+</div></div>
+
+<main class="wrap">
+  <section class="view on" id="v-home"></section>
+  <section class="view" id="v-level"></section>
+  <section class="view" id="v-review"></section>
+</main>
+
+<button class="codexbtn" id="codexBtn">📜 图鉴 <span class="cnt" id="codexCnt">0/0</span></button>
+<div class="dim-scrim" id="scrim"></div>
+<aside class="drawer" id="drawer">
+  <div class="dhead"><h2>写作工具图鉴</h2><button class="dclose" id="dclose">✕</button></div>
+  <div class="dtabs" id="dtabs"></div>
+  <div class="dbody" id="dbody"></div>
+</aside>
+
+<footer class="foot"><div class="wrap">中文写作 · 范式训练场 v1 · 起承转合 20 关 · Simon 学习门户 2026 夏<br>目标锚定：IGCSE 0509 中文第一语言（近期）· IBDP 中文A（远期）· 范式与自撰材料由 Claude 依据公开考纲与考官报告编写，最终评分口径以学校与考试局为准。</div></footer>
+<div class="toast" id="toast"></div>
+<script>
+'use strict';
+/* ================= 工具 ================= */
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e}
+function toast(m){var t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove('show')},2400)}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function today(){var d=new Date(),p=function(x){return (x<10?'0':'')+x};return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function zlen(s){return String(s||'').replace(/[\s\u3000]/g,'').replace(/[，。！？；：、""''（）《》【】—…·,.!?;:()\-]/g,'').length}
+/* ================= 状态 ================= */
+var KEY='simon_chinese_v1';
+var S={meta:{created:today(),opened:0,lastLevel:'',doneLevels:0,pct:0},
+  activity:{},q:{},ex:{},essays:{},micro:{},checks:{},cards:{},flips:{},reviews:{}};
+var CAN_STORE=true;
+try{var raw=localStorage.getItem(KEY);if(raw){var old=JSON.parse(raw);for(var k in S){if(old[k]!==undefined)S[k]=old[k]}}localStorage.setItem('__ct','1');localStorage.removeItem('__ct')}catch(e){CAN_STORE=false}
+function save(){
+  S.activity[today()]=true;
+  var d=0;LEVELS.forEach(function(L){if(levelDone(L))d++});
+  S.meta.doneLevels=d;S.meta.pct=Math.round(d/LEVELS.length*100);
+  if(CAN_STORE){try{localStorage.setItem(KEY,JSON.stringify(S));if(window.__SY2)window.__SY2.schedule()}catch(e){}}
+  paintDashLite();
+}
+/* ================= TTS：中文语音 ================= */
+var VOICE=null,HAS_VOICE=false;
+function pickVoice(){
+  try{
+    var vs=window.speechSynthesis.getVoices().filter(function(v){return /^zh|^cmn/i.test(v.lang)&&!/HK|TW|Cantonese|粤/i.test(v.lang+' '+v.name)});
+    if(!vs.length){vs=window.speechSynthesis.getVoices().filter(function(v){return /^zh|^cmn/i.test(v.lang)})}
+    if(!vs.length){HAS_VOICE=false;document.body.classList.add('novoice');return}
+    VOICE=vs.find(function(v){return /Xiaoxiao|Yunxi|Xiaoyi|Natural|Online/i.test(v.name)})
+      ||vs.find(function(v){return /Microsoft/i.test(v.name)})
+      ||vs.find(function(v){return /Google/i.test(v.name)})
+      ||vs[0];
+    HAS_VOICE=true;document.body.classList.remove('novoice');
+  }catch(e){HAS_VOICE=false;document.body.classList.add('novoice')}
+}
+function speak(text,rate){
+  if(!HAS_VOICE||!text)return;
+  try{
+    window.speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(String(text).replace(/<[^>]+>/g,''));
+    u.lang='zh-CN';u.rate=rate||0.95;if(VOICE)u.voice=VOICE;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+function speakSeq(items){
+  if(!HAS_VOICE||!items.length)return;
+  try{
+    window.speechSynthesis.cancel();
+    items.forEach(function(t){
+      var u=new SpeechSynthesisUtterance(String(t).replace(/<[^>]+>/g,''));
+      u.lang='zh-CN';u.rate=0.95;if(VOICE)u.voice=VOICE;
+      window.speechSynthesis.speak(u);
+    });
+  }catch(e){}
+}
+if('speechSynthesis' in window){pickVoice();window.speechSynthesis.onvoiceschanged=pickVoice}
+else{document.body.classList.add('novoice')}
+function spkBtn(text,label){return '<button class="spk" data-say="'+esc(text).replace(/"/g,'&quot;')+'">▶ '+(label||'朗读')+'</button>'}
+function abBtn(a,b){return '<button class="spk" data-ab="'+esc(a).replace(/"/g,'&quot;')+'|'+esc(b).replace(/"/g,'&quot;')+'">▶ 对听 A→B</button>'}
+document.addEventListener('click',function(ev){
+  var t=ev.target.closest('[data-say]');if(t){speak(t.getAttribute('data-say'));return}
+  var ab=ev.target.closest('[data-ab]');if(ab){var p=ab.getAttribute('data-ab').split('|');speakSeq(['A。'+p[0],'B。'+p[1]]);return}
+});
+/* ================= 卡片图鉴 ================= */
+function unlockCards(ids,silent){
+  var n=0;(ids||[]).forEach(function(id){if(!S.cards[id]){S.cards[id]=today();n++}});
+  if(n){save();paintCodexCnt();if(!silent){toast('🎴 图鉴入库 '+n+' 张新卡');$('#codexBtn').classList.add('pulse');setTimeout(function(){$('#codexBtn').classList.remove('pulse')},5200)}}
+}
+function cardById(id){for(var i=0;i<CARDS.length;i++)if(CARDS[i].id===id)return CARDS[i];return null}
+function paintCodexCnt(){var got=Object.keys(S.cards).length;$('#codexCnt').textContent=got+'/'+CARDS.length}
+var CUR_TAB='ALL';
+function renderCodex(){
+  var tabs=[['ALL','全部'],['PAT','范式'],['WPN','论证'],['MAT','素材'],['TRM','手法'],['REG','语料'],['STY','文体']];
+  $('#dtabs').innerHTML=tabs.map(function(t){return '<button class="dtab'+(CUR_TAB===t[0]?' on':'')+'" data-tab="'+t[0]+'">'+t[1]+'</button>'}).join('');
+  $$('#dtabs .dtab').forEach(function(b){b.onclick=function(){CUR_TAB=b.getAttribute('data-tab');renderCodex()}});
+  var list=CARDS.filter(function(c){return CUR_TAB==='ALL'||c.cat===CUR_TAB});
+  var h='';
+  list.forEach(function(c){
+    var got=!!S.cards[c.id];
+    h+='<div class="ccard'+(got?'':' locked')+'"><span class="cseal">'+c.seal+'</span><h4>'+c.name+'</h4><div class="csub">'+c.sub+'</div>';
+    if(got){h+='<div class="cbody">'+c.body+'</div>'}
+    else{h+='<div class="locknote">🔒 '+c.lockHint+'</div>'}
+    h+='</div>';
+  });
+  $('#dbody').innerHTML=h||'<p style="font-size:13px;color:var(--sub)">此类暂无卡片。</p>';
+}
+$('#codexBtn').onclick=function(){renderCodex();$('#drawer').classList.add('open');$('#scrim').classList.add('on')};
+function closeDrawer(){$('#drawer').classList.remove('open');$('#scrim').classList.remove('on')}
+$('#dclose').onclick=closeDrawer;$('#scrim').onclick=closeDrawer;
+/* ================= 复习队列 ================= */
+function addReview(qid,brief){S.reviews[qid]={brief:brief,at:today()};save();paintRvN()}
+function clearReview(qid){if(S.reviews[qid]){delete S.reviews[qid];save();paintRvN()}}
+function paintRvN(){$('#rvN').textContent=Object.keys(S.reviews).length}
+/* ================= 题目引擎：选择/判断/填空 ================= */
+var QMAP={};
+function regQ(q){QMAP[q.id]=q}
+function qState(id){if(!S.q[id])S.q[id]={streak:0,mastered:false,tries:0,wrong:0,vi:0};return S.q[id]}
+function qStatusHTML(st){
+  if(st.mastered)return '<span class="st st2">已掌握 ✓</span>';
+  if(st.tries>0)return '<span class="st st1">连对 '+st.streak+'/2</span>';
+  return '<span class="st st0">未作答</span>';
+}
+function choiceHTML(q,no){
+  var st=qState(q.id);
+  return '<div class="q" data-q="'+q.id+'"><div class="q-head"><span class="q-num">'+no+'</span><span style="font-size:12px;color:var(--sub)">'+q.brief+'</span>'+qStatusHTML(st)+'</div><div class="qbody"></div></div>';
+}
+function mountChoice(qid){
+  var q=QMAP[qid],box=$('[data-q="'+qid+'"]');if(!q||!box)return;
+  var st=qState(qid);
+  var v=q.v[st.vi%q.v.length];
+  var body=$('.qbody',box);
+  var opts=v.opts.map(function(o,i){return {t:o[0],ok:!!o[1],fb:o[2]||'',i:i}});
+  var order=(q.kind==='j')?opts:shuffle(opts);
+  var h='<div class="stem">'+v.stem+'</div><div class="opts"'+(q.kind==='j'?' style="grid-template-columns:repeat('+order.length+',1fr)"':'')+'>';
+  order.forEach(function(o,i){h+='<button class="opt" data-i="'+o.i+'">'+(q.kind==='j'?'':String.fromCharCode(65+i)+'. ')+o.t+'</button>'});
+  h+='</div><div class="verdict"></div><div class="exp"></div><div class="qbtns"><span class="mastery">'+(st.mastered?'已掌握，可再练巩固':'连对 2 个变式即算掌握')+'</span></div>';
+  body.innerHTML=h;
+  $$('.opt',body).forEach(function(b){
+    b.onclick=function(){
+      var i=+b.getAttribute('data-i');var o=opts[i];
+      st.tries++;
+      $$('.opt',body).forEach(function(x){x.classList.add('dim')});
+      var vd=$('.verdict',body),ex=$('.exp',body);
+      if(o.ok){
+        b.classList.remove('dim');b.classList.add('sel-ok');
+        st.streak++;
+        if(st.streak>=2&&!st.mastered){st.mastered=true;clearReview(qid);vd.className='verdict v-ok';vd.textContent='✓ 正确 · 连对两次，已掌握！'}
+        else{vd.className='verdict v-ok';vd.textContent='✓ 正确 · 连对 '+st.streak+'/2'}
+        ex.className='exp show';ex.innerHTML=v.exp||'';
+      }else{
+        b.classList.remove('dim');b.classList.add('sel-bad');
+        st.streak=0;st.wrong++;
+        addReview(qid,q.brief);
+        vd.className='verdict v-bad';vd.textContent='✗ 不对 · 看讲解，换个变式再来';
+        ex.className='exp show';ex.innerHTML=(o.fb?'<b>为什么错：</b>'+o.fb+'<div class="divider"></div>':'')+(v.exp||'');
+      }
+      st.vi++;
+      var btn=el('button','btn btn-ink btn-mini',st.mastered?'再练一个变式':'下一个变式 →');
+      btn.onclick=function(){mountChoice(qid)};
+      $('.qbtns',body).appendChild(btn);
+      $('.q-head .st',box).outerHTML=qStatusHTML(st);
+      save();refreshLevelPct();
+    };
+  });
+}
+/* ================= 排序引擎 ================= */
+var OMAP={};
+function regO(o){OMAP[o.id]=o}
+function exState(id){if(!S.ex[id])S.ex[id]={ok:false,best:0,tries:0,vi:0};return S.ex[id]}
+function orderHTML(o){return '<div class="oq" data-o="'+o.id+'"></div>'}
+function mountOrder(oid){
+  var o=OMAP[oid],box=$('[data-o="'+oid+'"]');if(!o||!box)return;
+  var st=exState(oid);
+  var v=o.v[st.vi%o.v.length];
+  var items=v.items.map(function(t,i){return{t:t,ci:i}});
+  var pool=shuffle(items);
+  var placed=new Array(items.length).fill(null);
+  var h='<p style="font-size:14px;color:var(--sub)">'+(o.intro||'点击下方卡片，按正确顺序放入槽位；点击槽内卡片可退回。')+'</p><div class="slotbox">';
+  items.forEach(function(_,i){h+='<div class="slot" data-s="'+i+'"><span class="sn">'+(i+1)+'</span><span class="sv" style="color:var(--sub)">'+((o.slots&&o.slots[i])||'（点击卡片放入）')+'</span></div>'});
+  h+='</div><div class="pool">';
+  pool.forEach(function(it,i){h+='<button class="chipbtn" data-p="'+i+'">'+it.t+'</button>'});
+  h+='</div><div class="qbtns"><button class="btn btn-blue btn-mini" data-check>检查顺序</button><span class="fb"></span></div><div class="exp"></div>';
+  box.innerHTML=h;
+  function paint(){
+    $$('.slot',box).forEach(function(s,i){
+      var p=placed[i];
+      s.className='slot'+(p!=null?' filled':'');
+      $('.sv',s).innerHTML=p!=null?pool[p].t:'<span style="color:var(--sub)">'+((o.slots&&o.slots[i])||'（点击卡片放入）')+'</span>';
+    });
+    $$('.chipbtn',box).forEach(function(c,i){c.classList.toggle('used',placed.indexOf(i)>=0)});
+  }
+  $$('.chipbtn',box).forEach(function(c,i){c.onclick=function(){
+    if(placed.indexOf(i)>=0)return;
+    var slot=placed.indexOf(null);if(slot<0)return;
+    placed[slot]=i;paint();
+  }});
+  $$('.slot',box).forEach(function(s,i){s.onclick=function(ev){
+    if(ev.target.closest('.chipbtn'))return;
+    if(placed[i]!=null){placed[i]=null;paint()}
+  }});
+  $('[data-check]',box).onclick=function(){
+    if(placed.indexOf(null)>=0){toast('先把所有卡片放进槽位');return}
+    st.tries++;var allOk=true;
+    $$('.slot',box).forEach(function(s,i){
+      var ok=pool[placed[i]].ci===i;
+      s.classList.add(ok?'s-ok':'s-bad');
+      if(!ok)allOk=false;
+    });
+    var fb=$('.fb',box),ex=$('.exp',box);
+    if(allOk){
+      st.ok=true;st.best=100;clearReview(oid);
+      fb.className='fb ok';fb.textContent='✓ 顺序完全正确';
+      ex.className='exp show';ex.innerHTML=v.exp||'';
+    }else{
+      addReview(oid,o.brief);
+      fb.className='fb bad';fb.textContent='✗ 有卡片放错了位置 · 读讲解后点"重排"';
+      ex.className='exp show';ex.innerHTML=(v.exp||'');
+      var btn=el('button','btn btn-ink btn-mini','重排（换一次）');
+      btn.onclick=function(){st.vi++;mountOrder(oid)};
+      $('.qbtns',box).appendChild(btn);
+    }
+    save();refreshLevelPct();
+  };
+}
+/* ================= 角色标注引擎 ================= */
+var RMAP={};
+function regR(r){RMAP[r.id]=r}
+function rolesHTML(r){return '<div class="rq" data-r="'+r.id+'"></div>'}
+function mountRoles(rid){
+  var r=RMAP[rid],box=$('[data-r="'+rid+'"]');if(!r||!box)return;
+  var st=exState(rid);
+  var v=r.v[st.vi%r.v.length];
+  var sel=new Array(v.rows.length).fill(-1);
+  var h='<p style="font-size:14px;color:var(--sub)">'+(r.intro||'为每一句选择它在段落中扮演的角色。')+'</p>';
+  v.rows.forEach(function(row,i){
+    h+='<div class="rrow" data-i="'+i+'"><div class="rtxt">'+row[0]+'</div><div class="rpick">';
+    r.roles.forEach(function(ro,j){h+='<button class="rpill" data-j="'+j+'">'+ro+'</button>'});
+    h+='</div></div>';
+  });
+  h+='<div class="qbtns"><button class="btn btn-blue btn-mini" data-check>检查标注</button><span class="fb"></span></div><div class="exp"></div>';
+  box.innerHTML=h;
+  $$('.rrow',box).forEach(function(row,i){
+    $$('.rpill',row).forEach(function(p,j){
+      p.onclick=function(){sel[i]=j;$$('.rpill',row).forEach(function(x,k){x.classList.toggle('on',k===j)})};
+    });
+  });
+  $('[data-check]',box).onclick=function(){
+    if(sel.indexOf(-1)>=0){toast('还有句子没有选角色');return}
+    st.tries++;var allOk=true;
+    $$('.rrow',box).forEach(function(row,i){
+      var ok=sel[i]===v.rows[i][1];
+      row.classList.remove('r-ok','r-bad');row.classList.add(ok?'r-ok':'r-bad');
+      if(!ok)allOk=false;
+    });
+    var fb=$('.fb',box),ex=$('.exp',box);
+    if(allOk){st.ok=true;st.best=100;clearReview(rid);fb.className='fb ok';fb.textContent='✓ 全部标对';ex.className='exp show';ex.innerHTML=v.exp||''}
+    else{addReview(rid,r.brief);st.vi+=(r.v.length>1?1:0);fb.className='fb bad';fb.textContent='✗ 红色句子标错了 · 读讲解后重试';ex.className='exp show';ex.innerHTML=v.exp||'';
+      var btn=el('button','btn btn-ink btn-mini','重新标注');btn.onclick=function(){mountRoles(rid)};$('.qbtns',box).appendChild(btn)}
+    save();refreshLevelPct();
+  };
+}
+/* ================= 口语雷达引擎 ================= */
+var DMAP={};
+function regD(d){DMAP[d.id]=d}
+function radarHTML(d){return '<div class="dq" data-d="'+d.id+'"></div>'}
+function mountRadar(did){
+  var d=DMAP[did],box=$('[data-d="'+did+'"]');if(!d||!box)return;
+  var st=exState(did);
+  var v=d.v[st.vi%d.v.length];
+  var sel={};
+  var h='<p style="font-size:14px;color:var(--sub)">'+(d.intro||'点击你认为"口语化 / 应该替换或删除"的词语，选完点检查。')+'</p><div class="radarbox">';
+  v.toks.forEach(function(t,i){
+    if(t[1]===-1){h+=t[0]}
+    else{h+='<span class="tok" data-i="'+i+'">'+t[0]+'</span>'}
+  });
+  h+='</div><div class="qbtns"><button class="btn btn-blue btn-mini" data-check>检查</button><span class="fb"></span></div><div class="exp"></div>';
+  box.innerHTML=h;
+  $$('.tok',box).forEach(function(tk){tk.onclick=function(){
+    if(tk.classList.contains('hit')||tk.classList.contains('miss'))return;
+    var i=tk.getAttribute('data-i');sel[i]=!sel[i];tk.classList.toggle('sel',!!sel[i]);
+  }});
+  $('[data-check]',box).onclick=function(){
+    st.tries++;
+    var hits=0,total=0,fa=0;
+    $$('.tok',box).forEach(function(tk){
+      var i=+tk.getAttribute('data-i');var isBad=v.toks[i][1]===1;
+      tk.classList.remove('sel');
+      if(isBad){total++;if(sel[i]){hits++;tk.classList.add('hit')}else{tk.classList.add('miss')}}
+      else if(sel[i]){fa++;tk.classList.add('fa')}
+    });
+    var score=Math.max(0,Math.round((hits-fa*0.5)/Math.max(1,total)*100));
+    if(score>st.best)st.best=score;
+    var pass=score>=80;if(pass){st.ok=true;clearReview(did)}else{addReview(did,d.brief)}
+    var fb=$('.fb',box),ex=$('.exp',box);
+    fb.className='fb '+(pass?'ok':'bad');
+    fb.textContent=(pass?'✓ ':'✗ ')+'命中 '+hits+'/'+total+(fa?' · 误报 '+fa+'（黄色）':'')+' · 得分 '+score+'%'+(pass?'':' · 需 ≥80%');
+    ex.className='exp show';ex.innerHTML=v.exp||'';
+    var btn=el('button','btn btn-ink btn-mini',pass?'换一段再扫':'读完讲解，换一段重扫');
+    btn.onclick=function(){st.vi++;mountRadar(did)};
+    $('.qbtns',box).appendChild(btn);
+    save();refreshLevelPct();
+  };
+}
+/* ================= A/B 对比引擎 ================= */
+var AMAP={};
+function regA(a){AMAP[a.id]=a}
+function abHTML(a){return '<div class="aq" data-a2="'+a.id+'"></div>'}
+function mountAB(aid){
+  var a=AMAP[aid],box=$('[data-a2="'+aid+'"]');if(!a||!box)return;
+  var st=exState(aid);
+  var h='<p style="font-size:14px;color:var(--sub)">'+(a.intro||'先判断哪一段更好，再回答"好在哪"。')+'</p><div class="abgrid">'
+    +'<div class="abcard" data-pick="a"><div class="ablab">A 段</div>'+a.a+'</div>'
+    +'<div class="abcard" data-pick="b"><div class="ablab">B 段</div>'+a.b+'</div>'
+    +'</div><div class="fb" data-fb1></div><div class="whybox" style="display:none"><div class="stem" style="margin-top:8px">'+a.why.stem+'</div><div class="opts" data-why></div></div><div class="exp"></div>';
+  box.innerHTML=h;
+  var step1=false;
+  $$('.abcard',box).forEach(function(c){c.onclick=function(){
+    if(step1)return;step1=true;st.tries++;
+    var pick=c.getAttribute('data-pick');var ok=pick===a.better;
+    $$('.abcard',box).forEach(function(x){x.style.pointerEvents='none'});
+    c.classList.add(ok?'sel-ok':'sel-bad');
+    if(!ok){$('[data-pick="'+a.better+'"]',box).classList.add('sel-ok')}
+    var fb=$('[data-fb1]',box);fb.className='fb '+(ok?'ok':'bad');
+    fb.textContent=ok?'✓ 选对了 · 现在说出理由':'✗ 更好的其实是 '+a.better.toUpperCase()+' 段 · 想想为什么，再答下一问';
+    if(!ok){st.streakBad=true;addReview(aid,a.brief)}
+    var wb=$('.whybox',box);wb.style.display='block';
+    var opts=shuffle(a.why.opts.map(function(o){return{t:o[0],ok:!!o[1],fb:o[2]||''}}));
+    var wh='';opts.forEach(function(o,i){wh+='<button class="opt" data-w="'+i+'">'+String.fromCharCode(65+i)+'. '+o.t+'</button>'});
+    $('[data-why]',box).innerHTML=wh;
+    $$('[data-why] .opt',box).forEach(function(b,i){b.onclick=function(){
+      $$('[data-why] .opt',box).forEach(function(x){x.classList.add('dim')});
+      var o=opts[i];b.classList.remove('dim');b.classList.add(o.ok?'sel-ok':'sel-bad');
+      var ex=$('.exp',box);ex.className='exp show';
+      if(o.ok&&ok&&!st.streakBad){st.ok=true;st.best=100;clearReview(aid);ex.innerHTML='<b>✓ 两问全对。</b> '+a.exp}
+      else if(o.ok){st.ok=true;st.best=Math.max(st.best,80);ex.innerHTML='<b>理由答对了。</b> '+a.exp}
+      else{addReview(aid,a.brief);ex.innerHTML=(o.fb?'<b>为什么错：</b>'+o.fb+'<div class="divider"></div>':'')+a.exp;
+        var btn=el('button','btn btn-ink btn-mini','重做本题');btn.onclick=function(){st.streakBad=false;mountAB(aid)};ex.appendChild(btn)}
+      save();refreshLevelPct();
+    }});
+  }});
+}
+/* ================= 翻牌卡引擎 ================= */
+function flipHTML(id,cardIds){
+  var h='<div class="flipgrid" data-fg="'+id+'">';
+  cardIds.forEach(function(cid){
+    var c=cardById(cid);
+    h+='<div class="fc" data-fc="'+cid+'"><div class="fci"><div class="fcf"><div class="fname">'+c.name.replace(/·.*$/,'')+'</div><div class="fhint">点击翻面</div></div><div class="fcb">'+c.body+'</div></div></div>';
+  });
+  return h+'</div><p class="tip" data-fgtip="'+id+'">逐张翻看 · 翻完全部后本项自动完成</p>';
+}
+function mountFlips(id,cardIds){
+  var st=exState(id);if(!S.flips[id])S.flips[id]={};
+  var seen=S.flips[id];
+  function upd(){
+    var n=cardIds.filter(function(c){return seen[c]}).length;
+    var tip=$('[data-fgtip="'+id+'"]');
+    if(tip)tip.textContent='已翻看 '+n+'/'+cardIds.length+(n>=cardIds.length?' ✓ 完成':' · 翻完全部后本项自动完成');
+    if(n>=cardIds.length&&!st.ok){st.ok=true;st.best=100;save();refreshLevelPct()}
+  }
+  $$('[data-fg="'+id+'"] .fc').forEach(function(fc){
+    fc.onclick=function(){fc.classList.toggle('flip');var cid=fc.getAttribute('data-fc');if(!seen[cid]){seen[cid]=1;save()}upd()};
+  });
+  upd();
+}
+/* ================= X 光范文 ================= */
+function xrayHTML(id,title,paras){
+  var h='<div class="xwrap" data-x="'+id+'"><div class="xbar"><span class="xtitle">'+title+'</span><button class="btn btn-ink btn-mini" data-xbtn>🩻 开启 X 光</button></div>';
+  paras.forEach(function(p){
+    h+='<div class="xp role-'+p.role+'"><span class="xroletag" style="background:'+({intro:'var(--qibg)',body:'var(--chengbg)',turn:'var(--zhuanbg)',end:'var(--hebg)'})[p.role]+';color:'+({intro:'var(--qi)',body:'var(--cheng)',turn:'var(--zhuan)',end:'var(--he)'})[p.role]+'">'+p.tag+'</span>'+p.html;
+    if(p.note)h+='<div class="xnote">🖊 '+p.note+'</div>';
+    h+='</div>';
+  });
+  return h+'</div>';
+}
+function mountXray(id){
+  var box=$('[data-x="'+id+'"]');if(!box)return;
+  var st=exState('x_'+id);
+  $('[data-xbtn]',box).onclick=function(){
+    var on=box.classList.toggle('xon');
+    this.textContent=on?'关闭 X 光':'🩻 开启 X 光';
+    if(on&&!st.ok){st.ok=true;st.best=100;save();refreshLevelPct()}
+  };
+}
+/* ================= 写作引擎 ================= */
+function essayHTML(w){
+  var e=S.essays[w.id]||{t:'',secs:0};
+  var h='<div class="wq" data-w="'+w.id+'">'+w.prompt;
+  h+='<div class="wtool">';
+  if(w.timed){h+='<button class="btn btn-zhu btn-mini" data-tstart>开始限时 '+w.timed+' 分钟</button><span class="timer" data-timer>'+w.timed+':00</span>'}
+  h+='<span style="font-size:12.5px;color:var(--sub)">目标 ≥ '+w.minChars+' 字 · 自动保存 · 写作时可随时打开右下角图鉴翻卡</span></div>';
+  h+='<textarea class="ess" data-ess placeholder="在这里写。别追求完美，先把骨架立起来。">'+esc(e.t)+'</textarea><div class="wc" data-wc>'+zlen(e.t)+' 字</div>';
+  if(w.checklist&&w.checklist.length){
+    h+='<div class="divider"></div><p style="font-size:14px;font-weight:600">写完后自查（勾满才算真正完成）</p>';
+    w.checklist.forEach(function(c,i){
+      var ck=(S.checks[w.id]||{})[i];
+      h+='<div class="ckrow"><input type="checkbox" data-ck="'+i+'"'+(ck?' checked':'')+'><label>'+c+'</label></div>';
+    });
+  }
+  if(w.model){h+='<div class="qbtns" style="margin-top:12px"><button class="btn btn-ghost btn-mini" data-model>写完并自查后 · 查看参考范文</button></div><div class="model" data-modelbox>'+w.model+'</div>'}
+  h+='</div>';
+  return h;
+}
+function mountEssay(w){
+  var box=$('[data-w="'+w.id+'"]');if(!box)return;
+  var ta=$('[data-ess]',box),wc=$('[data-wc]',box);
+  if(!S.essays[w.id])S.essays[w.id]={t:'',secs:0,ts:''};
+  var rec=S.essays[w.id];
+  var t0=null,tick=null;
+  ta.addEventListener('input',function(){
+    rec.t=ta.value;rec.ts=new Date().toISOString();
+    wc.textContent=zlen(rec.t)+' 字'+(zlen(rec.t)>=w.minChars?' ✓ 达标':'');
+    clearTimeout(ta._h);ta._h=setTimeout(function(){save();refreshLevelPct()},600);
+  });
+  $$('.ckrow input',box).forEach(function(cb){
+    cb.onchange=function(){
+      if(!S.checks[w.id])S.checks[w.id]={};
+      S.checks[w.id][cb.getAttribute('data-ck')]=cb.checked;
+      save();refreshLevelPct();
+    };
+  });
+  var ts=$('[data-tstart]',box);
+  if(ts){ts.onclick=function(){
+    if(tick)return;
+    var total=w.timed*60;t0=Date.now();
+    var tm=$('[data-timer]',box);tm.classList.add('show');ts.disabled=true;ts.textContent='计时中…';
+    tick=setInterval(function(){
+      var used=Math.floor((Date.now()-t0)/1000);rec.secs=used;
+      var left=total-used;var over=left<0;var v=Math.abs(left);
+      var mm=Math.floor(v/60),ss=v%60;
+      tm.textContent=(over?'+':'')+mm+':'+(ss<10?'0':'')+ss;
+      tm.classList.toggle('over',over);
+      if(used%15===0)save();
+    },1000);
+  }}
+  var mb=$('[data-model]',box);
+  if(mb){mb.onclick=function(){
+    if(zlen(rec.t)<w.minChars){toast('先写满 '+w.minChars+' 字，范文才有对照价值');return}
+    var need=w.checklist?w.checklist.length:0;
+    var got=0;for(var k in (S.checks[w.id]||{}))if(S.checks[w.id][k])got++;
+    if(got<need){toast('先诚实过一遍自查清单（'+got+'/'+need+'）');return}
+    $('[data-modelbox]',box).classList.add('show');mb.style.display='none';
+  }}
+}
+/* ================= 关卡完成判定 ================= */
+function reqDone(r){
+  if(r.t==='q'){var st=S.q[r.id];return !!(st&&st.mastered)}
+  if(r.t==='ex'){var e=S.ex[r.id];return !!(e&&e.ok)}
+  if(r.t==='essay'){var w=S.essays[r.id];if(!w||zlen(w.t)<r.min)return false;
+    if(r.ck){var c=S.checks[r.id]||{};for(var i=0;i<r.ck;i++)if(!c[i])return false}return true}
+  if(r.t==='micro'){var m=S.micro[r.id];return !!(m&&zlen(m)>=r.min)}
+  return false;
+}
+function levelPct(L){var d=0;L.req.forEach(function(r){if(reqDone(r))d++});return L.req.length?Math.round(d/L.req.length*100):0}
+function levelDone(L){return L.req.every(reqDone)}
+function levelUnlocked(idx){
+  if(idx===0)return true;
+  return levelDone(LEVELS[idx-1]);
+}
+function refreshLevelPct(){
+  var L=LEVELS[CUR_LV];if(L==null)return;
+  var pct=levelPct(L);
+  var tag=$('#lvPctTag');if(tag)tag.textContent='本关进度 '+pct+'%';
+  if(pct===100&&!S.q['__lvdone_'+L.id]){
+    S.q['__lvdone_'+L.id]={mastered:true,streak:2,tries:1,wrong:0,vi:0};
+    unlockCards(L.cards||[]);
+    toast('🏮 第 '+(CUR_LV+1)+' 关完成！'+(CUR_LV<LEVELS.length-1?'下一关已解锁':'全部通关！'));
+    save();
+  }
+}
+/* ================= 微写作 ================= */
+function microHTML(id,prompt,min){
+  var v=S.micro[id]||'';
+  return '<div class="tip" style="background:var(--hebg);color:var(--ink)">✍ <b>微写作</b> · '+prompt+'（≥'+min+' 字）</div>'
+    +'<textarea class="ess" style="min-height:110px" data-micro="'+id+'" data-min="'+min+'" placeholder="两三句即可，写完自动保存。">'+esc(v)+'</textarea><div class="wc" data-mwc="'+id+'">'+zlen(v)+' 字</div>';
+}
+function mountMicros(root){
+  $$('textarea[data-micro]',root).forEach(function(ta){
+    var id=ta.getAttribute('data-micro'),min=+ta.getAttribute('data-min');
+    ta.addEventListener('input',function(){
+      S.micro[id]=ta.value;
+      var wc=$('[data-mwc="'+id+'"]');if(wc)wc.textContent=zlen(ta.value)+' 字'+(zlen(ta.value)>=min?' ✓':'');
+      clearTimeout(ta._h);ta._h=setTimeout(function(){save();refreshLevelPct()},600);
+    });
+  });
+}
+/* ================= 首页 ================= */
+var STAGES=[
+  {ch:'起',name:'起 · 书面语兵营',sub:'第 1–4 关 · 先把"说话腔"换成"文章腔"',col:'var(--qi)',from:0,to:3},
+  {ch:'承',name:'承 · 议论文范式',sub:'第 5–12 关 · 主轴：结构、论证、论据、指导性写作',col:'var(--cheng)',from:4,to:11},
+  {ch:'转',name:'转 · 文本评论入门',sub:'第 13–16 关 · 通往 IBDP 中文A 的桥',col:'var(--zhuan)',from:12,to:15},
+  {ch:'合',name:'合 · 综合实战',sub:'第 17–20 关 · 拆掉脚手架，限时成文',col:'var(--he)',from:16,to:19}
+];
+function ringSVG(pct,size,stroke,col){
+  var r=(size-stroke)/2,c=2*Math.PI*r;
+  return '<svg width="'+size+'" height="'+size+'"><circle cx="'+(size/2)+'" cy="'+(size/2)+'" r="'+r+'" fill="none" stroke="var(--track)" stroke-width="'+stroke+'"/>'
+    +'<circle cx="'+(size/2)+'" cy="'+(size/2)+'" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="'+stroke+'" stroke-linecap="round" stroke-dasharray="'+c+'" stroke-dashoffset="'+(c*(1-pct/100))+'" style="transition:stroke-dashoffset .7s cubic-bezier(.2,.6,.2,1)"/></svg>';
+}
+function renderHome(){
+  var done=0;LEVELS.forEach(function(L){if(levelDone(L))done++});
+  var pct=Math.round(done/LEVELS.length*100);
+  var got=Object.keys(S.cards).length;
+  var essN=0;for(var k in S.essays)if(zlen(S.essays[k].t)>0)essN++;
+  var h='<div class="hero"><div class="eyebrow">SIMON 学习中心 · 中文专项</div><h1>中文写作 · 范式训练场</h1>'
+    +'<p class="sub">口语好不等于作文好——差的是一套<b>范式</b>：固定的结构、句式和论证套路。这里把它拆成 20 关，按「起承转合」四段走完。每一关掉落的卡片都会进右下角的图鉴，<b>它们不是奖励，是你写作时真正要翻的工具箱</b>。</p></div>';
+  h+='<div class="dash"><div class="ringbox">'+ringSVG(pct,92,9,'var(--he)')+'<div class="ringlab"><b>'+done+'/20</b><span>已通关</span></div></div>'
+    +'<div class="dnums"><div class="dn"><b>'+got+'/'+CARDS.length+'</b><span>图鉴卡片</span></div><div class="dn"><b>'+essN+'</b><span>已写篇目</span></div><div class="dn"><b>'+Object.keys(S.activity).length+'</b><span>活跃天数</span></div><div class="dn"><b>'+Object.keys(S.reviews).length+'</b><span>待复习</span></div></div>'
+    +'<div class="dbtns"><button class="btn btn-blue btn-mini" id="btnGo">'+(done===0?'从第 1 关开始':'继续 · 第 '+(Math.min(done,19)+1)+' 关')+'</button><button class="btn btn-ghost btn-mini" id="btnBak">备份存档</button><button class="btn btn-ghost btn-mini" id="btnImp">导入</button><input type="file" id="impFile" accept=".json" style="display:none"></div></div>';
+  if(!CAN_STORE)h+='<div class="note"><b>⚠ 当前打开方式不支持保存进度</b>（可能是无痕窗口或预览）。请用 Edge / Chrome 正常窗口打开本页，否则关页即丢。</div>';
+  h+='<div class="note"><b>三条铁规</b>：① 固定同一台电脑、同一个浏览器打开，不用无痕模式；② 每天一关（约 45–60 分钟），可加练不可跳关；③ <b>每周日点右上角「导出学习报告」发给爸爸</b>——第 1 关的诊断作文写完当天就先导出一次。</div>';
+  h+='<div class="rvbar" id="rvbar"></div>';
+  STAGES.forEach(function(st){
+    h+='<div class="stage"><div class="seal" style="background:'+st.col+'">'+st.ch+'</div><div><h2>'+st.name+'</h2><div class="ssub">'+st.sub+'</div></div></div><div class="map">';
+    for(var i=st.from;i<=st.to;i++){
+      var L=LEVELS[i],dn=levelDone(L),un=levelUnlocked(i),cur=un&&!dn;
+      var p=levelPct(L);
+      h+='<div class="lvrow'+(dn?' done':'')+(cur?' cur':'')+(!un?' lock':'')+'" data-lv="'+i+'">'
+        +'<div class="lvdot"'+(dn?' style="background:'+st.col+'"':'')+'>'+(dn?'✓':(un?(i+1):'🔒'))+'</div>'
+        +'<div class="lvcard"><div style="min-width:0"><div class="lvt">'+L.t+'</div><div class="lvs">'+L.s+'</div></div>'
+        +'<div class="lvmeta">'+(L.w?'<span class="tagw">✍ 写作关</span>':'')+(p>0&&!dn?'<span class="lvpct">'+p+'%</span>':'')+'</div></div></div>';
+    }
+    h+='</div>';
+  });
+  $('#v-home').innerHTML=h;
+  $('#btnGo').onclick=function(){
+    var idx=0;for(var i=0;i<LEVELS.length;i++){if(!levelDone(LEVELS[i])){idx=i;break}if(i===LEVELS.length-1)idx=i}
+    openLevel(idx);
+  };
+  $('#btnBak').onclick=exportState;
+  $('#btnImp').onclick=function(){$('#impFile').click()};
+  $('#impFile').onchange=function(){if(this.files[0])importState(this.files[0])};
+  $$('.lvrow').forEach(function(row){
+    row.onclick=function(){
+      var i=+row.getAttribute('data-lv');
+      if(!levelUnlocked(i)){toast('先完成上一关再解锁这一关');return}
+      openLevel(i);
+    };
+  });
+  paintRvBar();
+}
+function paintRvBar(){
+  var bar=$('#rvbar');if(!bar)return;
+  var ks=Object.keys(S.reviews);
+  if(!ks.length){bar.style.display='none';return}
+  bar.style.display='block';
+  var h='<b>复习队列 · '+ks.length+' 项</b>（答错过的会留在这里，重做至掌握即消失）<br>';
+  ks.slice(0,10).forEach(function(k){h+='<span class="rv-chip" data-rv="'+k+'">'+S.reviews[k].brief+'</span>'});
+  bar.innerHTML=h;
+  $$('.rv-chip',bar).forEach(function(c){c.onclick=function(){jumpToItem(c.getAttribute('data-rv'))}});
+}
+function jumpToItem(id){
+  for(var i=0;i<LEVELS.length;i++){
+    var L=LEVELS[i];
+    if(L.req.some(function(r){return r.id===id})||(L.itemIds||[]).indexOf(id)>=0){
+      openLevel(i);
+      setTimeout(function(){
+        var elx=$('[data-q="'+id+'"]')||$('[data-o="'+id+'"]')||$('[data-r="'+id+'"]')||$('[data-d="'+id+'"]')||$('[data-a2="'+id+'"]');
+        if(elx)elx.scrollIntoView({behavior:'smooth',block:'center'});
+      },120);
+      return;
+    }
+  }
+}
+function paintDashLite(){paintRvN();paintCodexCnt()}
+/* ================= 关卡视图 ================= */
+var CUR_LV=null;
+function openLevel(idx){
+  CUR_LV=idx;S.meta.lastLevel=LEVELS[idx].id;
+  var L=LEVELS[idx];
+  var st=STAGES.filter(function(s){return idx>=s.from&&idx<=s.to})[0];
+  var h='<div class="lv-head"><span class="crumb" id="crumbHome">返回关卡地图</span>'
+    +'<div class="lv-eyebrow" style="color:'+st.col+'">'+st.ch+' · 第 '+(idx+1)+' 关 / 20　<span id="lvPctTag" style="color:var(--sub);font-weight:600">本关进度 '+levelPct(L)+'%</span></div>'
+    +'<h1>'+L.t+'</h1><p class="lv-goal">🎯 '+L.goal+'</p></div>';
+  h+=L.html();
+  h+='<div class="blk" style="text-align:center"><button class="btn btn-blue" id="btnBackMap">完成本关 · 返回地图</button><p style="font-size:12.5px;color:var(--sub);margin-top:8px">本关全部核心任务完成后会自动记为通关并掉落卡片。</p></div>';
+  $('#v-level').innerHTML=h;
+  showView('v-level');
+  window.scrollTo(0,0);
+  $('#crumbHome').onclick=goHome;
+  $('#btnBackMap').onclick=goHome;
+  if(L.mount)L.mount();
+  mountMicros($('#v-level'));
+  save();
+}
+function goHome(){renderHome();showView('v-home')}
+function showView(id){$$('.view').forEach(function(v){v.classList.toggle('on',v.id===id)})}
+/* ================= 复习入口 ================= */
+$('#btnReview').onclick=function(){
+  var ks=Object.keys(S.reviews);
+  if(!ks.length){toast('复习队列是空的——很好');return}
+  goHome();
+  setTimeout(function(){var b=$('#rvbar');if(b)b.scrollIntoView({behavior:'smooth'})},80);
+};
+/* ================= 导出 / 导入 ================= */
+function dl(name,obj){var blob=new Blob([JSON.stringify(obj,null,1)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},400)}
+function exportReport(){
+  var rep={type:'simon_chinese_report',version:1,exported:new Date().toISOString(),
+    meta:{created:S.meta.created,activeDays:Object.keys(S.activity).length,activityDates:Object.keys(S.activity).sort()},
+    levels:{},layerAccuracy:{},mastered:0,totalQ:0,weak:[],cardsUnlocked:Object.keys(S.cards).length,
+    essays:{},micro:{},reviewsOutstanding:[]};
+  LEVELS.forEach(function(L){rep.levels[L.id]={title:L.t,pct:levelPct(L),done:levelDone(L)}});
+  for(var qid in QMAP){
+    var q=QMAP[qid],st=S.q[qid];if(!st)continue;
+    rep.totalQ++;if(st.mastered)rep.mastered++;
+    var lay=q.layer||'misc';
+    if(!rep.layerAccuracy[lay])rep.layerAccuracy[lay]={tries:0,wrong:0,mastered:0,total:0};
+    rep.layerAccuracy[lay].tries+=st.tries;rep.layerAccuracy[lay].wrong+=st.wrong;
+    rep.layerAccuracy[lay].total++;if(st.mastered)rep.layerAccuracy[lay].mastered++;
+    if(st.wrong>=2&&!st.mastered)rep.weak.push(q.brief+'（错 '+st.wrong+' 次）');
+  }
+  for(var wid in S.essays){var e=S.essays[wid];if(!zlen(e.t))continue;
+    rep.essays[wid]={chars:zlen(e.t),secondsUsed:e.secs||0,checklist:S.checks[wid]||{},text:e.t}}
+  for(var mid in S.micro){if(zlen(S.micro[mid]))rep.micro[mid]={chars:zlen(S.micro[mid]),text:S.micro[mid]}}
+  for(var rid in S.reviews)rep.reviewsOutstanding.push(S.reviews[rid].brief);
+  rep.state=S;
+  dl('Simon中文写作报告_'+today().replace(/-/g,'')+'.json',rep);
+  toast('学习报告已导出 · 发给爸爸 → Claude 批改与定制 v2');
+}
+function exportState(){dl('Simon中文写作存档_'+today().replace(/-/g,'')+'.json',{type:'simon_chinese_state',version:1,state:S});toast('存档已导出')}
+function importState(file){
+  var rd=new FileReader();
+  rd.onload=function(){try{var o=JSON.parse(rd.result);var st=o.state||o;if(!st.meta)throw new Error('bad');S=st;save();goHome();toast('导入成功，进度已恢复')}catch(e){toast('导入失败：不是有效的存档文件')}};
+  rd.readAsText(file);
+}
+$('#btnExport').onclick=exportReport;
+/* ================= 卡片数据 ================= */
+var CARDS=[
+/* ---- 范式卡 PAT ---- */
+{id:'P1',cat:'PAT',seal:'范式',name:'五段骨架 · 议论文母版',sub:'第 5 关解锁 · 一切议论文的地基',lockHint:'通过第 5 关解锁',
+ body:'<b>引论</b>（引题 → 亮观点 → 定调）→ <b>分论一</b> → <b>分论二</b> → <b>分论三（常放让步反驳）</b> → <b>结论</b>（收束 + 升华）。<br>三个分论点之间要么<b>并列</b>（个人 / 社会 / 文化），要么<b>递进</b>（是什么 → 为什么 → 怎么办）。写前先用 10 个字写出每段的观点句，骨架立住再动笔。'},
+{id:'P2',cat:'PAT',seal:'范式',name:'引论三句式',sub:'第 6 关解锁 · 开头不再抓瞎',lockHint:'通过第 6 关解锁',
+ body:'<b>句 1 引题</b>：从现象 / 事例 / 对立两句话切入（「有人说……也有人说……」「地铁上、课间里……」）。<br><b>句 2 亮观点</b>：「在我看来……」「我认为……的关键在于……」——观点必须是一个<b>可以被反驳的判断句</b>。<br><b>句 3 定调</b>：预告理路（「会用者得其利，被动者受其害」）。三句写完，开头即成。'},
+{id:'P3',cat:'PAT',seal:'范式',name:'议论段 · 点释证析结',sub:'第 7 关解锁 · 每个主体段的内部结构',lockHint:'通过第 7 关解锁',
+ body:'<b>点</b>：观点句（本段只说一件事）→ <b>释</b>：用一两句解释这个观点是什么意思 → <b>证</b>：论据（事例 / 引言 / 数据，从素材卡取）→ <b>析</b>：分析论据<b>为什么</b>能支撑观点（最容易被省掉、也最值分的一步）→ <b>结</b>：小结回扣。<br>口诀：<b>无「析」不成段</b>——只摆例子不分析，等于把菜买回来没下锅。'},
+{id:'P4',cat:'PAT',seal:'范式',name:'结论两句式',sub:'第 6 关解锁 · 收尾不虎头蛇尾',lockHint:'通过第 6 关解锁',
+ body:'<b>句 1 收束</b>：「综上所述……」用一个长句把三个分论点拧成一股绳（换说法，别照抄观点句）。<br><b>句 2 升华</b>：把话题从「这件事」推到「一类事 / 一种态度」——由手机谈到自律，由阅读谈到时代。<br>禁忌：结尾冒出<b>新论点</b>、新例子，或喊空口号。'},
+{id:'P5',cat:'PAT',seal:'范式',name:'指导性写作四步',sub:'第 11 关解锁 · 0509 试卷一必考',lockHint:'通过第 11 关解锁',
+ body:'<b>① 圈</b>：在两则材料里圈出全部信息点（通常 6–8 个）。<br><b>② 分</b>：按「支持 / 反对 / 背景」归类。<br><b>③ 重组</b>：把信息点<b>换成自己的话</b>并重新排队——考官报告明确警告：整句照抄材料、不重组措辞的作文<b>不能得高分</b>。<br><b>④ 成文</b>：按要求的格式（信 / 邮件 / 文章）和身份口吻写，观点鲜明，信息点全覆盖。'},
+{id:'P6',cat:'PAT',seal:'范式',name:'评论段 · 点证析联',sub:'第 13 关解锁 · IBDP 中文A 的段落语法',lockHint:'通过第 13 关解锁',
+ body:'<b>点</b>：本段论点——作者用了什么手法、想达成什么 → <b>证</b>：引用原文（短引，加引号）→ <b>析</b>：拆解这个手法<b>如何</b>制造效果（节奏？画面？情绪落差？）→ <b>联</b>：联回全文主旨或读者感受。<br>红线：<b>只报手法名不分析 = 不得分</b>。「用了排比」是零分句，「排比制造出循环往复的节奏，从而……」才开始得分。'},
+{id:'P7',cat:'PAT',seal:'范式',name:'效果句式骨架',sub:'第 14 关解锁 · 分析句的万能模板',lockHint:'通过第 14 关解锁',
+ body:'挑一个填空即可成句：<br>· 作者通过<b>____</b>（手法），描绘出 / 营造出<b>____</b>，从而<b>____</b>（表达情感 / 突出主旨 / 引发思考）。<br>· <b>____</b>一词看似平常，实则<b>____</b>。<br>· 前文的<b>____</b>与此处的<b>____</b>形成呼应 / 反差，使<b>____</b>。<br>· 若删去此句，则<b>____</b>——可见其作用在于<b>____</b>。'},
+{id:'P8',cat:'PAT',seal:'范式',name:'考场时间分配',sub:'第 17 关解锁 · 45 分钟怎么切',lockHint:'通过第 17 关解锁',
+ body:'以 45 分钟 600 字为例：<b>审题 3 分钟</b>（圈题眼，判断文体与立场）→ <b>提纲 5 分钟</b>（五段各写 10 字观点句 + 选定素材卡）→ <b>写作 32 分钟</b>（每段约 6 分钟，卡住就跳，先保结构完整）→ <b>检查 5 分钟</b>（专查：错别字、口语词、关联词、结尾是否升华）。<br>铁律：<b>宁可每段短，不可缺一段</b>——结构完整是保底分。'},
+/* ---- 兵器卡 WPN ---- */
+{id:'W1',cat:'WPN',seal:'论证',name:'例证法',sub:'第 8 关解锁 · 用事实说话',lockHint:'通过第 8 关解锁',
+ body:'<b>定义</b>：举具体事例证明观点。<br><b>触发句式</b>：「……便是明证」「以……为例」。<br><b>微示例</b>：坚持方能成事，屠呦呦历经数百次提取失败仍不放弃，终获青蒿素，便是明证。<br><b>警告</b>：例后必须跟一句「析」——例子不会自己说话。一段一例即可，堆例不加分。'},
+{id:'W2',cat:'WPN',seal:'论证',name:'引证法',sub:'第 8 关解锁 · 借权威之口',lockHint:'通过第 8 关解锁',
+ body:'<b>定义</b>：引用名言、经典、数据证明观点。<br><b>触发句式</b>：「正如……所言」「古人云……」。<br><b>微示例</b>：正如荀子所言，「不积跬步，无以至千里」，积累从来不是笨办法，而是唯一的办法。<br><b>警告</b>：引文要短、要准；引完要接自己的话，不能让名言替你写作文。'},
+{id:'W3',cat:'WPN',seal:'论证',name:'对比论证',sub:'第 8 关解锁 · 有比较才有分量',lockHint:'通过第 8 关解锁',
+ body:'<b>定义</b>：正反两面并置，在反差中凸显观点。<br><b>触发句式</b>：「反观……」「与其……不如……」「同样是……，前者……后者……」。<br><b>微示例</b>：同样面对失利，有人一蹶不振，苏轼却吟出「一蓑烟雨任平生」——境界高下，正在于此。<br><b>警告</b>：对比双方要在<b>同一维度</b>上比，否则是错位比较。'},
+{id:'W4',cat:'WPN',seal:'论证',name:'因果论证',sub:'第 9 关解锁 · 挖一层「为什么」',lockHint:'通过第 9 关解锁',
+ body:'<b>定义</b>：由原因推结果，或由结果追原因。<br><b>触发句式</b>：「究其原因……」「正因如此……」「之所以……是因为……」。<br><b>微示例</b>：碎片化阅读之所以令人焦虑，究其原因，是它只喂给我们结论，却抽走了得出结论的过程。<br><b>警告</b>：警惕「先后」冒充「因果」——A 发生在 B 之前，不代表 A 导致了 B。'},
+{id:'W5',cat:'WPN',seal:'论证',name:'比喻论证',sub:'第 9 关解锁 · 把抽象说活',lockHint:'通过第 9 关解锁',
+ body:'<b>定义</b>：用具体形象比喻抽象道理。<br><b>触发句式</b>：「……犹如……」「好比……」。<br><b>微示例</b>：范式犹如脚手架——楼没起来时离不得，楼起来后必须拆。<br><b>警告</b>：比喻是「像什么」的说明，不是证据本身，宜与例证、因果搭配使用。'},
+{id:'W6',cat:'WPN',seal:'论证',name:'让步反驳',sub:'第 9 关解锁 · 高分段的标配',lockHint:'通过第 9 关解锁',
+ body:'<b>定义</b>：先承认对方合理处（让步），再指出其局限并反驳。这是最能体现「思想深度」的一招，第三分论点的黄金结构。<br><b>触发句式</b>：「诚然，……但……」「不可否认……然而……」「有人认为……这种看法看似有理，却忽略了……」。<br><b>微示例</b>：诚然，兼职会占用学习时间；但真正偷走时间的从来不是兼职本身，而是没有规划的生活。<br><b>警告</b>：让步要真诚具体，不能立个稻草人一推就倒。'},
+/* ---- 语料卡 REG ---- */
+{id:'G1',cat:'REG',seal:'语料',name:'口语 → 书面 替换表（80 对）',sub:'第 3 关解锁 · 写作时随时翻',lockHint:'通过第 3 关解锁',
+ body:'<details open><summary><b>动词（16）</b></summary>觉得→认为 · 说→指出/表示/强调 · 看→观察/审视 · 想→思考/设想 · 用→运用/采用 · 帮→协助 · 弄/搞→处理/进行 · 给→提供/赋予 · 拿到→获得/取得 · 碰到→遭遇/面临 · 开始→着手/展开 · 变成→转变为 · 知道→了解/知晓 · 喜欢→青睐/倾向于 · 讨厌→排斥/抵触 · 打算→计划/意在</details>'
+ +'<details><summary><b>副词与程度（14）</b></summary>很/非常→极为/颇为/相当 · 特别→尤为 · 真的→确实/的确 · 太→过于 · 有点→略显/稍显 · 越来越→日益/愈发 · 一直→始终/持续 · 马上→随即 · 常常→往往/时常 · 都→均/皆 · 大概→大致/约 · 到处→处处/随处 · 好好→认真/切实 · 一下子→顷刻/骤然</details>'
+ +'<details><summary><b>名词（14）</b></summary>东西→事物/因素 · 事儿→事务/现象 · 地方→场所/层面 · 人→人们/个体/群体 · 好处→益处/优势 · 坏处→弊端/危害 · 问题→议题/弊病 · 办法→途径/策略/方案 · 样子→形态/面貌 · 想法→观点/见解 · 原因→缘由/成因 · 结果→后果/成效 · 力气→精力 · 机会→契机/机遇</details>'
+ +'<details><summary><b>形容词（12）</b></summary>好→有益/出色/优良 · 坏→不良/有害/恶劣 · 大→巨大/显著/重大 · 小→细微/有限 · 多→众多/大量/诸多 · 少→寥寥/稀少 · 快→迅速/快捷 · 慢→迟缓 · 重要→关键/至关重要 · 厉害→出众/剧烈 · 差不多→大致/近乎 · 一样→相同/一致</details>'
+ +'<details><summary><b>连接（12）</b></summary>然后→随后/继而 · 但是→然而 · 所以→因此/因而 · 要是→倘若/若 · 不管→无论 · 还有→此外/再者 · 反正→总之（慎用）· 其实→实际上/事实上 · 就算→即便/纵然 · 因为→由于 · 这样→如此/由此 · 那→那么</details>'
+ +'<details><summary><b>直接删除黑名单（12）</b></summary>就是 · 然后（口头禅式）· 那个 · 的话 · 其实（滥用时）· 什么的 · 之类的（滥用时）· 啊/呀/嘛/呗 · 超/贼/蛮/挺 · 啥/咋 · 咱（改「我们」）· 搞（改「进行/开展」）</details>'},
+{id:'G2',cat:'REG',seal:'语料',name:'关联词罗盘（六族）',sub:'第 4 关解锁 · 段落之间的螺丝钉',lockHint:'通过第 4 关解锁',
+ body:'<b>递进</b>：不仅……而且…… · 更有甚者 · 进一步说<br><b>转折</b>：然而 · 诚然……但…… · 尽管如此<br><b>因果</b>：因此 · 究其原因 · 正因如此<br><b>并列</b>：一方面……另一方面…… · 与此同时 · 其一……其二……<br><b>条件假设</b>：倘若 · 唯有……方能…… · 一旦……便……<br><b>总结</b>：综上所述 · 由此可见 · 归根结底<br><b>用法铁律</b>：段首关联词决定段落关系——写每一段前先问：这段和上一段是什么关系？选对族，再选词。'},
+/* ---- 素材卡 MAT（万能论据 15）---- */
+{id:'M1',cat:'MAT',seal:'素材',name:'苏轼 · 三起三落',sub:'逆境 / 豁达 / 心态',lockHint:'通过第 10 关解锁',
+ body:'<b>事例</b>：一生三次被贬（黄州、惠州、儋州），却在贬所写出传世名篇、修堤办学。<br><b>可引</b>：「竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。」（《定风波》）<br><b>适用论点</b>：逆境成就人 · 心态决定境界 · 真正的强大是内心从容。'},
+{id:'M2',cat:'MAT',seal:'素材',name:'司马迁 · 发愤著史',sub:'坚持 / 使命 / 忍辱',lockHint:'通过第 10 关解锁',
+ body:'<b>事例</b>：受刑之后忍辱负重，历时十余年完成《史记》。<br><b>可引</b>：「究天人之际，通古今之变，成一家之言。」（《报任安书》）<br><b>适用论点</b>：苦难与成就 · 长期主义 · 为热爱之事承受代价。'},
+{id:'M3',cat:'MAT',seal:'素材',name:'屠呦呦 · 青蒿素',sub:'科学 / 坚持 / 古为今用',lockHint:'通过第 10 关解锁',
+ body:'<b>事例</b>：历经数百次提取试验失败，从东晋葛洪《肘后备急方》中获得低温提取灵感，最终发现青蒿素，2015 年获诺贝尔生理学或医学奖。<br><b>适用论点</b>：坚持与试错 · 传统智慧的现代价值 · 冷板凳上的大成就。'},
+{id:'M4',cat:'MAT',seal:'素材',name:'袁隆平 · 稻田里的一生',sub:'实干 / 理想 / 朴素',lockHint:'通过第 10 关解锁',
+ body:'<b>事例</b>：毕生躬耕田野研究杂交水稻，年逾九旬仍下田。<br><b>可引</b>：「人就像一粒种子，要做一粒好种子。」<br><b>适用论点</b>：把理想种进土里 · 实干精神 · 一件事做到极致。'},
+{id:'M5',cat:'MAT',seal:'素材',name:'贝多芬 · 失聪作曲',sub:'逆境 / 艺术 / 意志',lockHint:'通过第 10 关解锁',
+ body:'<b>事例</b>：晚年几乎完全失聪，仍完成《第九交响曲》——一位听不见的人写出了《欢乐颂》。<br><b>适用论点</b>：命运的限制不等于人生的上限 · 热爱可抵万难 · 身体的残缺与精神的完整。'},
+{id:'M6',cat:'MAT',seal:'素材',name:'居里夫人 · 两获诺奖',sub:'专注 / 淡泊 / 女性力量',lockHint:'通过第 10 关解锁',
+ body:'<b>事例</b>：1903 年获诺贝尔物理学奖、1911 年获化学奖；放弃为镭的提纯方法申请专利，把发现留给全人类。<br><b>适用论点</b>：专注与淡泊 · 科学的公共精神 · 名利之外的追求。'},
+{id:'M7',cat:'MAT',seal:'素材',name:'樊锦诗 · 敦煌的女儿',sub:'坚守 / 文化传承 / 选择',lockHint:'通过第 10 关解锁',
+ body:'<b>事例</b>：北大毕业后扎根莫高窟数十年，主持「数字敦煌」，让千年壁画在数字世界永生。<br><b>适用论点</b>：一生择一事 · 传统文化的现代守护 · 冷清处自有大事业。'},
+{id:'M8',cat:'MAT',seal:'素材',name:'王羲之 · 墨池',sub:'刻苦 / 积累',lockHint:'通过第 10 关解锁',
+ body:'<b>事例</b>：相传他临池练字，洗笔洗砚，日久池水尽黑，后人称「墨池」。（传说典故，引用时可加「相传」）<br><b>适用论点</b>：功夫在日常 · 量变到质变 · 天才背后的笨功夫。'},
+{id:'M9',cat:'MAT',seal:'素材',name:'爱迪生 · 千种灯丝',sub:'试错 / 创新 / 韧性',lockHint:'通过第 10 关解锁',
+ body:'<b>事例</b>：据传记记载，为寻找合适的灯丝材料，他试验了上千种材料方才成功。<br><b>适用论点</b>：失败是数据不是终点 · 创新源于笨拙的坚持 · 把不可能穷举成可能。'},
+{id:'M10',cat:'MAT',seal:'素材',name:'乔布斯 · 串起人生的点',sub:'跨界 / 长期主义 / 兴趣',lockHint:'通过第 10 关解锁',
+ body:'<b>事例</b>：大学退学后旁听书法课，十年后这门「无用」的课成就了 Mac 的优美字体。他在 2005 年斯坦福演讲中说：人生的点无法预先连成线，只能在回望时串起它们。<br><b>适用论点</b>：无用之用 · 兴趣的长期价值 · 允许人生绕路。'},
+{id:'M11',cat:'MAT',seal:'素材',name:'达·芬奇 · 跨界通才',sub:'好奇心 / 广博与专精',lockHint:'通过第 10 关解锁',
+ body:'<b>事例</b>：画《蒙娜丽莎》之外，留下数千页手稿，涉及解剖、工程、光学、飞行器设计。<br><b>适用论点</b>：好奇心是第一生产力 · 学科之间没有墙 · 广博滋养专精。'},
+{id:'M12',cat:'MAT',seal:'素材',name:'张桂梅 · 华坪女高',sub:'教育 / 责任 / 平凡英雄',lockHint:'通过第 10 关解锁',
+ body:'<b>事例</b>：创办全国第一所免费女子高中，拖着病体家访十余万公里，帮助数千名山区女孩走进大学。<br><b>适用论点</b>：教育改变命运 · 一个人可以照亮多少人 · 责任高于自我。'},
+{id:'M13',cat:'MAT',seal:'素材',name:'荀子 · 积累之道',sub:'名言 / 积累 / 恒心',lockHint:'通过第 10 关解锁',
+ body:'<b>可引</b>：「不积跬步，无以至千里；不积小流，无以成江海。」（《荀子·劝学》）<br><b>用法</b>：谈学习方法、习惯养成、长期主义时作引证；引后接一句自己的阐释，如「积累从来不是笨办法，而是唯一的办法」。'},
+{id:'M14',cat:'MAT',seal:'素材',name:'韩愈 · 业精于勤',sub:'名言 / 勤奋 / 思考',lockHint:'通过第 10 关解锁',
+ body:'<b>可引</b>：「业精于勤荒于嬉，行成于思毁于随。」（韩愈《进学解》）<br><b>用法</b>：前半句谈勤奋，后半句谈独立思考——两个论点共用一句引文，性价比极高。'},
+{id:'M15',cat:'MAT',seal:'素材',name:'数据 · 屏幕时代的阅读',sub:'数据 / 科技与生活',lockHint:'通过第 10 关解锁',
+ body:'<b>可引数据</b>：据中国新闻出版研究院发布的全国国民阅读调查，近年来我国成年国民人均每天手机接触时长超过 100 分钟。<br><b>用法</b>：谈碎片化阅读、手机使用、深度思考等话题的开篇引题或论据；引用时保留「据……调查」的来源框架，显得严谨。'},
+/* ---- 术语卡 TRM（手法 25）---- */
+{id:'T1',cat:'TRM',seal:'手法',name:'比喻',sub:'第 13 关解锁',lockHint:'通过第 13 关解锁',body:'<b>定义</b>：用相似的事物打比方（明喻「像」、暗喻「是」、借喻不出现本体）。<br><b>识别</b>：像 / 如 / 仿佛 / 是。<br><b>效果句式</b>：将____比作____，使抽象的____变得具体可感。'},
+{id:'T2',cat:'TRM',seal:'手法',name:'拟人',sub:'第 13 关解锁',lockHint:'通过第 13 关解锁',body:'<b>定义</b>：赋予事物以人的动作、情感。<br><b>识别</b>：非人事物做出人的行为。<br><b>效果句式</b>：赋予____以人的____，使画面生动，并暗含作者对它的____之情。'},
+{id:'T3',cat:'TRM',seal:'手法',name:'排比',sub:'第 13 关解锁',lockHint:'通过第 13 关解锁',body:'<b>定义</b>：三个及以上结构相似的短语或句子并列。<br><b>识别</b>：句式重复、节奏推进。<br><b>效果句式</b>：连用三个「____」，形成层层推进的节奏，增强了____的气势 / 情感。'},
+{id:'T4',cat:'TRM',seal:'手法',name:'对比',sub:'第 13 关解锁',lockHint:'通过第 13 关解锁',body:'<b>定义</b>：把相反的事物或同一事物的两面并置。<br><b>识别</b>：一正一反、一今一昔、一明一暗。<br><b>效果句式</b>：____与____形成鲜明对比，突出了____。'},
+{id:'T5',cat:'TRM',seal:'手法',name:'夸张',sub:'第 13 关解锁',lockHint:'通过第 13 关解锁',body:'<b>定义</b>：故意言过其实，放大或缩小。<br><b>识别</b>：明显超出常理的程度描述。<br><b>效果句式</b>：以夸张之笔写____，强化了____的感受，令人印象深刻。'},
+{id:'T6',cat:'TRM',seal:'手法',name:'反问',sub:'第 13 关解锁',lockHint:'通过第 13 关解锁',body:'<b>定义</b>：用问句表达确定的意思，答案在问题里。<br><b>识别</b>：难道 / 岂 / 怎能——不需要回答。<br><b>效果句式</b>：以反问收束，语气强烈，不容置疑地强调了____。'},
+{id:'T7',cat:'TRM',seal:'手法',name:'设问',sub:'第 13 关解锁',lockHint:'通过第 13 关解锁',body:'<b>定义</b>：自问自答，或问而引人思考。<br><b>识别</b>：先提问，随后作者自己回答或引出下文。<br><b>效果句式</b>：以设问开启，引发读者思考，并自然引出____。'},
+{id:'T8',cat:'TRM',seal:'手法',name:'反复',sub:'第 13 关解锁',lockHint:'通过第 13 关解锁',body:'<b>定义</b>：同一词句有意重复出现。<br><b>识别</b>：原词原句再现（区别于排比的「结构相似」）。<br><b>效果句式</b>：「____」的反复出现，一唱三叹，强化了____的情感 / 营造出回环的节奏。'},
+{id:'T9',cat:'TRM',seal:'手法',name:'引用',sub:'第 14 关解锁',lockHint:'通过第 14 关解锁',body:'<b>定义</b>：引诗文、名言、俗语入文。<br><b>识别</b>：引号 + 出处或熟语。<br><b>效果句式</b>：引用____，既增添文采，又借其权威 / 意蕴支撑了____。'},
+{id:'T10',cat:'TRM',seal:'手法',name:'双关',sub:'第 14 关解锁',lockHint:'通过第 14 关解锁',body:'<b>定义</b>：一语两义，表里各有所指。<br><b>识别</b>：字面义之外另有谐音义或语境义。<br><b>效果句式</b>：「____」一语双关，表面写____，实则暗指____，含蓄而有味。'},
+{id:'T11',cat:'TRM',seal:'手法',name:'象征',sub:'第 14 关解锁',lockHint:'通过第 14 关解锁',body:'<b>定义</b>：用具体事物代表抽象观念或情感（整体层面）。<br><b>识别</b>：某物在全文反复出现并承载含义。<br><b>效果句式</b>：____象征着____，使抽象的____有了可触可感的形象。'},
+{id:'T12',cat:'TRM',seal:'手法',name:'衬托',sub:'第 14 关解锁',lockHint:'通过第 14 关解锁',body:'<b>定义</b>：用次要事物陪衬主要事物（正衬 / 反衬）。<br><b>识别</b>：写 A 是为了让 B 更突出。<br><b>效果句式</b>：以____衬托____，使____的形象 / 情感更加鲜明。'},
+{id:'T13',cat:'TRM',seal:'手法',name:'白描',sub:'第 14 关解锁',lockHint:'通过第 14 关解锁',body:'<b>定义</b>：不加渲染修饰、寥寥数笔勾勒。<br><b>识别</b>：几乎没有形容词与比喻，却轮廓分明。<br><b>效果句式</b>：以白描手法勾勒____，笔墨极简而形神俱出。'},
+{id:'T14',cat:'TRM',seal:'手法',name:'细节描写',sub:'第 14 关解锁',lockHint:'通过第 14 关解锁',body:'<b>定义</b>：抓住细小动作、神态、物件精雕细刻。<br><b>识别</b>：镜头拉近，一个动作 / 一件小物被放大。<br><b>效果句式</b>：「____」这一细节，于细微处见____，比直接抒情更有力量。'},
+{id:'T15',cat:'TRM',seal:'手法',name:'借景抒情',sub:'第 14 关解锁',lockHint:'通过第 14 关解锁',body:'<b>定义</b>：情感不直说，寄托在景物描写中。<br><b>识别</b>：大段写景，景中含情绪色彩。<br><b>效果句式</b>：借____之景，抒____之情，情景交融。'},
+{id:'T16',cat:'TRM',seal:'手法',name:'托物言志',sub:'第 14 关解锁',lockHint:'通过第 14 关解锁',body:'<b>定义</b>：借某一事物寄托志向、品格。<br><b>识别</b>：咏物之文，物的品性即人的追求。<br><b>效果句式</b>：借____之____，言____之志。'},
+{id:'T17',cat:'TRM',seal:'手法',name:'欲扬先抑',sub:'第 14 关解锁',lockHint:'通过第 14 关解锁',body:'<b>定义</b>：想褒扬先贬抑，造成情感落差。<br><b>识别</b>：前文贬损铺垫，后文态度反转。<br><b>效果句式</b>：先抑后扬，前后反差使____的形象更为动人，也让情感有了起伏。'},
+{id:'T18',cat:'TRM',seal:'手法',name:'首尾呼应',sub:'第 14 关解锁',lockHint:'通过第 14 关解锁',body:'<b>定义</b>：结尾回应开头的意象、句子或问题。<br><b>识别</b>：末段与首段出现同一元素。<br><b>效果句式</b>：结尾回应开头的____，结构圆合，余味悠长。'},
+{id:'T19',cat:'TRM',seal:'手法',name:'悬念',sub:'第 14 关解锁',lockHint:'通过第 14 关解锁',body:'<b>定义</b>：故意留下疑问，吊住读者。<br><b>识别</b>：关键信息被延迟揭晓。<br><b>效果句式</b>：设置____的悬念，牵引读者追读，直至____方才释然。'},
+{id:'T20',cat:'TRM',seal:'手法',name:'伏笔',sub:'第 14 关解锁',lockHint:'通过第 14 关解锁',body:'<b>定义</b>：前文不动声色地埋下线索，后文应验。<br><b>识别</b>：回看时发现「原来早有交代」。<br><b>效果句式</b>：前文的____为后文____埋下伏笔，使情节合理而有回味。'},
+{id:'T21',cat:'TRM',seal:'手法',name:'侧面描写',sub:'第 14 关解锁',lockHint:'通过第 14 关解锁',body:'<b>定义</b>：不直接写对象，通过他人反应、环境烘托来写。<br><b>识别</b>：主角未出场或未正面着墨，效果却已呈现。<br><b>效果句式</b>：通过____的反应侧面烘托____，不着一字而尽得风流。'},
+{id:'T22',cat:'TRM',seal:'手法',name:'动静结合',sub:'第 14 关解锁',lockHint:'通过第 14 关解锁',body:'<b>定义</b>：动态与静态景物相互映衬。<br><b>识别</b>：一静一动同框（以动衬静最常见）。<br><b>效果句式</b>：以____之动衬____之静，画面顿生层次与生气。'},
+{id:'T23',cat:'TRM',seal:'手法',name:'叙事视角',sub:'第 14 关解锁',lockHint:'通过第 14 关解锁',body:'<b>定义</b>：故事由谁的眼睛讲出（第一人称 / 第三人称 / 儿童视角等）。<br><b>识别</b>：注意「我」是谁、知道多少。<br><b>效果句式</b>：采用____视角叙述，既____，又让读者____。'},
+{id:'T24',cat:'TRM',seal:'手法',name:'意象',sub:'第 14 关解锁',lockHint:'通过第 14 关解锁',body:'<b>定义</b>：承载情感与含义的具体物象（月、雨、灯、路……）。<br><b>识别</b>:反复出现、带情绪色彩的「物」。<br><b>效果句式</b>：「____」这一意象贯穿全文，承载着____，使情感有所依附。'},
+{id:'T25',cat:'TRM',seal:'手法',name:'以乐写哀',sub:'第 14 关解锁',lockHint:'通过第 14 关解锁',body:'<b>定义</b>：用明快的景物或语调反衬悲哀，倍增其哀。<br><b>识别</b>：内容欢快，语境情感却低沉。<br><b>效果句式</b>：以乐景写哀情，前面的明快铺垫越足，此处的____便越显沉重。'},
+/* ---- 文体卡 STY（DP Paper 1 铺垫 5）---- */
+{id:'Y1',cat:'STY',seal:'文体',name:'博客',sub:'第 15 关解锁',lockHint:'通过第 15 关解锁',body:'<b>读者</b>：网络大众。<b>目的</b>：分享观点 / 经历。<br><b>语言标志</b>：第一人称、口语与书面混搭、直接与读者对话（「你有没有过……」）、小标题、结尾常邀请留言。<br><b>常用手法</b>：设问、自嘲、个人事例。'},
+{id:'Y2',cat:'STY',seal:'文体',name:'演讲稿',sub:'第 15 关解锁',lockHint:'通过第 15 关解锁',body:'<b>读者</b>：现场听众。<b>目的</b>：鼓动 / 说服。<br><b>语言标志</b>：称呼语（「各位老师、同学」）、第二人称「我们」拉近距离、短句与排比密集、结尾有号召。<br><b>常用手法</b>：排比、反问、反复、呼告。'},
+{id:'Y3',cat:'STY',seal:'文体',name:'新闻报道',sub:'第 15 关解锁',lockHint:'通过第 15 关解锁',body:'<b>读者</b>：公众。<b>目的</b>：客观传递信息。<br><b>语言标志</b>：标题 + 导语（何时何地何人何事）、第三人称、引述消息来源（「据……介绍」）、几乎不出现「我认为」。<br><b>常用手法</b>：引用、数据、倒金字塔结构。'},
+{id:'Y4',cat:'STY',seal:'文体',name:'广告文案',sub:'第 15 关解锁',lockHint:'通过第 15 关解锁',body:'<b>读者</b>：潜在消费者。<b>目的</b>：促成行动。<br><b>语言标志</b>：极短句、祈使句（「立即拥有」）、押韵或双关的口号、放大痛点与愿景。<br><b>常用手法</b>：双关、夸张、反复、对比。'},
+{id:'Y5',cat:'STY',seal:'文体',name:'访谈',sub:'第 15 关解锁',lockHint:'通过第 15 关解锁',body:'<b>读者</b>：对受访者感兴趣的公众。<b>目的</b>：呈现人物观点与个性。<br><b>语言标志</b>：问答体、问题层层递进、保留受访者口语痕迹以显真实。<br><b>常用手法</b>：追问、细节描写（神态动作插叙）、引用原话。'}
+];
+/* ================= 关卡数据 ================= */
+var LEVELS=[
+/* ---------- D1 ---------- */
+{id:'d1',t:'开营 · 诊断写作',s:'先写一篇，让教练看清起点',w:1,cards:[],
+goal:'不追求完美——在 45 分钟内写出一篇约 300 字的议论小文，作为整个训练营的「起点照片」，Claude 教练据此定制后面 19 关。',
+req:[{t:'essay',id:'w1',min:280,ck:4}],itemIds:['w1'],
+html:function(){
+ var h='<div class="blk"><h3><span class="kicker k-learn">教练说</span>为什么第一天就写</h3>'
+ +'<p>医生开药前要先看片子。这篇小文就是你的「片子」：它会随本周的学习报告一起交给 Claude，用来判断你的真实起点——口语化到什么程度、结构感有没有、例子会不会用。<b>写得糙没关系，写得假才麻烦</b>，所以：不查范文、不问 AI、不给别人看过再改。'+spkBtn('写得糙没关系，写得假才麻烦。这一篇只求真实，不求漂亮。','听教练一句')+'</p>'
+ +'<div class="tip">规则：① 可以先花 5 分钟在纸上列三个想说的点；② 点「开始限时」再动笔；③ 写完勾自查清单；④ <b>今天就点右上角「导出学习报告」发给爸爸</b>。</div></div>';
+ h+='<div class="blk"><h3><span class="kicker k-write">写作</span>诊断题</h3>'
+ +essayHTML({id:'w1',minChars:280,timed:45,
+  prompt:'<p class="stem"><b>题目：</b>有人说，网络让人与人越来越近；也有人说，网络让人与人越来越远。你怎么看？<br><span style="font-size:13px;color:var(--sub)">写一篇约 300 字的议论小文，观点明确，至少举一个具体例子。</span></p>',
+  checklist:['第一段里有一句话明确说出了我的观点','全文分了至少三段','用了至少一个具体的例子（人 / 事 / 数据都行）','通读了一遍，改掉了看得见的错别字']})
+ +'</div>';
+ return h;
+},
+mount:function(){mountEssay({id:'w1',minChars:280,timed:45,checklist:[1,1,1,1]})}},
+/* ---------- D2 ---------- */
+{id:'d2',t:'语体觉醒 · 口语腔 vs 文章腔',s:'耳朵先分清两种腔调',cards:[],
+goal:'能在三秒内判断一句话是「说话腔」还是「文章腔」，并用耳朵听出两者的节奏差别。',
+req:[{t:'q',id:'q2_1'},{t:'q',id:'q2_2'},{t:'q',id:'q2_3'},{t:'q',id:'q2_4'},{t:'ex',id:'d2_rad1'}],
+itemIds:['q2_1','q2_2','q2_3','q2_4','d2_rad1'],
+html:function(){
+ var h='<div class="blk"><h3><span class="kicker k-learn">精讲</span>同一个意思，两种腔调</h3>'
+ +'<p>你的口语很好，这是资产不是问题——问题只在于：<b>作文里用错了腔</b>。口语为「当场听懂」而生，允许重复、语气词和随想随说；书面语为「反复被读」而生，词要准、句要紧、逻辑要摆在纸面上。先用耳朵感受（戴上耳机，点对听）：</p>';
+ var pairs=[
+  ['我觉得手机这东西吧，有好处也有坏处。','在我看来，手机利弊并存。'],
+  ['很多人都特别喜欢刷短视频。','短视频受到大量用户的青睐。'],
+  ['要是天天熬夜的话，身体肯定会垮。','倘若长期熬夜，健康势必受损。']];
+ pairs.forEach(function(p){
+  h+='<div class="pairrow"><div class="pr pr-oral"><b>口语腔 A</b>'+p[0]+'</div><div class="pr pr-formal"><b>文章腔 B</b>'+p[1]+'</div></div><div style="margin:-2px 0 10px">'+abBtn(p[0],p[1])+'</div>';
+ });
+ h+='<div class="tip">听出来了吗：文章腔更<b>短</b>、更<b>密</b>、没有「吧 / 的话 / 这东西」这类只在嘴上有用的零件。语体差异有一半是<b>节奏差异</b>。</div></div>';
+ h+='<div class="blk"><h3><span class="kicker k-quiz">快判</span>三秒定腔调</h3>'
+ +choiceHTML(QMAP.q2_1,1)+choiceHTML(QMAP.q2_2,2)+choiceHTML(QMAP.q2_3,3)+choiceHTML(QMAP.q2_4,4)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-play">雷达</span>口语雷达 · 第一扫</h3>'+radarHTML(DMAP.d2_rad1)+'</div>';
+ return h;
+},
+mount:function(){mountChoice('q2_1');mountChoice('q2_2');mountChoice('q2_3');mountChoice('q2_4');mountRadar('d2_rad1')}},
+/* ---------- D3 ---------- */
+{id:'d3',t:'词汇升级 · 替换表入库',s:'80 对武器 + 雷达第二扫',cards:['G1'],
+goal:'常用口语词看到就能条件反射出书面替身；通关掉落「替换表」卡，此后写作随时可翻。',
+req:[{t:'q',id:'q3_1'},{t:'q',id:'q3_2'},{t:'q',id:'q3_3'},{t:'q',id:'q3_4'},{t:'ex',id:'d3_rad1'}],
+itemIds:['q3_1','q3_2','q3_3','q3_4','d3_rad1'],
+html:function(){
+ var h='<div class="blk"><h3><span class="kicker k-learn">精讲</span>替换三步：先圈，后换，再读</h3>'
+ +'<p>升级词汇不是背字典，是建立<b>一对一的条件反射</b>。方法：写完一段后，① 圈出口语词；② 查表替换（通关后表就在右下角图鉴里）；③ 出声读一遍，确认换完仍然通顺——换词换到别扭，等于没换。'+spkBtn('先圈，后换，再读。换词换到别扭，等于没换。')+'</p>'
+ +'<div class="pairrow"><div class="pr pr-oral"><b>换前</b>我觉得这个办法挺好的，很多人都能用。</div><div class="pr pr-formal"><b>换后</b>我认为这一方案颇为可行，适用面很广。</div></div><div style="margin:-2px 0 10px">'+abBtn('我觉得这个办法挺好的，很多人都能用。','我认为这一方案颇为可行，适用面很广。')+'</div></div>';
+ h+='<div class="blk"><h3><span class="kicker k-quiz">选词</span>给句子换上正装</h3>'
+ +choiceHTML(QMAP.q3_1,1)+choiceHTML(QMAP.q3_2,2)+choiceHTML(QMAP.q3_3,3)+choiceHTML(QMAP.q3_4,4)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-play">雷达</span>口语雷达 · 第二扫（更密）</h3>'+radarHTML(DMAP.d3_rad1)+'</div>';
+ return h;
+},
+mount:function(){mountChoice('q3_1');mountChoice('q3_2');mountChoice('q3_3');mountChoice('q3_4');mountRadar('d3_rad1')}},
+/* ---------- D4 ---------- */
+{id:'d4',t:'关联词罗盘 · 句子瘦身术',s:'段落之间的螺丝钉',cards:['G2'],
+goal:'会按「关系」选关联词，而不是凭感觉；能把一段啰嗦话删瘦三成而意思不变。',
+req:[{t:'q',id:'q4_1'},{t:'q',id:'q4_2'},{t:'q',id:'q4_3'},{t:'ex',id:'d4_ord1'},{t:'micro',id:'mc4',min:60}],
+itemIds:['q4_1','q4_2','q4_3','d4_ord1'],
+html:function(){
+ var h='<div class="blk"><h3><span class="kicker k-learn">精讲</span>先定关系，再选词</h3>'
+ +'<p>关联词不是装饰，是<b>路标</b>：它告诉读者「这一句和上一句是什么关系」。所以顺序永远是——先想清关系（递进？转折？因果？），再去对应的族里挑词。六族罗盘：</p>'
+ +'<p style="font-size:14.5px;line-height:2.1">🧭 <b>递进</b>：不仅……而且 · 更有甚者　'+spkBtn('阅读不仅拓宽视野，而且训练思维。','听例句')
+ +'<br>🧭 <b>转折</b>：然而 · 诚然……但　'+spkBtn('诚然，游戏能放松身心，但沉迷其中便得不偿失。','听例句')
+ +'<br>🧭 <b>因果</b>：因此 · 究其原因　'+spkBtn('长期熬夜损害记忆，因此考前更应保证睡眠。','听例句')
+ +'<br>🧭 <b>并列</b>：一方面……另一方面　<br>🧭 <b>条件</b>：唯有……方能　<br>🧭 <b>总结</b>：综上所述 · 归根结底</p>'
+ +'<div class="tip"><b>瘦身三害</b>：「就是」「然后」「的话」——口语里的润滑剂，书面里的赘肉。写完先删这三个，句子立刻紧一圈。</div></div>';
+ h+='<div class="blk"><h3><span class="kicker k-quiz">选择</span>路标测试</h3>'
+ +choiceHTML(QMAP.q4_1,1)+choiceHTML(QMAP.q4_2,2)+choiceHTML(QMAP.q4_3,3)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-play">拼装</span>三句成段 · 按关系排队</h3>'+orderHTML(OMAP.d4_ord1)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-write">微写作</span></h3>'+microHTML('mc4','用「诚然……然而……因此……」写一段三句话，话题任选（建议：熬夜 / 游戏 / 补习）',60)+'</div>';
+ return h;
+},
+mount:function(){mountChoice('q4_1');mountChoice('q4_2');mountChoice('q4_3');mountOrder('d4_ord1')}},
+/* ---------- D5 ---------- */
+{id:'d5',t:'议论文全景 · X 光第一课',s:'看穿一篇 650 字范文的骨架',cards:['P1'],
+goal:'认识五段骨架；开启 X 光看穿一篇完整范文，再把打乱的骨架亲手装回去。',
+req:[{t:'ex',id:'x_d5_x'},{t:'ex',id:'d5_ord1'},{t:'q',id:'q5_1'}],
+itemIds:['d5_ord1','q5_1'],
+html:function(){
+ var h='<div class="blk"><h3><span class="kicker k-learn">精讲</span>五段骨架：议论文的母版</h3>'
+ +'<p>从今天起，你写的每一篇议论文都长同一副骨头：<b>引论 → 分论一 → 分论二 → 分论三 → 结论</b>。三个分论点要么<b>并列</b>（个人 / 社会 / 文化三个面），要么<b>递进</b>（是什么 → 为什么 → 怎么办）。第三分论点是黄金位——通常放「让步反驳」，那是全文思想深度所在。'+spkBtn('引论，分论一，分论二，分论三，结论。写前先用十个字写出每段的观点句。')+'</p>'
+ +'<div class="pillrow"><span class="pill" style="background:var(--qibg);color:var(--qi)">引论 · 亮观点</span><span class="pill" style="background:var(--chengbg);color:var(--cheng)">分论一</span><span class="pill" style="background:var(--chengbg);color:var(--cheng)">分论二</span><span class="pill" style="background:var(--zhuanbg);color:var(--zhuan)">分论三 · 让步反驳</span><span class="pill" style="background:var(--hebg);color:var(--he)">结论 · 升华</span></div></div>';
+ h+='<div class="blk"><h3><span class="kicker k-play">X 光</span>透视一篇真范文</h3><p style="font-size:13.5px;color:var(--sub)">先当普通读者读一遍，再点「开启 X 光」——骨架和批注会显影。左侧色条即段落角色。</p>'
+ +xrayHTML('d5_x','碎片化阅读，是敌是友？（范文 · 约 650 字）',[
+ {role:'intro',tag:'引论 · 三句式',note:'三句式：现象引题 → 亮观点（一个可被反驳的判断句）→ 定调（预告全文思路）。',
+  html:'地铁上、课间里、睡前的十分钟——人们低头刷着几百字的短文与几十秒的视频，碎片化阅读已成为这个时代最普遍的阅读姿态。有人断言它正在摧毁深度思考，也有人视之为高效获取信息的利器。<span class="xu" title="观点句">在我看来，碎片化阅读本身并无善恶，关键在于谁掌握主动权：会用者得其利，被动者受其害。</span>'},
+ {role:'body',tag:'分论一 · 利',note:'段内五步：点（门槛降低）→ 释（嵌进生活缝隙）→ 证（「三上」典故）→ 析 + 结（善用者积少成多）。',
+  html:'不可否认，碎片化阅读大幅降低了获取信息的门槛。等车的五分钟可以读完一篇科普，排队的间隙可以听半集播客——知识第一次如此轻盈地嵌进生活的缝隙。古人尚且珍惜「马上、枕上、厕上」的三上时光，今天的我们不过是用屏幕延续了同一种智慧。善用零碎时间者，积少成多，视野自宽。'},
+ {role:'body',tag:'分论二 · 弊',note:'转折起段。注意引用《论语》后立即接自己的话——引文不能替你写作文。',
+  html:'然而，若长期只满足于碎片，思维便会在不知不觉中变浅。短内容为了抓住眼球，往往只给结论、不给论证；我们看似知道了很多，实则只是<span class="xu" title="警句：收藏不等于思考">收藏了很多</span>。久而久之，注意力被切成碎屑，读一本完整的书竟成了苦役。「学而不思则罔」，只输入不消化的阅读，正是现代版的「罔」。'},
+ {role:'turn',tag:'分论三 · 让步反驳',note:'高分三步：诚然（承认对方合理处）→ 却（指出其混淆）→ 真正的解法（给出「怎么办」）。',
+  html:'诚然，有人辩称：信息爆炸的时代，不碎片化就跟不上节奏。这话有几分道理，却混淆了「获取信息」与「建构知识」两件事。真正的解法是<span class="xu" title="全文金句 · 方法论">「以整驭碎」</span>——用碎片时间做筛选和标记，把值得深读的内容留给整块时间；让碎片为深读服务，而非取而代之。'},
+ {role:'end',tag:'结论 · 两句式',note:'句 1 收束（把三个分论拧成一股绳）；句 2 升华（由「阅读」推到「人与工具的关系」）。',
+  html:'综上所述，碎片化阅读是一件工具，而工具从不为后果负责——决定成败的，是握着它的那只手。愿我们都能在信息的洪流里既拾得起碎片，也沉得下心来；驾驭工具，而不是被工具驯化。'}])
+ +'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-play">拼装台</span>把骨架亲手装回去</h3>'+orderHTML(OMAP.d5_ord1)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-quiz">加固</span></h3>'+choiceHTML(QMAP.q5_1,1)+'</div>';
+ return h;
+},
+mount:function(){mountXray('d5_x');mountOrder('d5_ord1');mountChoice('q5_1')}},
+/* ---------- D6 ---------- */
+{id:'d6',t:'开头与结尾 · 三句式与两句式',s:'掐头去尾，先把两头焊死',cards:['P2','P4'],
+goal:'掌握「引论三句式」与「结论两句式」，从此开头结尾不再抓瞎。',
+req:[{t:'ex',id:'d6_ord1'},{t:'ex',id:'d6_ab1'},{t:'q',id:'q6_1'},{t:'micro',id:'mc6',min:60}],
+itemIds:['d6_ord1','d6_ab1','q6_1'],
+html:function(){
+ var h='<div class="blk"><h3><span class="kicker k-learn">精讲</span>开头三句式</h3>'
+ +'<p><b>句 1 引题</b>（现象 / 对立观点切入）→ <b>句 2 亮观点</b>（「在我看来……」，必须是可以被反驳的判断句）→ <b>句 3 定调</b>（一句话预告全文理路）。听一遍昨天范文的开头，注意三句的功能切换：'
+ +spkBtn('地铁上、课间里、睡前的十分钟，人们低头刷着几百字的短文与几十秒的视频，碎片化阅读已成为这个时代最普遍的阅读姿态。有人断言它正在摧毁深度思考，也有人视之为高效获取信息的利器。在我看来，碎片化阅读本身并无善恶，关键在于谁掌握主动权。','听范文开头')+'</p>'
+ +'<div class="divider"></div><h3><span class="kicker k-learn">精讲</span>结尾两句式</h3>'
+ +'<p><b>句 1 收束</b>：「综上所述……」把三个分论点拧成一股绳（换说法，不照抄）。<b>句 2 升华</b>：把话题推高一层——由手机谈自律，由阅读谈时代。'
+ +spkBtn('综上所述，碎片化阅读是一件工具，而工具从不为后果负责，决定成败的，是握着它的那只手。','听范文结尾')
+ +'</p><div class="tip">结尾三禁忌：❌ 冒出新论点　❌ 突然举新例子　❌ 空喊口号（「让我们一起努力吧！」）。</div></div>';
+ h+='<div class="blk"><h3><span class="kicker k-play">拼装</span>乱序开头 · 复原三句式</h3>'+orderHTML(OMAP.d6_ord1)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-play">评审席</span>两个开头，哪个能拿分</h3>'+abHTML(AMAP.d6_ab1)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-quiz">加固</span></h3>'+choiceHTML(QMAP.q6_1,1)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-write">微写作</span></h3>'+microHTML('mc6','给题目「碎片化时代，专注力去哪儿了」写一个标准三句式开头（引题 → 亮观点 → 定调）',60)+'</div>';
+ return h;
+},
+mount:function(){mountOrder('d6_ord1');mountAB('d6_ab1');mountChoice('q6_1')}},
+/* ---------- D7 ---------- */
+{id:'d7',t:'议论段解剖 · 点释证析结',s:'一个主体段的五脏六腑',cards:['P3'],
+goal:'看到任何一段议论文字，能立刻说出每句话是「点 / 释 / 证 / 析 / 结」中的哪一步——并且永远不再漏写「析」。',
+req:[{t:'ex',id:'d7_rol1'},{t:'ex',id:'d7_ord1'},{t:'q',id:'q7_1'},{t:'micro',id:'mc7',min:50}],
+itemIds:['d7_rol1','d7_ord1','q7_1'],
+html:function(){
+ var h='<div class="blk"><h3><span class="kicker k-learn">精讲</span>无「析」不成段</h3>'
+ +'<p>一个合格的议论段有五步：<b>点</b>（观点句）→ <b>释</b>（解释观点）→ <b>证</b>（论据）→ <b>析</b>（分析论据为什么撑得住观点）→ <b>结</b>（回扣小结）。五步里最常被漏、也最值分的是<b>析</b>——例子不会自己说话，你不下锅，菜永远是生的。听一个标准段：'
+ +spkBtn('积累是学业进步的唯一捷径。所谓积累，就是把大目标拆成每天可完成的小动作。相传王羲之临池习字，日复一日，竟把一池清水洗成墨色。池水变黑并非天赋使然，而是每天都来的必然结果，量的堆叠终会撬动质的改变。可见，笨功夫才是真捷径。','听标准段')+'</p></div>';
+ h+='<div class="blk"><h3><span class="kicker k-play">标注台</span>给每句话发工牌</h3>'+rolesHTML(RMAP.d7_rol1)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-play">拼装</span>被打乱的议论段</h3>'+orderHTML(OMAP.d7_ord1)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-quiz">加固</span></h3>'+choiceHTML(QMAP.q7_1,1)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-write">微写作</span>补出缺失的「析」</h3><p style="font-size:14px">已给出：<b>点</b>「坚持与试错是科学发现的底色。」<b>证</b>「屠呦呦历经数百次提取试验失败，最终从古籍中获得灵感，发现青蒿素。」</p>'+microHTML('mc7','请补写「析」：用两句话分析这个例子为什么能证明观点（提示：失败在她那里扮演了什么角色？）',50)+'</div>';
+ return h;
+},
+mount:function(){mountRoles('d7_rol1');mountOrder('d7_ord1');mountChoice('q7_1')}},
+/* ---------- D8 ---------- */
+{id:'d8',t:'兵器谱 · 上 ＋ 全模板首作',s:'例证 · 引证 · 对比 → 第一篇完整议论文',w:1,cards:['W1','W2','W3'],
+goal:'认识前三种论证兵器；带着完整脚手架，写出训练营第一篇 450 字以上的五段议论文。',
+req:[{t:'q',id:'q8_1'},{t:'q',id:'q8_2'},{t:'q',id:'q8_3'},{t:'essay',id:'w8',min:450,ck:6}],
+itemIds:['q8_1','q8_2','q8_3','w8'],
+html:function(){
+ var h='<div class="blk"><h3><span class="kicker k-learn">精讲</span>三件兵器</h3>'
+ +'<p>⚔️ <b>例证法</b>：举事实。「屠呦呦历经数百次失败终获青蒿素，便是明证。」'+spkBtn('坚持方能成事。屠呦呦历经数百次提取失败仍不放弃，终获青蒿素，便是明证。')
+ +'<br>⚔️ <b>引证法</b>：借权威。「正如荀子所言：不积跬步，无以至千里。」'+spkBtn('正如荀子所言，不积跬步，无以至千里。积累从来不是笨办法，而是唯一的办法。')
+ +'<br>⚔️ <b>对比论证</b>：正反照。「同样面对失利，有人一蹶不振，苏轼却吟出一蓑烟雨任平生。」'+spkBtn('同样面对失利，有人一蹶不振，苏轼却吟出一蓑烟雨任平生。境界高下，正在于此。')
+ +'</p><div class="tip">通关掉落三张兵器卡。写作时打开图鉴，兵器上都印着<b>触发句式</b>——照着起笔就行。</div></div>';
+ h+='<div class="blk"><h3><span class="kicker k-quiz">辨识</span>这一击用的是什么兵器</h3>'
+ +choiceHTML(QMAP.q8_1,1)+choiceHTML(QMAP.q8_2,2)+choiceHTML(QMAP.q8_3,3)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-write">写作</span>全模板首作（脚手架满配）</h3>'
+ +essayHTML({id:'w8',minChars:450,
+  prompt:'<p class="stem"><b>题目：</b>中学生该不该拥有自己的手机？（450 字以上）</p>'
+  +'<div class="tip"><b>脚手架 · 每段照这个起笔：</b><br>① 引论：放学铃一响……（现象）＋ 在我看来……（观点）＋ 一句定调<br>② 分论一（利）：手机首先是＿＿。＋ 释 ＋ 证（例 / 引）＋ 析 ＋ 结<br>③ 分论二（弊）：然而，＿＿。＋ 五步走<br>④ 分论三（怎么办）：诚然，有人认为＿＿，但＿＿。真正的关键在于＿＿。<br>⑤ 结论：综上所述……（收束）＋ 升华一句<br>兵器至少用两种；素材不够就打开右下角图鉴现翻。</div>',
+  checklist:['开头是标准三句式','三个分论点各只说一件事，互不重复','每个主体段都有「析」','用了至少两种论证兵器','按替换表清扫过口语词','结尾两句式：收束 + 升华'],
+  model:'<div class="quote"><b>参考范文 · 手机：立规则，再拥有（约 560 字）</b><br><br>放学铃一响，教室里此起彼伏地亮起屏幕——手机早已长在了许多中学生的手心里。有人主张一禁了之，也有人认为放任自由。在我看来，中学生可以拥有手机，但必须<b>先有规则，再有手机</b>：无规则的拥有是失控，有规则的拥有才是成长。<br><br>手机首先是一件高效的学习与联络工具。查一个生词、约一次讨论、在通勤路上听一段课程，皆可在方寸之间完成；遇到突发情况，它更是与家人之间最快的一条线。工具本身并不制造问题，恰如一把菜刀，握在厨师手里是生产力。善用者，让手机为学习开路。<br><br>然而，无规则的手机极易反客为主。短视频与游戏以分钟为单位切割注意力，令完整的作业时间支离破碎；深夜的屏幕光则一点点偷走睡眠。据全国国民阅读调查，成年人日均手机接触已超过一百分钟——自控力尚在发育的中学生，只会更难抽身。此时不是人在用手机，而是手机在用人。<br><br>诚然，有人担心「一给就沉迷」，主张彻底禁止。这种担忧不无道理，却混淆了「工具」与「使用方式」：真正让人沉迷的不是手机，而是无边界的使用。与其一禁了之，不如与父母约法三章——定时段、定场景、作业优先，让规则先于欲望到场。<br><br>综上所述，手机之利在联通与效率，其弊在失序与沉迷，而化弊为利的钥匙是规则。愿我们都能做工具的主人：先立规矩，再握手机——驾驭它，而不是被它驯化。<br><br><span style="font-size:12.5px;color:var(--sub)">🖊 简批：五段完整；每段先「点」后「析」；第四段是标准让步反驳；引用了图鉴里的 M15 数据素材；结尾回扣「工具与人」完成升华。对照你的版本：你的「析」够不够两句？</span></div>'})
+ +'</div>';
+ return h;
+},
+mount:function(){mountChoice('q8_1');mountChoice('q8_2');mountChoice('q8_3');mountEssay({id:'w8',minChars:450,checklist:[1,1,1,1,1,1],model:1})}},
+/* ---------- D9 ---------- */
+{id:'d9',t:'兵器谱 · 下',s:'因果 · 比喻 · 让步反驳（高分手）',cards:['W4','W5','W6'],
+goal:'补齐后三种兵器，重点吃透「让步反驳」——它是把中档作文与高分作文区分开的那一招。',
+req:[{t:'q',id:'q9_1'},{t:'q',id:'q9_2'},{t:'q',id:'q9_3'},{t:'ex',id:'d9_ab1'},{t:'micro',id:'mc9',min:90}],
+itemIds:['q9_1','q9_2','q9_3','d9_ab1'],
+html:function(){
+ var h='<div class="blk"><h3><span class="kicker k-learn">精讲</span>后三件兵器</h3>'
+ +'<p>⚔️ <b>因果论证</b>：向下挖一层「为什么」。'+spkBtn('碎片化阅读之所以令人焦虑，究其原因，是它只喂给我们结论，却抽走了得出结论的过程。')
+ +'<br>⚔️ <b>比喻论证</b>：把抽象说活。'+spkBtn('范式犹如脚手架，楼没起来时离不得，楼起来后必须拆。')
+ +'<br>⚔️ <b>让步反驳</b>（高分手）：先让一步，再反一军。三步式——<b>诚然</b>（承认对方合理处）→ <b>然而</b>（指出局限）→ <b>因此</b>（重申己方）。'+spkBtn('诚然，兼职会占用学习时间。但真正偷走时间的从来不是兼职本身，而是没有规划的生活。')
+ +'</p><div class="tip">让步的诚意决定反驳的力度：对方的理由要挑<b>最强的</b>那条来让，立个稻草人一推就倒，考官看得出来。</div></div>';
+ h+='<div class="blk"><h3><span class="kicker k-quiz">辨识</span></h3>'
+ +choiceHTML(QMAP.q9_1,1)+choiceHTML(QMAP.q9_2,2)+choiceHTML(QMAP.q9_3,3)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-play">评审席</span>真让步 vs 假让步</h3>'+abHTML(AMAP.d9_ab1)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-write">微写作</span></h3>'+microHTML('mc9','就「中学生玩电子游戏」写一个完整的让步反驳段：诚然……然而……因此……（对方最强的理由是什么？先让它）',90)+'</div>';
+ return h;
+},
+mount:function(){mountChoice('q9_1');mountChoice('q9_2');mountChoice('q9_3');mountAB('d9_ab1')}},
+/* ---------- D10 ---------- */
+{id:'d10',t:'素材军火库 · 一材多用',s:'15 张万能论据卡整箱入库',cards:['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15'],
+goal:'结构再好，弹药为零也打不响。今天把 15 张跨主题素材卡全部入库，并练会「一材多用」。',
+req:[{t:'ex',id:'d10_flip'},{t:'q',id:'q10_1'},{t:'q',id:'q10_2'},{t:'q',id:'q10_3'},{t:'micro',id:'mc10',min:100}],
+itemIds:['d10_flip','q10_1','q10_2','q10_3'],
+html:function(){
+ var h='<div class="blk"><h3><span class="kicker k-learn">精讲</span>素材的正确打开方式</h3>'
+ +'<p>口语好的同学最大的隐形短板往往不是结构，而是<b>论据库存为零</b>——观点立住了，例子空着。解决办法不是背一百个，而是把 15 个吃透：每张卡都标了「适用论点」，一个素材从不同角度切，能供三四个论点用（这叫<b>一材多用</b>）。逐张翻看下面的卡，翻完自动入库图鉴。</p></div>';
+ h+='<div class="blk"><h3><span class="kicker k-play">翻牌</span>15 连抽 · 全部入库</h3>'+flipHTML('d10_flip',['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15'])+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-quiz">配对</span>素材与论点的婚配</h3>'
+ +choiceHTML(QMAP.q10_1,1)+choiceHTML(QMAP.q10_2,2)+choiceHTML(QMAP.q10_3,3)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-write">微写作</span></h3>'+microHTML('mc10','为论点「失败是成长的必修课」写「证 + 析」：从刚翻的 15 张卡里任选一张做论据（一两句），再用两句分析它为何撑得住论点',100)+'</div>';
+ return h;
+},
+mount:function(){mountFlips('d10_flip',['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M13','M14','M15']);mountChoice('q10_1');mountChoice('q10_2');mountChoice('q10_3')}},
+/* ---------- D11 ---------- */
+{id:'d11',t:'指导性写作 · 信息流水线',s:'0509 试卷一的核心题型',cards:['P5'],
+goal:'学会「圈 → 分 → 重组 → 成文」四步流水线；牢记考官红线：照抄材料原句的作文不能得高分。',
+req:[{t:'ex',id:'d11_cls1'},{t:'ex',id:'d11_ord1'},{t:'q',id:'q11_1'}],
+itemIds:['d11_cls1','d11_ord1','q11_1'],
+html:function(){
+ var h='<div class="blk"><h3><span class="kicker k-learn">精讲</span>什么是指导性写作</h3>'
+ +'<p>考卷给你<b>两则观点相反的材料</b>，要求你读懂、提取信息，再以指定身份和文体（信件 / 邮件 / 文章）写出<b>自己的</b>观点文。它考的不是文采，是<b>信息处理</b>：① <b>圈</b>出全部信息点（通常 6–8 个）→ ② 按「支持 / 反对 / 背景」<b>分</b>类 → ③ <b>重组</b>：换成自己的话、重新排队 → ④ <b>成文</b>。'+spkBtn('圈，分，重组，成文。抄材料原句，等于把零分抄进作文。')+'</p>'
+ +'<div class="tip"><b>考官红线</b>：整句照抄材料、不重组措辞的作文<b>没有说服力，不能得高分</b>——这是剑桥考官报告反复点名的失分模式。重组 = 换词 + 换序 + 换视角，缺一不可。</div></div>';
+ h+='<div class="blk"><h3><span class="kicker k-learn">材料</span>今天的两则材料（考场仿真 · 自撰）</h3>'
+ +'<div class="quote"><b>材料 A 《兼职是一堂提前的社会课》</b>（校刊 · 学生来稿）<br>上学期我在一家饮品店做周末兼职。为了不迟到，我第一次主动定了闹钟——那种「有人等着我」的责任感，是课堂给不了的。第一次拿到自己挣的两百多元，我才真正明白了父母工资单背后的分量，也开始学着记账。柜台前形形色色的顾客，逼着我学会了跟陌生人清楚、礼貌地说话。更意外的是，排班表和库存单让我发现自己对经营管理很感兴趣——这也许会影响我将来选专业。<span class="src">'+spkBtn('上学期我在一家饮品店做周末兼职。为了不迟到，我第一次主动定了闹钟，那种有人等着我的责任感，是课堂给不了的。第一次拿到自己挣的两百多元，我才真正明白了父母工资单背后的分量，也开始学着记账。柜台前形形色色的顾客，逼着我学会了跟陌生人清楚礼貌地说话。更意外的是，排班表和库存单让我发现自己对经营管理很感兴趣，这也许会影响我将来选专业。','整段朗读 A')+'</span></div>'
+ +'<div class="quote"><b>材料 B 《别让兼职偷走你的高中》</b>（班主任 · 王老师）<br>我不反对劳动，但反对用高中的黄金时间去做低回报的重复劳动。人的精力是有限的：我带过的学生里，凡是周末连续打工的，下学期成绩几乎都有下滑。端盘子、贴标签这类工作练不出真本事，成长价值很低。未成年人在外工作还面临安全与权益风险——超时、欠薪时常发生。同样的时间，参加社团、读几本好书、做一个研究小项目，对升学和成长的回报都远高于时薪二十元。<span class="src">'+spkBtn('我不反对劳动，但反对用高中的黄金时间去做低回报的重复劳动。人的精力是有限的，我带过的学生里，凡是周末连续打工的，下学期成绩几乎都有下滑。端盘子贴标签这类工作练不出真本事，成长价值很低。未成年人在外工作还面临安全与权益风险，超时欠薪时常发生。同样的时间，参加社团，读几本好书，做一个研究小项目，对升学和成长的回报都远高于时薪二十元。','整段朗读 B')+'</span></div></div>';
+ h+='<div class="blk"><h3><span class="kicker k-play">流水线 ①②</span>圈 + 分：给信息点发工牌</h3>'+rolesHTML(RMAP.d11_cls1)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-play">流水线 ③</span>重组：把提纲排成自己的队</h3>'+orderHTML(OMAP.d11_ord1)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-quiz">红线</span></h3>'+choiceHTML(QMAP.q11_1,1)+'</div>';
+ return h;
+},
+mount:function(){mountRoles('d11_cls1');mountOrder('d11_ord1');mountChoice('q11_1')}},
+/* ---------- D12 ---------- */
+{id:'d12',t:'指导性写作实战 · 一封信',s:'半模板：只给功能，不给句子',w:1,cards:[],
+goal:'用昨天的四步流水线独立完成一封 300–350 字的读者来信——脚手架从今天开始拆一半。',
+req:[{t:'essay',id:'w12',min:280,ck:5}],itemIds:['w12'],
+html:function(){
+ var h='<div class="blk"><h3><span class="kicker k-learn">任务书</span></h3>'
+ +'<p>校刊「观点版」正在就<b>「中学生假期兼职」</b>征集读者来信。请结合昨天的材料 A 与 B（可回第 11 关翻看，图鉴里也有 P5 流程卡），写一封 300–350 字的信，表明你的立场。</p>'
+ +'<div class="tip"><b>半模板（只给每段功能）</b>：称呼「编辑你好：」→ ① 亮明立场 → ② 谈收获（用 A 的信息点，换自己的话）→ ③ 正视风险（用 B 的信息点）→ ④ 给出你的条件或建议 → ⑤ 一句收束 → 落款「一名高一读者」。<br>硬要求：A、B 各至少用两个信息点且<b>全部换说法</b>；用一次「诚然……然而……」。</div></div>';
+ h+='<div class="blk"><h3><span class="kicker k-write">写作</span></h3>'
+ +essayHTML({id:'w12',minChars:280,
+  prompt:'<p class="stem"><b>题目：</b>就「中学生假期兼职」给校刊写一封读者来信（300–350 字）。</p>',
+  checklist:['有称呼「编辑你好：」和落款「一名高一读者」','我的立场可以用一句话复述出来','覆盖了材料 A 的至少两个信息点，且换了说法','覆盖了材料 B 的至少两个信息点，且换了说法','用了「诚然……然而……」或同族让步句式'],
+  model:'<div class="quote"><b>参考信（约 330 字）</b><br><br>编辑你好：<br><br>读了贵刊关于假期兼职的两篇文章，我想表明自己的立场：我<b>有条件地支持</b>中学生假期兼职——兼职应当是一门「选修课」，而不是必修课，更不是主课。<br><br>兼职的价值是真实的。一份「有人等着我」的工作能逼出课堂给不了的责任感与守时习惯；亲手挣到的第一笔钱，会让人重新掂量劳动与金钱的分量；柜台前的沟通，则是最便宜的社交训练场。有人甚至由此摸到了自己未来的专业方向。<br><br>诚然，反对者的担忧并非多虑：精力有限，长期打工确有拖累学业之虞；重复性劳动的成长回报偏低，安全与权益风险也不容忽视。然而，这些是「无节制兼职」的代价，而非兼职本身的原罪。<br><br>因此我建议给兼职装上三道闸门：只在假期、每周不超过两个半天；学业任务优先完成；家长知情并把关工作环境。有闸门的水才是灌溉，没闸门的水只会淹田。<br><br>一名高一读者<br><br><span style="font-size:12.5px;color:var(--sub)">🖊 简批：立场一句可复述；A 取了责任 / 金钱观 / 沟通 / 兴趣四点、B 取了精力 / 低成长 / 风险三点，全部换了说法；第四段是标准让步反驳；结尾用比喻收束。</span></div>'})
+ +'</div>';
+ return h;
+},
+mount:function(){mountEssay({id:'w12',minChars:280,checklist:[1,1,1,1,1],model:1})}},
+/* ---------- D13 ---------- */
+{id:'d13',t:'评论入门 · 点证析联',s:'通往 IBDP 中文A 的第一块桥板',cards:['P6','T1','T2','T3','T4','T5','T6','T7','T8'],
+goal:'搞清「议论文」与「文本评论」的区别；掌握评论段的语法「点证析联」，并牢记红线：只报手法名 = 零分句。',
+req:[{t:'ex',id:'x_d13_x'},{t:'ex',id:'d13_rol1'},{t:'ex',id:'d13_flip'},{t:'q',id:'q13_1'}],
+itemIds:['d13_rol1','d13_flip','q13_1'],
+html:function(){
+ var h='<div class="blk"><h3><span class="kicker k-learn">精讲</span>换一种写作：从「谈观点」到「拆文本」</h3>'
+ +'<p>议论文是<b>你</b>对世界发表观点；文本评论是你分析<b>作者</b>怎样用文字制造效果——这是 DP 中文A 的主战场，G10 就要开始铺桥。评论段的语法是<b>点证析联</b>：<b>点</b>（作者用了什么手法、想干什么）→ <b>证</b>（短引原文，加引号）→ <b>析</b>（这个手法<b>如何</b>产生效果）→ <b>联</b>（联回全文主旨或读者感受）。'
+ +'</p><div class="tip"><b>红线</b>：「作者用了排比」是<b>零分句</b>——只报菜名不上菜。必须回答「如何」：排比制造了什么节奏？节奏又推着读者产生了什么感受？</div></div>';
+ h+='<div class="blk"><h3><span class="kicker k-learn">文本</span>朱自清《匆匆》· 首段（1922）</h3>'
+ +'<div class="quote">燕子去了，有再来的时候；杨柳枯了，有再青的时候；桃花谢了，有再开的时候。但是，聪明的，你告诉我，我们的日子为什么一去不复返呢？<span class="src">'+spkBtn('燕子去了，有再来的时候。杨柳枯了，有再青的时候。桃花谢了，有再开的时候。但是，聪明的，你告诉我，我们的日子为什么一去不复返呢？','朗读原文')+'　朱自清《匆匆》，1922 年（公版）</span></div></div>';
+ h+='<div class="blk"><h3><span class="kicker k-play">X 光</span>一个满分评论段长什么样</h3>'
+ +xrayHTML('d13_x','示范评论段 · 拆《匆匆》首段',[
+ {role:'intro',tag:'点',note:'第一句就亮出「手法 + 意图」，绝不绕弯。',html:'开篇，作者以一组排比铺陈自然的循环，为的是给「日子」的一去不返蓄力。'},
+ {role:'body',tag:'证',note:'短引 + 引号。引文要短到不能再短——它是证物，不是凑字数。',html:'「燕子去了，有再来的时候；杨柳枯了，有再青的时候；桃花谢了，有再开的时候」，三个分句结构如一。'},
+ {role:'turn',tag:'析',note:'「析」至少两句，回答「如何产生效果」——这是评论段的发动机。',html:'三个「有再……的时候」制造出循环往复的节奏，仿佛万物都握着重来的门票；而「但是」一字陡转，把这份从容猛地抽走——前面的循环铺得越满，此处「一去不复返」的失落便越重，这正是以乐写哀的笔法。'},
+ {role:'end',tag:'联',note:'联回全文：这段效果为整篇文章做了什么。',html:'这一扬一抑，为全文的时间之叹定下基调，也把读者一并拖入那句无人能答的追问之中。'}])
+ +'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-play">标注台</span>第二个评论段 · 你来发工牌</h3>'+rolesHTML(RMAP.d13_rol1)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-play">翻牌</span>手法术语 · 第一批 8 张</h3>'+flipHTML('d13_flip',['T1','T2','T3','T4','T5','T6','T7','T8'])+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-quiz">辨识</span></h3>'+choiceHTML(QMAP.q13_1,1)+'</div>';
+ return h;
+},
+mount:function(){mountXray('d13_x');mountRoles('d13_rol1');mountFlips('d13_flip',['T1','T2','T3','T4','T5','T6','T7','T8']);mountChoice('q13_1')}},
+/* ---------- D14 ---------- */
+{id:'d14',t:'手法武库 · 25 张集齐',s:'辨识训练 + 效果句式骨架',cards:['P7','T9','T10','T11','T12','T13','T14','T15','T16','T17','T18','T19','T20','T21','T22','T23','T24','T25'],
+goal:'集齐 25 张手法卡；练到看见句子三秒报出手法，并能套「效果句式」说出它的作用。',
+req:[{t:'ex',id:'d14_flip'},{t:'q',id:'q14_1'},{t:'q',id:'q14_2'},{t:'q',id:'q14_3'},{t:'q',id:'q14_4'}],
+itemIds:['d14_flip','q14_1','q14_2','q14_3','q14_4'],
+html:function(){
+ var h='<div class="blk"><h3><span class="kicker k-learn">精讲</span>手法卡的正确用法</h3>'
+ +'<p>25 张卡不是让你背定义，而是给你一套<b>效果句式</b>（通关掉落 P7 骨架卡）：「作者通过____，营造出____，从而____。」看到手法 → 翻卡 → 套句式 → 一句合格的「析」就出炉了。先把第二批 17 张翻完入库：</p></div>';
+ h+='<div class="blk"><h3><span class="kicker k-play">翻牌</span>17 连抽</h3>'+flipHTML('d14_flip',['T9','T10','T11','T12','T13','T14','T15','T16','T17','T18','T19','T20','T21','T22','T23','T24','T25'])+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-quiz">辨识</span>三秒报手法</h3>'
+ +choiceHTML(QMAP.q14_1,1)+choiceHTML(QMAP.q14_2,2)+choiceHTML(QMAP.q14_3,3)+choiceHTML(QMAP.q14_4,4)+'</div>';
+ return h;
+},
+mount:function(){mountFlips('d14_flip',['T9','T10','T11','T12','T13','T14','T15','T16','T17','T18','T19','T20','T21','T22','T23','T24','T25']);mountChoice('q14_1');mountChoice('q14_2');mountChoice('q14_3');mountChoice('q14_4')}},
+/* ---------- D15 ---------- */
+{id:'d15',t:'文体雷达 · 谁在说话',s:'DP Paper 1 的入门嗅觉',cards:['Y1','Y2','Y3','Y4','Y5'],
+goal:'拿到一段陌生文字，能从「读者 + 目的 + 语言标志」三件套判断它的文体。',
+req:[{t:'q',id:'q15_1'},{t:'q',id:'q15_2'},{t:'q',id:'q15_3'},{t:'micro',id:'mc15',min:50}],
+itemIds:['q15_1','q15_2','q15_3'],
+html:function(){
+ var h='<div class="blk"><h3><span class="kicker k-learn">精讲</span>文体 = 读者 × 目的 × 语言标志</h3>'
+ +'<p>DP 中文A 试卷一会甩给你一篇非文学文本（博客 / 演讲 / 新闻 / 广告 / 访谈……），第一问永远是：<b>这是什么文体、写给谁、想干什么</b>。判断口诀三件套：① 它假想的<b>读者</b>是谁？② 它想让读者<b>做什么 / 信什么</b>？③ 有哪些<b>语言标志</b>（称呼语？祈使句？消息来源？问答体？）。通关掉落 5 张文体卡，标志全在卡上。'+spkBtn('读者是谁，目的是什么，语言标志有哪些。三问一过，文体自现。')+'</p></div>';
+ h+='<div class="blk"><h3><span class="kicker k-quiz">嗅觉测试</span>判断下列片段的文体</h3>'
+ +choiceHTML(QMAP.q15_1,1)+choiceHTML(QMAP.q15_2,2)+choiceHTML(QMAP.q15_3,3)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-write">微写作</span>一料两吃</h3>'+microHTML('mc15','同一条信息——「学校下月将举办读书周」——请分别写：① 一句新闻导语（何时何地何人何事，客观口吻）；② 一句广告口号（短促、有鼓动性，可用双关或对偶）',50)+'</div>';
+ return h;
+},
+mount:function(){mountChoice('q15_1');mountChoice('q15_2');mountChoice('q15_3')}},
+/* ---------- D16 ---------- */
+{id:'d16',t:'评论实战 · 秋夜的枣树',s:'第一次独立写文本评论',w:1,cards:[],
+goal:'用「点证析联」独立写出两段文本评论——这是 DP 中文A 的最小作战单元。',
+req:[{t:'essay',id:'w16',min:260,ck:5}],itemIds:['w16'],
+html:function(){
+ var h='<div class="blk"><h3><span class="kicker k-learn">文本</span>鲁迅《秋夜》· 开头（1924）</h3>'
+ +'<div class="quote">在我的后园，可以看见墙外有两株树，一株是枣树，还有一株也是枣树。这上面的夜的天空，奇怪而高，我生平没有见过这样奇怪而高的天空。他仿佛要离开人间而去，使人们仰面不再看见。<span class="src">'+spkBtn('在我的后园，可以看见墙外有两株树，一株是枣树，还有一株也是枣树。这上面的夜的天空，奇怪而高，我生平没有见过这样奇怪而高的天空。他仿佛要离开人间而去，使人们仰面不再看见。','朗读原文')+'　鲁迅《秋夜》，1924 年（公版）</span></div>'
+ +'<div class="tip">两个抓手已替你圈好：① 「一株是枣树，还有一株也是枣树」——明明可以说「有两株枣树」，作者偏不。这是<b>反复</b>造成的陌生化：句子被拉长、放慢，逼你一株一株地看。它像什么？为什么开篇要这样慢？② 天空被写成「他」，「奇怪而高」「仿佛要离开人间而去」——<b>拟人</b>之下，天空成了一个疏远、冷漠、想抽身而去的存在。</div></div>';
+ h+='<div class="blk"><h3><span class="kicker k-write">写作</span>两段点证析联（各一个抓手）</h3>'
+ +essayHTML({id:'w16',minChars:260,
+  prompt:'<p class="stem"><b>任务：</b>就上面两个抓手各写一段评论，每段都按「点 → 证 → 析 → 联」推进，合计 260 字以上。手法卡和效果句式（P7）就在右下角图鉴里，随时翻。</p>',
+  checklist:['每段第一句都是「点」（手法 + 意图）','每段都有带引号的短引','每段的「析」不少于两句，且回答了「如何产生效果」','至少套用了一次图鉴 P7 里的效果句式','没有「作者用了××」就完事的贴标签句'],
+  model:'<div class="quote"><b>参考评论（约 350 字）</b><br><br>开篇，作者以反复的笔法写树，为的是让寻常景物变得陌生。「一株是枣树，还有一株也是枣树」——本可一笔带过的信息被刻意拆成两半，句子因此变慢、变重，读者被迫像作者一样，把目光在两株树上逐一停留。这种近乎笨拙的重复，恰恰滤掉了观景的轻快，让开篇就笼上一层孤寂而固执的调子，也为整篇夜的独语定了速度。<br><br>继而，作者将夜空拟人化，以写出它的冷漠与疏离。天空被称作「他」，「奇怪而高」，甚至「仿佛要离开人间而去」——本应笼罩万物的夜空，竟成了一个急于抽身、不愿与人间相认的存在。「离开」与「不再看见」两词，把物理的高远改写成情感上的弃绝，天地之间由此拉开一道冷冷的缝隙。这份被天空「背过身去」的孤独感，正是全文夜之寒意的源头，也让后文枣树独自直刺天空的姿态，有了对手与分量。<br><br><span style="font-size:12.5px;color:var(--sub)">🖊 简批：两段第一句都是「点」；引文短而带引号；「析」各三句以上，全部在回答「如何」；结尾各有一句「联」。对照自查：你的「析」是否也在讲机制，而不是复述内容？</span></div>'})
+ +'</div>';
+ return h;
+},
+mount:function(){mountEssay({id:'w16',minChars:260,checklist:[1,1,1,1,1],model:1})}},
+/* ---------- D17 ---------- */
+{id:'d17',t:'综合体检 · 拆脚手架',s:'四大能力混合抽查 + 时间分配',cards:['P8'],
+goal:'混合抽查语体 / 论证 / 手法 / 关联词四项基本功；学会 45 分钟考场切分法；把复习队列清零。',
+req:[{t:'ex',id:'d17_ord1'},{t:'q',id:'q17_1'},{t:'q',id:'q17_2'},{t:'q',id:'q17_3'},{t:'q',id:'q17_4'}],
+itemIds:['d17_ord1','q17_1','q17_2','q17_3','q17_4'],
+html:function(){
+ var h='<div class="blk"><h3><span class="kicker k-learn">精讲</span>45 分钟怎么切</h3>'
+ +'<p>明天就是全真限时卷。考场时间这样切：<b>审题 3 分钟</b>（圈题眼，定立场）→ <b>提纲 5 分钟</b>（五段各写 10 字观点句 + 选好素材卡）→ <b>写作 32 分钟</b>（每段约 6 分钟，卡住就跳）→ <b>检查 5 分钟</b>（专查错别字、口语词、关联词、结尾升华）。'+spkBtn('三分钟审题，五分钟提纲，三十二分钟写作，五分钟检查。宁可每段短，不可缺一段。')+'</p>'
+ +'<div class="tip">今天还有一项硬任务：回首页把<b>复习队列清零</b>——那里躺着的都是你真实的弱点，明天考场不会放过它们。</div></div>';
+ h+='<div class="blk"><h3><span class="kicker k-play">裸拼</span>无标签骨架拼装（新题：合作与竞争）</h3>'+orderHTML(OMAP.d17_ord1)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-quiz">四科联考</span></h3>'
+ +choiceHTML(QMAP.q17_1,1)+choiceHTML(QMAP.q17_2,2)+choiceHTML(QMAP.q17_3,3)+choiceHTML(QMAP.q17_4,4)+'</div>';
+ return h;
+},
+mount:function(){mountOrder('d17_ord1');mountChoice('q17_1');mountChoice('q17_2');mountChoice('q17_3');mountChoice('q17_4')}},
+/* ---------- D18 ---------- */
+{id:'d18',t:'全真限时 · 打字卷',s:'45 分钟 · 550 字起 · 零脚手架',w:1,cards:[],
+goal:'第一次全真模拟：无模板、无提示，45 分钟内独立完成一篇 550 字以上的议论文。',
+req:[{t:'essay',id:'w18',min:550,ck:5}],itemIds:['w18'],
+html:function(){
+ var h='<div class="blk"><h3><span class="kicker k-learn">考前一分钟</span></h3>'
+ +'<p>脚手架今天全拆。你手里有的：五段骨架（P1）、三句式两句式（P2 / P4）、点释证析结（P3）、六件兵器（W1–W6）、15 张素材卡、45 分钟切分法（P8）——全在图鉴里，但<b>开考后尽量不翻</b>，考场没有图鉴。点「开始限时」即视为开考。</p></div>';
+ h+='<div class="blk"><h3><span class="kicker k-write">全真卷</span></h3>'
+ +essayHTML({id:'w18',minChars:550,timed:45,
+  prompt:'<p class="stem"><b>题目：</b>人工智能时代，我们还需要背诵与记忆吗？<br><span style="font-size:13px;color:var(--sub)">写一篇不少于 550 字的议论文，观点明确，论证充分。</span></p>',
+  checklist:['结构五段完整（引论 + 三分论 + 结论）','我的观点可以用一句话复述','用了让步反驳','引用与事例至少各一','留出了约 5 分钟检查，并实际改掉了错别字 / 口语词'],
+  model:'<div class="quote"><b>参考范文 · 背诵不死，只是升级（约 620 字）</b><br><br>「都能搜到，为什么还要背？」——人工智能时代，这句反问几乎成了拒绝背诵的通行证。的确，机器的记忆又大又准，人脑似乎已无必要与之竞赛。但在我看来，越是外包记忆的时代，越需要背诵：<b>该升级的是背什么、怎么背，而不是要不要背</b>。<br><br>背诵首先是思考的原材料仓库。思维从不凭空运转，它靠调用脑内已有之物完成连接；正如荀子所言，「不积跬步，无以至千里」——没有存货的头脑，搜索再快也只是过路的驿站。诗句、公式、史实烂熟于心，灵感才有燃料可点。<br><br>更进一步，背诵在塑造大脑本身。记忆的过程即反复提取、组织与编码的过程，这份「慢功夫」恰是专注力与理解力的健身房。屠呦呦能从古籍的字缝里认出低温提取的灵感，靠的正是常年积累在胸中的知识底盘——机会只提示有准备的大脑，而准备，写在记忆里。<br><br>诚然，有人认为背诵是应试的遗产，理解才是王道。这话对了一半：死记硬背确应淘汰，但「理解」与「记忆」从来不是对手——不被记住的理解，考场上调不出，生活里用不上。真正该做的，是把背诵从机械复读升级为理解之上的内化：先懂，再背，背到能用。<br><br>综上所述，人工智能接管的是「存储」，接管不了「内化」。愿我们在把琐碎交给机器的同时，把最好的诗句、最硬的原理留在自己心里——因为决定一个人思想高度的，从来不是他能搜到什么，而是他随身带着什么。<br><br><span style="font-size:12.5px;color:var(--sub)">🖊 简批：开头以反问引题；两个分论递进（仓库 → 健身房）；第四段让步反驳并给出「怎么办」；引证（荀子）与例证（屠呦呦）各一；结尾升华到「搜到 vs 带着」。写完后逐段对照。</span></div>'})
+ +'</div>';
+ return h;
+},
+mount:function(){mountEssay({id:'w18',minChars:550,timed:45,checklist:[1,1,1,1,1],model:1})}},
+/* ---------- D19 ---------- */
+{id:'d19',t:'升格工坊 · 自评与改写',s:'学会像考官一样看自己的文章',cards:[],
+goal:'掌握四条评分标准的通俗版；能诊断一段文字的「病」，并对症升格重写。',
+req:[{t:'ex',id:'d19_ab1'},{t:'ex',id:'d19_ab2'},{t:'q',id:'q19_1'},{t:'micro',id:'mc19',min:120}],
+itemIds:['d19_ab1','d19_ab2','q19_1'],
+html:function(){
+ var h='<div class="blk"><h3><span class="kicker k-learn">精讲</span>考官的四把尺子（通俗版）</h3>'
+ +'<p>📏 <b>A 理解与阐释</b>：你真的看懂题 / 文本了吗？观点是否有据？<br>📏 <b>B 分析与评价</b>：有没有「析」？是在分析机制，还是在复述内容？<br>📏 <b>C 聚焦与组织</b>：结构完整吗？每段只说一件事吗？段间有路标吗？<br>📏 <b>D 语言</b>：书面语体？准确？口语词与错别字清干净了吗？<br>自评口诀：<b>先看 C（骨架），再看 B（发动机），最后扫 D（皮肤）</b>——A 藏在前三者之中。'+spkBtn('先看结构，再看分析，最后扫语言。')+'</p></div>';
+ h+='<div class="blk"><h3><span class="kicker k-play">会诊 ①</span>议论段：缺了什么</h3>'+abHTML(AMAP.d19_ab1)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-play">会诊 ②</span>评论段：贴标签之罪</h3>'+abHTML(AMAP.d19_ab2)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-quiz">开药方</span></h3>'+choiceHTML(QMAP.q19_1,1)+'</div>';
+ h+='<div class="blk"><h3><span class="kicker k-write">升格实操</span></h3>'+microHTML('mc19','回到第 18 关，把你那篇限时作文里最弱的一段复制过来想一想，然后在这里升格重写：补「析」、清口语、加路标（不必抄原段，直接贴重写后的版本）',120)+'</div>';
+ return h;
+},
+mount:function(){mountAB('d19_ab1');mountAB('d19_ab2');mountChoice('q19_1')}},
+/* ---------- D20 ---------- */
+{id:'d20',t:'终局 · 手写卷',s:'纸笔 45 分钟 · 拍照交卷',w:1,cards:[],
+goal:'考试终究是手写的。最后一关回到纸笔：限时 45 分钟写完 600 字，拍照发给爸爸，由 Claude 教练人工批改。',
+req:[{t:'essay',id:'w20',min:60,ck:4}],itemIds:['w20'],
+html:function(){
+ var h='<div class="blk"><h3><span class="kicker k-learn">终局规则</span></h3>'
+ +'<p>① 准备两张作文纸和一支顺手的笔；② 手机开 45 分钟倒计时后<b>反扣在桌角</b>；③ 在纸上完成下面的题目（约 600 字）；④ 写完<b>拍照发给爸爸</b>——照片会交给 Claude 教练逐段批改；⑤ 回到本页：把你的<b>五段提纲</b>（每段一句观点句）登记进文本框，勾完自查清单，训练营即通关。'+spkBtn('纸上见真章。四十五分钟，六百字，写完拍照交卷。')+'</p>'
+ +'<div class="quote"><b>终局题目：</b>有人认为竞争使人进步，也有人认为合作才是更大的智慧。谈谈你的看法。<span class="src">要求：观点明确，结构完整，不少于 600 字。</span></div></div>';
+ h+='<div class="blk"><h3><span class="kicker k-write">交卷登记</span></h3>'
+ +essayHTML({id:'w20',minChars:60,timed:45,
+  prompt:'<p class="stem">在下方登记你的<b>五段提纲</b>（每段一句观点句即可，也欢迎把全文誊录进来供教练比对字迹版）。上方的限时按钮可作为写作计时器使用。</p>',
+  checklist:['已在纸上限时 45 分钟内完成全文','已拍照发给爸爸','五段提纲已登记在上方文本框','誊录 / 检查时清扫过口语词与错别字']})
+ +'</div>';
+ h+='<div class="blk" style="text-align:center;background:linear-gradient(135deg,#FFF9F0,#FDECE6)"><h3 style="justify-content:center"><span class="kicker k-write">通关</span></h3><p style="font-size:16px"><b>🏮 二十关走完，范式已经长在你手上。</b></p><p style="font-size:14px;color:var(--sub)">最后一步：点右上角「<b>导出学习报告</b>」发给爸爸。Claude 教练会根据这份报告 + 你的手写照片，出具批改意见与 v2 定制方案。</p></div>';
+ return h;
+},
+mount:function(){mountEssay({id:'w20',minChars:60,timed:45,checklist:[1,1,1,1]})}}
+];
+/* ================= 题目数据 · 选择/判断/填空 ================= */
+/* --- D2 语体判断 --- */
+regQ({id:'q2_1',brief:'语体判断 ①',layer:'style',kind:'j',v:[
+ {stem:'「这事儿吧，其实挺麻烦的。」',opts:[['口语腔',1],['文章腔',0,'「事儿」「吧」「挺」都是口语零件。']],exp:'<b>信号：</b>儿化（事儿）、语气词（吧）、程度口语（挺）。书面版：此事颇为棘手。'},
+ {stem:'「此事颇为棘手。」',opts:[['口语腔',0,'「颇为」「棘手」是典型书面词。'],['文章腔',1]],exp:'<b>信号：</b>「颇为」「棘手」——四字紧凑，无语气词。'},
+ {stem:'「办这个手续可真费劲。」',opts:[['口语腔',1],['文章腔',0,'「可真费劲」是嘴上的话。']],exp:'<b>信号：</b>「可真」「费劲」。书面版：办理该手续程序繁琐。'}]});
+regQ({id:'q2_2',brief:'语体判断 ②',layer:'style',kind:'j',v:[
+ {stem:'「碎片化阅读日益普及。」',opts:[['口语腔',0,'「日益」是书面副词。'],['文章腔',1]],exp:'<b>信号：</b>「日益」替代了口语的「越来越」。'},
+ {stem:'「现在大家都爱看短的东西。」',opts:[['口语腔',1],['文章腔',0,'「大家」「东西」都偏口语。']],exp:'<b>信号：</b>「大家」「东西」。书面版：如今人们普遍青睐短内容。'},
+ {stem:'「深度阅读的价值愈发凸显。」',opts:[['口语腔',0,'「愈发」「凸显」是书面搭配。'],['文章腔',1]],exp:'<b>信号：</b>「愈发」「凸显」——书面味的核心在于词的密度。'}]});
+regQ({id:'q2_3',brief:'语体判断 ③',layer:'style',kind:'j',v:[
+ {stem:'「我跟你说，运动真的超重要。」',opts:[['口语腔',1],['文章腔',0,'「我跟你说」「超」是聊天开场。']],exp:'<b>信号：</b>对话式开场 + 网络程度词「超」。书面版：运动对健康至关重要。'},
+ {stem:'「运动对健康至关重要。」',opts:[['口语腔',0,'「至关重要」是书面四字格。'],['文章腔',1]],exp:'<b>信号：</b>「至关重要」，判断句干净利落。'},
+ {stem:'「适度运动有益身心。」',opts:[['口语腔',0,'「有益身心」为书面表达。'],['文章腔',1]],exp:'<b>信号：</b>「适度」「有益身心」——书面语爱用双音节和四字格。'}]});
+regQ({id:'q2_4',brief:'语体判断 ④',layer:'style',kind:'j',v:[
+ {stem:'「然后呢，我们就去问老师了。」',opts:[['口语腔',1],['文章腔',0,'「然后呢」「就」是口头衔接。']],exp:'<b>信号：</b>「然后呢」。书面版：随后，我们向老师求证。'},
+ {stem:'「随后，我们向老师求证。」',opts:[['口语腔',0,'「随后」「求证」均为书面词。'],['文章腔',1]],exp:'<b>信号：</b>「随后」是「然后」的正装版本。'},
+ {stem:'「那我们就先这样呗。」',opts:[['口语腔',1],['文章腔',0,'语气词「呗」暴露了一切。']],exp:'<b>信号：</b>「呗」——语气词是口语的身份证。'}]});
+/* --- D3 选词填空 --- */
+regQ({id:'q3_1',brief:'选词 · 动词升级',layer:'vocab',kind:'m',v:[
+ {stem:'面对失败，我们应当<span class="blank">____</span>自身的不足。',opts:[['审视',1],['看看',0,'口语叠词，力度不够。'],['打量',0,'「打量」多用于看人看物，不接抽象的「不足」。'],['参观',0,'搭配错误：参观用于场所。']],exp:'<b>审视</b>＝带着思考去看，正配「不足」这类抽象对象。'},
+ {stem:'他在报告中<span class="blank">____</span>了三点改进建议。',opts:[['提出',1],['说了',0,'口语，且不庄重。'],['讲了讲',0,'叠词口语。'],['扔出',0,'语体过于随意。']],exp:'「<b>提出</b>建议 / 观点」是最稳的书面搭配。'},
+ {stem:'我们不应<span class="blank">____</span>困难，而应直面它。',opts:[['回避',1],['躲',0,'口语单字动词。'],['怕',0,'语义是恐惧，不是躲开。'],['溜走',0,'主语搭配不当。']],exp:'「<b>回避</b>」与「直面」形成工整的书面对仗。'}]});
+regQ({id:'q3_2',brief:'选词 · 程度升级',layer:'vocab',kind:'m',v:[
+ {stem:'这一发现<span class="blank">____</span>重要。',opts:[['极为',1],['超',0,'网络口语程度词。'],['贼',0,'方言口语。'],['蛮',0,'口语程度词。']],exp:'程度词书面三件套：<b>极为 / 尤为 / 至关</b>。'},
+ {stem:'两种方案的成本<span class="blank">____</span>接近。',opts:[['大致',1],['差不多',0,'口语。'],['基本上吧',0,'口语加语气词。'],['八成',0,'口语估测词。']],exp:'「<b>大致 / 近乎</b>」是「差不多」的书面替身。'}]});
+regQ({id:'q3_3',brief:'选词 · 名词升级',layer:'vocab',kind:'m',v:[
+ {stem:'手机既是工具，也是一种社交<span class="blank">____</span>。',opts:[['媒介',1],['东西',0,'万能口语名词，毫无信息量。'],['玩意',0,'口语，且含轻视。'],['物件',0,'偏口语，且不搭「社交」。']],exp:'「<b>媒介</b>」精准表达「承载与传递」之义——书面语的本质是<b>用更准的词</b>。'},
+ {stem:'解决问题要找对<span class="blank">____</span>，而非蛮干。',opts:[['途径',1],['路子',0,'口语。'],['门道儿',0,'儿化口语。'],['招儿',0,'儿化口语。']],exp:'「办法」的书面梯队：<b>途径 / 策略 / 方案</b>。'}]});
+regQ({id:'q3_4',brief:'选词 · 综合',layer:'vocab',kind:'m',v:[
+ {stem:'<span class="blank">____</span>长期熬夜，健康势必受损。',opts:[['倘若',1],['要是',0,'口语假设词。'],['万一',0,'语义偏「小概率意外」。'],['搞不好',0,'口语。']],exp:'「要是……的话」的正装是「<b>倘若 / 若</b>」——而且「的话」直接删。'},
+ {stem:'这次活动<span class="blank">____</span>了同学们的广泛参与。',opts:[['吸引',1],['招来',0,'感情色彩偏贬。'],['弄来',0,'口语。'],['拉来',0,'口语。']],exp:'中性书面动词「<b>吸引 / 赢得</b>」；「招来」多接是非、麻烦。'}]});
+/* --- D4 关联词 --- */
+regQ({id:'q4_1',brief:'关联词 · 选路标',layer:'conn',kind:'m',v:[
+ {stem:'他成绩优异，<span class="blank">____</span>从不骄傲。',opts:[['却',1],['然后',0,'「然后」表顺承，这里是转折关系。'],['所以',0,'前后并非因果。'],['就是',0,'口语赘词。']],exp:'先判关系：优异 vs 不骄傲＝<b>转折</b>，故用「却 / 然而」。'},
+ {stem:'<span class="blank">____</span>坚持锻炼，体质<span class="blank">才</span>会改善。',opts:[['唯有',1],['就算',0,'让步词，与「才」不搭。'],['反正',0,'口语，无条件义。'],['然后',0,'顺承词，不构成条件。']],exp:'「<b>唯有……方能 / 才</b>」是条件族的黄金搭档。'}]});
+regQ({id:'q4_2',brief:'关联词 · 认族',layer:'conn',kind:'m',v:[
+ {stem:'「一方面……另一方面……」属于哪一族？',opts:[['并列',1],['递进',0,'递进有强弱升级，此处两面平行。'],['转折',0,'无对立义。'],['因果',0,'无因果链。']],exp:'两面平行铺开＝<b>并列</b>；若后一面明显更重，才升级为递进。'},
+ {stem:'「究其原因」属于哪一族？',opts:[['因果',1],['总结',0,'它是向内挖原因，不是收束全文。'],['转折',0],['条件',0]],exp:'「究其原因 / 正因如此」＝<b>因果族</b>，向下挖一层「为什么」。'},
+ {stem:'「更有甚者」属于哪一族？',opts:[['递进',1],['并列',0,'「更」字已在升级。'],['转折',0],['总结',0]],exp:'「不仅……更 / 更有甚者」＝<b>递进族</b>，语义在爬坡。'}]});
+regQ({id:'q4_3',brief:'瘦身 · 删赘词',layer:'conn',kind:'m',v:[
+ {stem:'「如果明天下雨<u>的话</u>，运动会<u>就是</u>要改期了。」最该删的是：',opts:[['「的话」和「就是」',1],['「如果」',0,'假设词是必需的路标。'],['「明天」',0,'时间信息不能删。'],['「改期」',0,'核心信息。']],exp:'「的话」是口语挂件，「就是」是口头缓冲——删掉后：如果明天下雨，运动会将改期。<b>紧了一圈，意思没少。</b>'},
+ {stem:'「<u>然后</u>我觉得<u>就是</u>说，阅读<u>其实</u>很重要。」删到最干净是：',opts:[['阅读很重要。／ 我认为，阅读至关重要。',1],['然后阅读其实很重要。',0,'「然后」仍是赘头。'],['我觉得就是阅读很重要。',0,'「就是」未清。'],['保持原句',0,'满句赘词。']],exp:'口头禅三件套「然后 / 就是 / 其实」全删，再把「我觉得」升级为「我认为」。'}]});
+/* --- D5 骨架 --- */
+regQ({id:'q5_1',brief:'骨架认知',layer:'struct',kind:'m',v:[
+ {stem:'五段骨架中，第三个分论点通常最适合安排什么？',opts:[['让步反驳（诚然……但……）',1],['再举一个同类例子',0,'与前两段功能重复，无增量。'],['抒情排比',0,'议论文主体段以论证为纲。'],['复述一遍观点',0,'那是结论的事，且要换说法。']],exp:'第三分论是<b>思想深度位</b>：先替对方说话，再指出局限——考官最愿意给分的一步。'},
+ {stem:'三个分论点之间最忌讳的是：',opts:[['互相重复，换汤不换药',1],['一个谈个人一个谈社会',0,'这是标准的并列展开。'],['按「是什么—为什么—怎么办」排列',0,'这是标准的递进展开。'],['第三点用让步反驳',0,'这是推荐做法。']],exp:'并列或递进都行，<b>重复</b>不行——每段必须提供新的角度或新的层次。'}]});
+/* --- D6 开头结尾 --- */
+regQ({id:'q6_1',brief:'结尾禁忌',layer:'struct',kind:'m',v:[
+ {stem:'下列哪种结尾是合格的？',opts:[['收束三个分论点后，把话题推高一层',1],['补充一个来不及写的新论点',0,'结尾冒新论点＝结构漏洞。'],['突然举一个新例子',0,'例子属于主体段。'],['「让我们一起加油吧！」',0,'空口号，无收束无升华。']],exp:'结论两句式：<b>句 1 拧绳收束，句 2 升华</b>。三禁忌：新论点、新例子、空口号。'},
+ {stem:'「综上所述」之后最应该出现的是：',opts:[['把三个分论点换说法拧成一句',1],['原样重抄开头的观点句',0,'照抄＝浪费结尾的黄金位。'],['一个反问句质问读者',0,'可作升华句备选，但先要收束。'],['致谢与署名',0,'那是书信格式。']],exp:'「综上所述」是收束的启动器——先<b>换说法</b>总括，再谈升华。'}]});
+/* --- D7 议论段 --- */
+regQ({id:'q7_1',brief:'点释证析结 · 要害',layer:'struct',kind:'m',v:[
+ {stem:'「点释证析结」五步中，最常被漏掉、也最影响得分的是：',opts:[['析',1],['点',0,'观点句很少有人漏。'],['证',0,'例子大家都记得放。'],['结',0,'漏了可惜，但伤害小于漏析。']],exp:'<b>无析不成段</b>：例子不会自己说话。漏「析」的段落＝把菜买回来没下锅。'},
+ {stem:'下面哪句是「析」？',opts:[['池水变黑并非天赋使然，而是「每天都来」的必然结果。',1],['相传王羲之临池习字，日久池水尽黑。',0,'这是「证」——摆事实。'],['积累是学业进步的唯一捷径。',0,'这是「点」——观点句。'],['可见，笨功夫才是真捷径。',0,'这是「结」——回扣。']],exp:'「析」的特征：在<b>解释因果机制</b>——它回答「这个例子为什么能证明观点」。'}]});
+/* --- D8 论证辨识（上）--- */
+regQ({id:'q8_1',brief:'兵器辨识 ①',layer:'argu',kind:'m',v:[
+ {stem:'「屠呦呦历经数百次提取失败仍不放弃，终获青蒿素，便是明证。」用的是：',opts:[['例证法',1],['引证法',0,'没有引用他人言论。'],['对比论证',0,'没有正反并置。'],['比喻论证',0,'没有打比方。']],exp:'摆出具体<b>人 + 事</b>作证据＝例证法；句尾「便是明证」是它的签名。'},
+ {stem:'「正如荀子所言：不积跬步，无以至千里。」用的是：',opts:[['引证法',1],['例证法',0,'引的是话，不是事。'],['因果论证',0],['让步反驳',0]],exp:'借<b>权威之口</b>＝引证法；记得引完接一句自己的阐释。'}]});
+regQ({id:'q8_2',brief:'兵器辨识 ②',layer:'argu',kind:'m',v:[
+ {stem:'「同样面对失利，有人一蹶不振，苏轼却吟出一蓑烟雨任平生。」用的是：',opts:[['对比论证',1],['例证法',0,'虽有事例，但骨架是「有人……却……」的正反并置。'],['比喻论证',0],['引证法',0,'引句只是对比的一翼。']],exp:'「同样是……前者……后者却……」——<b>正反同框</b>，差距自己说话。'},
+ {stem:'「与其抱怨黑暗，不如点亮一支蜡烛。」的论证骨架是：',opts:[['对比论证',1],['因果论证',0],['例证法',0],['引证法',0,'即便是名句，其内部结构是两种做法的对比。']],exp:'「与其……不如……」＝对比族句式：两种选择并置，高下立判。'}]});
+regQ({id:'q8_3',brief:'兵器辨识 ③',layer:'argu',kind:'m',v:[
+ {stem:'一段里连堆四个名人例子、没有一句分析。最准的诊断是：',opts:[['证据冗余，缺「析」',1],['论证充分有力',0,'例子不等于论证。'],['引证法运用娴熟',0,'那是例证不是引证，且都没下锅。'],['结构完整',0]],exp:'<b>一段一例 + 两句析</b>，胜过四例裸奔——考官数的是思考，不是名人。'},
+ {stem:'为「阅读使人开阔」选最贴的一击：',opts:[['樊锦诗因常年浸于典籍与壁画，方能主持数字敦煌这样跨界的事业',1],['我同桌很爱读书',0,'私人化例子说服力弱。'],['书是人类进步的阶梯，所以阅读使人开阔',0,'循环论证，用结论证结论。'],['不读书就会被淘汰',0,'恐吓不是论证。']],exp:'好论据三要素：<b>公共性、具体性、指向性</b>——例子必须正打在观点上。'}]});
+/* --- D9 论证辨识（下）--- */
+regQ({id:'q9_1',brief:'兵器辨识 ④',layer:'argu',kind:'m',v:[
+ {stem:'「碎片化阅读之所以令人焦虑，究其原因，是它只给结论、不给论证。」用的是：',opts:[['因果论证',1],['例证法',0],['对比论证',0],['比喻论证',0]],exp:'「之所以……究其原因……」＝<b>因果族签名</b>：向下挖一层「为什么」。'},
+ {stem:'「先后发生」与「因果关系」的区别在于：',opts:[['先后只是时间顺序，因果需要机制链条',1],['两者相同',0,'A 在 B 之前不代表 A 导致 B。'],['因果就是先后加「因为」',0,'加连接词不等于有机制。'],['考试里不区分',0,'恰是考官爱抓的逻辑漏洞。']],exp:'写因果前自问：<b>中间的机制说清了吗？</b>说不清就退回「相关」。'}]});
+regQ({id:'q9_2',brief:'兵器辨识 ⑤',layer:'argu',kind:'m',v:[
+ {stem:'「范式犹如脚手架——楼没起来时离不得，楼起来后必须拆。」用的是：',opts:[['比喻论证',1],['例证法',0],['因果论证',0],['引证法',0]],exp:'「犹如 / 好比」＝比喻论证；注意它是<b>说明器</b>不是证据，宜与例证搭配。'},
+ {stem:'比喻论证的正确用量是：',opts:[['一段一个，贴切日常',1],['越多越显文采',0,'比喻是盐不是主菜。'],['全文不许用',0,'矫枉过正。'],['只能用在开头',0,'无此限制。']],exp:'比喻密度过高会稀释论证——<b>一段一喻</b>，点到为止。'}]});
+regQ({id:'q9_3',brief:'让步反驳三步',layer:'argu',kind:'m',v:[
+ {stem:'标准的让步反驳三步是：',opts:[['诚然（让）→ 然而（驳）→ 因此（立）',1],['首先 → 其次 → 最后',0,'那是并列展开。'],['因为 → 所以 → 综上',0,'那是因果 + 总结。'],['虽然 → 然后 → 就是',0,'后两个是口语赘词。']],exp:'<b>让 → 驳 → 立</b>：先承认对方最强的理由，再指出其局限，最后重申己方。'},
+ {stem:'让步时应该挑对方哪条理由来「让」？',opts:[['最强的那条',1],['最弱的那条',0,'立稻草人一推就倒，考官看得穿。'],['随便一条',0],['不存在的那条',0,'虚构对手＝自说自话。']],exp:'让步的诚意决定反驳的力度：敢对<b>最强理由</b>让步，反驳才有含金量。'}]});
+/* --- D10 素材配对 --- */
+regQ({id:'q10_1',brief:'素材配论点 ①',layer:'material',kind:'m',v:[
+ {stem:'「苏轼三起三落」这张卡，最贴哪个论点？',opts:[['心态决定境界，逆境成就从容',1],['科技改变生活',0,'跨度太远。'],['合作胜于竞争',0,'卡上没有合作要素。'],['诚信是立身之本',0,'不对题。']],exp:'配对逻辑：看卡上的<b>「适用论点」标签</b>——苏轼卡＝逆境 / 豁达 / 心态。'},
+ {stem:'「张桂梅与华坪女高」最贴哪个论点？',opts:[['教育改变命运，一个人能照亮许多人',1],['碎片化阅读利弊',0],['人工智能的边界',0],['竞争使人进步',0,'她的故事核心是奉献而非竞争。']],exp:'张桂梅卡的标签：<b>教育 / 责任 / 平凡英雄</b>。'}]});
+regQ({id:'q10_2',brief:'素材配论点 ②',layer:'material',kind:'m',v:[
+ {stem:'要论证「无用之用」（看似无用的积累终会开花），首选：',opts:[['乔布斯旁听书法课，十年后成就 Mac 字体',1],['爱迪生试验千种灯丝',0,'那是直奔目标的试错，不是「无用」。'],['袁隆平毕生种稻',0,'专业深耕，非「无用」主题。'],['居里夫人放弃专利',0,'主题是淡泊。']],exp:'乔布斯卡的关键词正是<b>「无用之用 / 人生的点」</b>——一材配一题，标签先行。'},
+ {stem:'要论证「专注与淡泊」，首选：',opts:[['居里夫人两获诺奖却放弃镭的专利',1],['王羲之墨池',0,'主题是勤奋积累。'],['司马迁著《史记》',0,'主题是忍辱与使命。'],['达·芬奇跨界手稿',0,'主题是好奇心。']],exp:'居里卡双标签：<b>专注</b>（两获诺奖）＋ <b>淡泊</b>（放弃专利）——一张卡两个开关。'}]});
+regQ({id:'q10_3',brief:'一材多用',layer:'material',kind:'m',v:[
+ {stem:'「屠呦呦与青蒿素」除了证「坚持」，还能证下列哪个论点？',opts:[['传统智慧的现代价值（从古籍获得灵感）',1],['体育锻炼的重要性',0],['网络利弊',0],['环保意识',0]],exp:'<b>一材多用</b>的诀窍：换切入角度——同一事，坚持角度看是「试错」，古籍角度看是「古为今用」。'},
+ {stem:'「贝多芬失聪作曲」还能支持哪个论点？',opts:[['命运的限制不等于人生的上限',1],['团队合作的力量',0],['科技进步的代价',0],['诚信经营',0]],exp:'贝多芬卡的第二把钥匙：<b>身体的残缺 vs 精神的完整</b>。'}]});
+/* --- D11 指导性红线 --- */
+regQ({id:'q11_1',brief:'指导性写作红线',layer:'guided',kind:'j',v:[
+ {stem:'「把材料原句直接抄进作文，只要通顺就能得高分。」',opts:[['对',0,'考官报告明确点名：照抄材料、不重组的作文没有说服力，不能得高分。'],['错',1]],exp:'<b>重组三换：换词、换序、换视角</b>——材料是矿石，作文要的是炼出来的金属。'},
+ {stem:'「重组信息＝把材料里的句子改动一两个词。」',opts:[['对',0,'改一两个词仍是抄写的近亲，考官一眼识破。'],['错',1]],exp:'合格的重组：读懂 → 合上材料 → <b>用自己的话说给自己听</b> → 再写下来。'}]});
+/* --- D13 手法辨识（匆匆）--- */
+regQ({id:'q13_1',brief:'手法辨识 ·《匆匆》',layer:'device',kind:'m',v:[
+ {stem:'「燕子去了，有再来的时候；杨柳枯了，有再青的时候；桃花谢了，有再开的时候。」主要手法是：',opts:[['排比',1],['夸张',0,'内容并未言过其实。'],['设问',0,'此句无问。'],['借代',0]],exp:'三个「……了，有再……的时候」结构如一＝<b>排比</b>；效果：循环往复的节奏，为「一去不返」蓄力。'},
+ {stem:'「聪明的，你告诉我，我们的日子为什么一去不复返呢？」中「聪明的」一语，配合问句形成：',opts:[['设问 / 呼告，引读者入局',1],['反语讽刺读者愚笨',0,'语气是恳切的追问，非讽刺。'],['比喻',0],['夸张',0]],exp:'直接<b>称呼读者并发问</b>——把读者拽进这场无人能答的追问，共情由此发生。'}]});
+/* --- D14 手法辨识（第二批）--- */
+regQ({id:'q14_1',brief:'手法辨识 ①',layer:'device',kind:'m',v:[
+ {stem:'「院角那盏旧灯，每晚都亮着——后来我才知道，那是母亲留给我的一句话。」灯在文中是：',opts:[['象征（承载母爱的物象）',1],['夸张',0],['白描',0,'灯被赋予了含义，不止勾勒。'],['反问',0]],exp:'具体物承载抽象情感、贯穿全文＝<b>象征 / 意象</b>。'},
+ {stem:'「他出门前，反常地把钥匙留在了桌上。」若结尾才见分晓，这一笔是：',opts:[['伏笔',1],['悬念',0,'悬念是「明着吊你」，伏笔是「暗中交代」。'],['对比',0],['引用',0]],exp:'<b>伏笔</b>：前文不动声色，后文应验；回看时「原来早有交代」。'},
+ {stem:'「教室里静得能听见窗外一片叶子落地。」用的是：',opts:[['以动衬静（动静结合）',1],['排比',0],['设问',0],['借代',0]],exp:'以叶落之<b>动</b>衬教室之<b>静</b>——声音越细，安静越深。'}]});
+regQ({id:'q14_2',brief:'手法辨识 ②',layer:'device',kind:'m',v:[
+ {stem:'「一件洗得发白的蓝布衫，袖口两处补丁。」寥寥两笔写尽清贫，这是：',opts:[['白描',1],['夸张',0],['拟人',0],['反复',0]],exp:'<b>白描</b>：不加渲染，几乎零形容词，轮廓却分明。'},
+ {stem:'「满堂喝彩声中，他悄悄攥紧了口袋里那张不及格的卷子。」主要手法是：',opts:[['对比（乐景衬哀情）',1],['引用',0],['设问',0],['借景抒情',0,'此处非景物，是场面与心境的反差。']],exp:'外部的<b>喝彩</b>与内心的<b>失落</b>同框——反差越大，哀感越重（近于以乐写哀）。'},
+ {stem:'「未见其人，先闻满巷子的笑声。」写人的手法是：',opts:[['侧面描写',1],['白描',0],['托物言志',0],['首尾呼应',0]],exp:'人未出场，<b>借声音与他者反应</b>写其性格＝侧面描写。'}]});
+regQ({id:'q14_3',brief:'手法辨识 ③',layer:'device',kind:'m',v:[
+ {stem:'「梅，凌寒独自开——我愿做那枝头最倔强的一朵。」全文咏梅明志，手法是：',opts:[['托物言志',1],['借景抒情',0,'借景抒情重在情绪氛围，托物言志重在品格志向。'],['设问',0],['伏笔',0]],exp:'物的品性＝人的追求：<b>托物言志</b>。'},
+ {stem:'「初见他时只觉木讷寡言，甚至有些嫌他闷；直到那个雨夜……我才读懂这份沉默。」结构手法是：',opts:[['欲扬先抑',1],['首尾呼应',0],['悬念',0,'重点不在吊胃口，而在态度反转。'],['白描',0]],exp:'先贬后褒、情感反转＝<b>欲扬先抑</b>；落差越大，「扬」越有力。'}]});
+regQ({id:'q14_4',brief:'效果句式运用',layer:'device',kind:'m',v:[
+ {stem:'为「三个排比句写春雨」选一句合格的「析」：',opts:[['连用三个「落在……」，节奏层层铺展，春雨的绵密与温柔随之漫上纸面',1],['作者用了排比，写得很好',0,'贴标签 + 空评价＝零分句。'],['这段用了排比、比喻、拟人、夸张',0,'报菜名大全，仍无分析。'],['春雨下得很大',0,'复述内容，不是分析。']],exp:'合格的析＝<b>手法 + 如何 + 效果</b>三件齐。套 P7 句式即可达标。'},
+ {stem:'「若删去此句，则＿＿——可见其作用在于＿＿。」这一句式在训练你：',opts:[['用「删除测试」倒推句子的功能',1],['背诵原文',0],['扩写句子',0],['翻译文言',0]],exp:'<b>删除测试</b>是分析利器：删了什么就少了什么，少的那个就是作用。'}]});
+/* --- D15 文体判断 --- */
+regQ({id:'q15_1',brief:'文体嗅觉 ①',layer:'genre',kind:'m',v:[
+ {stem:'「各位老师、同学：今天我想和大家聊聊「失败」这两个字。我们，都摔过跤……」判断文体：',opts:[['演讲稿',1],['新闻报道',0,'新闻不用称呼语和「我们」。'],['广告文案',0],['访谈',0]],exp:'签名：<b>称呼语 + 「我们」 + 现场感</b>＝演讲稿。'},
+ {stem:'「本报讯 昨日上午，市图书馆读书节开幕，首日入馆人数逾八千。馆长在接受采访时表示……」判断文体：',opts:[['新闻报道',1],['博客',0,'博客用第一人称聊天口吻。'],['演讲稿',0],['广告',0]],exp:'签名：<b>「本报讯」导语 + 何时何地何事 + 消息来源</b>＝新闻。'}]});
+regQ({id:'q15_2',brief:'文体嗅觉 ②',layer:'genre',kind:'m',v:[
+ {stem:'「说真的，我也曾三分钟热度。直到上个月，我试了一个笨办法——你要不要也试试？评论区聊。」判断文体：',opts:[['博客',1],['新闻报道',0,'新闻不跟读者唠嗑。'],['访谈',0,'没有问答体。'],['演讲稿',0,'「评论区」暴露了网络场景。']],exp:'签名：<b>第一人称经历 + 与读者对话 + 邀请留言</b>＝博客。'},
+ {stem:'「三分钟，唤醒一整天。晨光牌燕麦——快，更要好。」判断文体：',opts:[['广告文案',1],['博客',0],['新闻报道',0],['演讲稿',0]],exp:'签名：<b>极短句 + 祈使 / 口号 + 产品名</b>＝广告。'}]});
+regQ({id:'q15_3',brief:'文体嗅觉 ③',layer:'genre',kind:'m',v:[
+ {stem:'「问：您坚持晨跑十年，最难的是什么？　答：不是腿，是被窝。（笑）真正的敌人永远在起床前。」判断文体：',opts:[['访谈',1],['演讲稿',0],['博客',0],['新闻报道',0,'新闻会转述，不保留问答原貌。']],exp:'签名：<b>问答体 + 保留口语痕迹（笑）</b>＝访谈。'},
+ {stem:'判断文体时最不可靠的依据是：',opts:[['文章的长短',1],['假想读者是谁',0,'三件套之一。'],['写作目的',0,'三件套之一。'],['语言标志（称呼、祈使、来源、问答）',0,'三件套之一。']],exp:'长短不定文体——判断靠<b>读者 × 目的 × 语言标志</b>三件套。'}]});
+/* --- D17 综合体检 --- */
+regQ({id:'q17_1',brief:'体检 · 语体',layer:'style',kind:'j',v:[
+ {stem:'「反正我觉得这方案挺靠谱的。」',opts:[['口语腔',1],['文章腔',0,'「反正」「挺」「靠谱」三连口语。']],exp:'书面版：我认为该方案切实可行。'},
+ {stem:'「该方案兼顾成本与效率，颇具可行性。」',opts:[['口语腔',0,'全句书面词。'],['文章腔',1]],exp:'「兼顾」「颇具」——密度与准度都在线。'}]});
+regQ({id:'q17_2',brief:'体检 · 论证',layer:'argu',kind:'m',v:[
+ {stem:'「诚然，竞争带来压力；然而正是适度的压力，把潜能从舒适区里赶了出来。」用的是：',opts:[['让步反驳',1],['例证法',0],['比喻论证',0,'「赶出来」只是措辞形象，骨架是让步。'],['引证法',0]],exp:'「诚然……然而……」＝让步反驳的签名句式。'},
+ {stem:'「合作犹如齿轮咬合——单个齿轮转得再快，也带不动整台机器。」用的是：',opts:[['比喻论证',1],['对比论证',0,'虽有「单个 vs 整台」，主骨架是齿轮之喻。'],['因果论证',0],['例证法',0]],exp:'「犹如」起手＝比喻论证；喻体（齿轮）承担了说理。'}]});
+regQ({id:'q17_3',brief:'体检 · 手法',layer:'device',kind:'m',v:[
+ {stem:'「风翻着书页，像在替我复习。」用的是：',opts:[['拟人',1],['排比',0],['反问',0],['引用',0]],exp:'风做出「替我复习」的人类行为＝<b>拟人</b>（兼有比喻痕迹，主手法为拟人）。'},
+ {stem:'「这道题难道还需要第二种解法吗？」用的是：',opts:[['反问',1],['设问',0,'设问会自答；此句答案已在问中。'],['反复',0],['夸张',0]],exp:'<b>反问</b>：无疑而问，语气加压。'}]});
+regQ({id:'q17_4',brief:'体检 · 关联词',layer:'conn',kind:'m',v:[
+ {stem:'「独学无友，则孤陋寡闻；<span class="blank">____</span>，闭门造车终难成器。」',opts:[['同理',1],['然而',0,'前后同向，非转折。'],['否则',0,'逻辑不通。'],['然后',0,'口语顺承。']],exp:'前后两句<b>同向并列</b>——「同理 / 与此同时」即可。'},
+ {stem:'「<span class="blank">____</span>双方各让一步，谈判<span class="blank">才</span>可能重回正轨。」',opts:[['唯有',1],['因为',0,'与「才」不搭。'],['就算',0,'让步词与「才」矛盾。'],['所以',0]],exp:'又见条件族黄金搭档：<b>唯有……才 / 方能</b>。'}]});
+/* --- D19 升格 --- */
+regQ({id:'q19_1',brief:'诊断开方',layer:'revise',kind:'m',v:[
+ {stem:'一篇作文：结构完整、例子丰富，但每段例后直接跳小结。最该先修的是：',opts:[['B 分析与评价——给每个例子补两句「析」',1],['C 聚焦与组织',0,'结构已完整。'],['D 语言',0,'先修发动机，再抛光皮肤。'],['A 理解与阐释',0,'审题无误。']],exp:'诊断顺序 C→B→D：骨架无恙，则病灶多在<b>缺析</b>。'},
+ {stem:'一篇作文观点清晰、分析到位，但通篇「挺 / 然后 / 的话」。最该先修的是：',opts:[['D 语言——按替换表清扫口语',1],['B 分析与评价',0,'析已到位。'],['C 聚焦与组织',0],['A 理解与阐释',0]],exp:'此病在皮肤：<b>替换表 + 删赘三件套</b>一遍过。'}]});
+/* ================= 排序数据 ================= */
+regO({id:'d4_ord1',brief:'三句成段排序',intro:'三句话来自同一段。按关联词提示的逻辑关系排出正确顺序。',v:[
+ {items:['阅读能拓宽视野。','不仅如此，它还能训练思维。','更重要的是，它让我们学会与自己相处。'],exp:'递进族的爬坡三级：<b>基础 →「不仅如此」→「更重要的是」</b>——语义一路升高，关联词就是台阶。'},
+ {items:['诚然，竞争能激发潜能。','然而，过度竞争会扭曲心态。','因此，我们需要的是良性竞争。'],exp:'让步反驳三步：<b>诚然（让）→ 然而（驳）→ 因此（立）</b>——这条链后面天天要用。'}]});
+regO({id:'d5_ord1',brief:'五段骨架拼装',intro:'这是范文五段的首句缩略版。把它们放回五段骨架的正确位置。',slots:['引论','分论一','分论二','分论三','结论'],v:[
+ {items:['地铁上、课间里……在我看来，关键在于谁掌握主动权。','不可否认，碎片化阅读大幅降低了获取信息的门槛。','然而，若长期只满足于碎片，思维便会变浅。','诚然，有人辩称不碎片化就跟不上节奏……真正的解法是「以整驭碎」。','综上所述……驾驭工具，而不是被工具驯化。'],exp:'定位信号：<b>「在我看来」</b>＝引论亮观点；<b>「不可否认」</b>＝正面第一论；<b>「然而」</b>＝转向弊端；<b>「诚然……」</b>＝让步反驳位；<b>「综上所述」</b>＝结论启动器。'},
+ {items:['放学铃一响，教室里亮起屏幕……在我看来，问题在「如何有」。','手机首先是一件高效的学习与联络工具。','然而，无规则的手机极易反客为主。','诚然，有人主张一禁了之，但这混淆了工具与使用方式。','综上所述，化弊为利的钥匙是规则。'],exp:'同一副骨架，换一个题目照样立得住——<b>这就是范式的意义</b>。'}]});
+regO({id:'d6_ord1',brief:'三句式开头复原',intro:'一个被打乱的开头。按「引题 → 亮观点 → 定调」复原。',slots:['句1 引题','句2 亮观点','句3 定调'],v:[
+ {items:['放学铃一响，教室里此起彼伏地亮起屏幕——手机早已长在了中学生的手心里。','在我看来，问题不在「该不该有」，而在「如何有」。','有规则地拥有，方能让工具归位为工具。'],exp:'句1 是<b>画面</b>（现象引题），句2 有<b>「在我看来」</b>（观点），句3 是<b>方法论预告</b>（定调）。'},
+ {items:['赛场上人人争先，教室里却常听到「内卷」的叹息——竞争正在被重新审视。','在我看来，竞争与合作并非对手，而是一枚硬币的两面。','善竞争者借他人磨快自己，善合作者聚众人成其大事。'],exp:'依然是三件套：<b>现象（含对立）→ 判断句观点 → 双线定调</b>。'}]});
+regO({id:'d7_ord1',brief:'议论段五步重排',intro:'一段被打乱的议论文字。按「点 → 释 → 证 → 析 → 结」复原。',slots:['点','释','证','析','结'],v:[
+ {items:['运动是最划算的自我投资。','它用汗水换来的，不只是体魄，更是专注与情绪的稳定。','许多长期坚持晨跑的人都有同感：跑完步的上午，效率明显更高。','这并非玄学——运动促进血液循环、改善大脑供氧，专注力自然水涨船高。','可见，想给学习提速，先给身体上油。'],exp:'辨认要诀：<b>点</b>是判断句；<b>释</b>在解释「是什么」；<b>证</b>摆现象或事例；<b>析</b>讲机制（为什么灵）；<b>结</b>回扣并常带「可见」。'},
+ {items:['诚信是一个人最硬的通行证。','它意味着说过的话作数、答应的事兑现。','商鞅徙木立信，一根木头换来了变法的公信力。','人们相信的从来不是那根木头，而是「说到做到」这四个字——信任一旦建立，政令便有了重量。','由此可见，立信虽慢，却是最快的路。'],exp:'注意<b>析</b>的位置：它总在例子之后，负责把事例翻译成道理。'}]});
+regO({id:'d11_ord1',brief:'重组提纲排序',intro:'这是给校刊那封信的五段提纲。按合理顺序排出你的行文路线。',slots:['第1段','第2段','第3段','第4段','第5段'],v:[
+ {items:['亮明立场：有条件支持假期兼职。','先谈收获：责任、金钱观与沟通（重组自材料 A）。','正视风险：精力、低成长与安全（重组自材料 B）。','给出条件：限时长、保学业、家长知情。','收束：兼职是选修课，不是必修课。'],exp:'指导性写作的黄金路线：<b>立场 → 采对方之长 → 认风险 → 开条件 → 收束</b>——两则材料的信息点全部各就各位。'}]});
+regO({id:'d17_ord1',brief:'裸拼骨架（无标签）',intro:'题目「合作与竞争」。槽位没有任何提示——凭句子自身的信号定位。',v:[
+ {items:['运动场上人人争先，实验室里却讲究协作——竞争与合作，究竟谁是成长的引擎？在我看来，二者本是一体两面。','竞争划出上限：有对手在侧，人才知道自己还能更快。','合作抬高地板：一个人可以走得快，一群人才能走得远。','诚然，有人担心合作会稀释个人锋芒；但真正的高手，恰是在协作中把锋芒磨成了分寸。','综上所述，愿我们既能在赛道上全力以赴，也能在团队里托举他人——竞而不戾，合而不庸。'],exp:'没有标签也能定位，靠的是句内信号：<b>问句 + 「在我看来」</b>＝引论；<b>「诚然……但」</b>＝第四段；<b>「综上所述」</b>＝结论。这，就是骨架长在手上的感觉。'}]});
+/* ================= 角色标注数据 ================= */
+regR({id:'d7_rol1',brief:'议论段发工牌',roles:['点','释','证','析','结'],intro:'为每一句选择它在段中扮演的角色（点 / 释 / 证 / 析 / 结）。',v:[
+ {rows:[['积累是学业进步的唯一捷径。',0],['所谓积累，就是把大目标拆成每天可完成的小动作。',1],['相传王羲之临池习字，日复一日，竟把一池清水洗成墨色。',2],['池水变黑并非天赋使然，而是「每天都来」的必然结果——量的堆叠终会撬动质的改变。',3],['可见，笨功夫才是真捷径。',4]],
+  exp:'速记：<b>点</b>下判断，<b>释</b>说含义，<b>证</b>摆事实，<b>析</b>讲机制，<b>结</b>回扣（常带「可见」）。'},
+ {rows:[['深阅读是抵抗浮躁的锚。',0],['它要求整块时间、完整文本与不被打断的注意力。',1],['据全国国民阅读调查，成年人日均手机接触已超过一百分钟，而纸质书阅读时长远低于此。',2],['当注意力被切成以分钟计的碎屑，人便渐渐失去了跟一个复杂问题长久相处的能力——锚一松，船就随浪走。',3],['因此，每天留一段完整的深读时间，实为必要。',4]],
+  exp:'数据同样可以当「证」；「析」负责把数字翻译成<b>机制与后果</b>。'}]});
+regR({id:'d11_cls1',brief:'信息点分类',roles:['支持','反对','背景'],intro:'这些句子提炼自材料 A 与 B。给每条信息发工牌：它是支持兼职、反对兼职，还是中性背景？',v:[
+ {rows:[['兼职带来「有人等着我」的责任感与守时习惯。',0],['亲手挣到工资，让人真正理解劳动与金钱的分量。',0],['柜台沟通是与陌生人打交道的实战训练。',0],['排班与库存工作可能帮人发现兴趣与专业方向。',0],['人的精力有限，连续打工的学生成绩多有下滑。',1],['端盘子贴标签属重复劳动，成长回报很低。',1],['未成年人在外工作面临安全与权益风险。',1],['同样的时间用于社团、阅读与研究项目，回报更高。',1],['本次讨论的对象是中学生的假期兼职。',2]],
+  exp:'圈分是流水线的前两步——分类清楚了，第 3 步「重组」才有原料。注意 B 的最后一条其实是<b>替代方案</b>，它属于反方最有力的武器。'}]});
+regR({id:'d13_rol1',brief:'评论段发工牌',roles:['点','证','析','联'],intro:'这是拆《匆匆》后半句的第二个评论段。为每句选择「点 / 证 / 析 / 联」。',v:[
+ {rows:[['紧接着，作者以一个无法回答的设问，把时间之痛递到读者手中。',0],['「聪明的，你告诉我，我们的日子为什么一去不复返呢？」',1],['称读者为「聪明的」，却抛出一个聪明也答不了的问题——恭维与无解相撞，暖色的称呼反而加深了怅惘；问句悬而不决，追问便一直悬在读者心头。',2],['自此，全文的每一段流逝，都成了对这一问的持续回响。',3]],
+  exp:'评论段四步：<b>点</b>亮手法与意图，<b>证</b>短引原文，<b>析</b>拆效果机制（至少两句），<b>联</b>接回全文。'}]});
+/* ================= 口语雷达数据 ================= */
+regD({id:'d2_rad1',brief:'口语雷达 · 第一扫',intro:'下面这段话混进了不少口语词。点击所有你认为「应替换或删除」的词，然后点检查（需 ≥80%）。',v:[
+ {toks:[['',-1],['手机',0],['现在',0],['对',-1],['我们',0],['来说',-1],['真的',1],['特别',1],['重要',0],['。',-1],['它',0],['就是',1],['一个',0],['随身的',0],['小电脑',0],['，',-1],['查资料',0],['、',-1],['联系人',0],['都',0],['挺',1],['方便',0],['的',-1],['。',-1],['但是',0],['要是',1],['管不住',1],['自己',0],['的话',1],['，',-1],['时间',0],['一下子',1],['就',0],['没了',1],['。',-1]],
+  exp:'应标：<b>真的、特别、就是、挺、要是、管不住、的话、一下子、没了</b>。替换示范：手机对我们极为重要……倘若缺乏自控，时间便会悄然流逝。'},
+ {toks:[['',-1],['上网课',0],['的时候',-1],['，',-1],['很多',1],['同学',0],['都',0],['爱',1],['开着',0],['小窗',0],['干别的',1],['。',-1],['反正',1],['老师',0],['也',0],['看不见',0],['，',-1],['听着听着',0],['就',0],['跑神了',1],['。',-1],['这样',0],['搞',1],['下去',0],['，',-1],['成绩',0],['肯定',1],['要',0],['垮',1],['。',-1]],
+  exp:'应标：<b>很多、爱、干别的、反正、跑神了、搞、肯定、垮</b>。书面版：网课期间，不少同学分屏他顾；教师难以监督，注意力遂逐渐涣散。长此以往，成绩势必下滑。'}]});
+regD({id:'d3_rad1',brief:'口语雷达 · 第二扫（更密）',intro:'密度升级：这一段的口语词更多也更隐蔽。全部揪出来（需 ≥80%）。',v:[
+ {toks:[['',-1],['我',0],['觉得',1],['吧',1],['，',-1],['学习',0],['这',0],['东西',1],['，',-1],['光',1],['靠',0],['死记硬背',0],['是',0],['没用的',1],['。',-1],['你',1],['得',1],['动脑子',1],['，',-1],['把',0],['知识',0],['真正',0],['搞懂',1],['。',-1],['然后',1],['呢',1],['，',-1],['还要',0],['经常',0],['复习',0],['，',-1],['要不然',1],['学了',0],['也',0],['白学',1],['。',-1]],
+  exp:'应标：<b>觉得、吧、东西、光、没用的、你、得、动脑子、搞懂、然后、呢、要不然、白学</b>。书面版：我认为，学习不能仅凭机械记忆，而应深入理解；同时须定期复习，否则所学终将遗忘。'},
+ {toks:[['',-1],['写作文',0],['的时候',-1],['，',-1],['好多',1],['人',0],['上来',1],['就',0],['开写',1],['，',-1],['想到',0],['啥',1],['写',0],['啥',1],['。',-1],['结果',0],['写着写着',0],['就',0],['乱套了',1],['，',-1],['前面',0],['说',0],['东',0],['后面',0],['扯',1],['西',0],['。',-1],['其实',1],['先',0],['列个',1],['提纲',0],['，',-1],['真的',1],['能',0],['省',0],['老多',1],['事',0],['。',-1]],
+  exp:'应标：<b>好多、上来、开写、啥×2、乱套了、扯、其实、列个、真的、老多</b>。书面版：不少人写作时未加构思、信笔而书，导致前后失序；先拟提纲，方能事半功倍。'}]});
+/* ================= A/B 对比数据 ================= */
+regA({id:'d6_ab1',brief:'开头对比评审',better:'b',intro:'题目「人工智能时代，我们还需要背诵吗」。哪个开头更好？',
+ a:'我觉得 AI 时代背诵没什么用了，因为想要什么都能查到，背了也是浪费时间。下面我来说说我的理由。',
+ b:'「都能搜到，为什么还要背？」——这句反问几乎成了这个时代拒绝背诵的通行证。在我看来，越是记忆可以外包的时代，越需要背诵：该升级的是背什么、怎么背，而不是要不要背。这份必要，藏在思维的运转方式里。',
+ why:{stem:'B 段更好的核心原因是：',opts:[['三句式齐全：引题有画面、观点是可辩判断句、结尾定调',1],['因为 B 更长，字多显得认真',0,'长短不是标准，功能才是。'],['因为 B 用了引号，显得高级',0,'引号只是工具，关键是三句的功能分工。'],['因为 A 的观点是错的',0,'观点无对错，A 输在「我觉得＋没什么用」的口语直给与理由空转。']]},
+ exp:'A 的病：口语直给（我觉得 / 没什么用）、观点含混、且「下面说说理由」是无信息量的赘句。B 的三句各司其职——<b>这就是范式的价值：不靠灵感，靠工序。</b>'});
+regA({id:'d9_ab1',brief:'真假让步评审',better:'b',intro:'两个「让步反驳」段，谁是真让步？',
+ a:'有人说玩游戏一点好处都没有，纯属浪费生命。这种说法太绝对了，所以是错的。游戏其实有很多好处。',
+ b:'诚然，反对者最有力的理由是：游戏以即时奖励劫持注意力，自控力未熟的青少年极易深陷。这一担忧真实而沉重。然而，它指向的是「无节制」而非「游戏」本身——同样的机制，在规则之内便是休息与社交。因此，问题的答案不在禁绝，而在边界。',
+ why:{stem:'B 是真让步的关键在于：',opts:[['它挑对方「最强」的理由来让，并承认其分量',1],['它用了「诚然」这个词',0,'词只是外壳，A 换上「诚然」依然是稻草人。'],['它比 A 长',0],['它没有反驳对方',0,'它反驳了——先让后驳，且驳在「混淆概念」这一点上。']]},
+ exp:'A 立了个稻草人（「一点好处都没有」这种极端说法本就少有人持），一推就倒；B 先扛住对方<b>最重的一拳</b>，反驳才有含金量。'});
+regA({id:'d19_ab1',brief:'议论段会诊',better:'b',intro:'同一个论点的两个版本。哪段能拿分？',
+ a:'坚持很重要。爱迪生试了一千多种灯丝才成功。屠呦呦失败了几百次也没放弃。贝多芬耳朵聋了还在作曲。所以说坚持真的很重要。',
+ b:'坚持之所以可贵，在于它把失败转化为数据。爱迪生试验上千种灯丝，每次失败都在排除一种错误答案——成功不是第一千零一次的运气，而是前一千次的积累。可见，坚持者与放弃者的差别，不在挨打的次数，而在是否把每一击都记进了账本。',
+ why:{stem:'B 段得分的关键是：',opts:[['一例配足了「析」：讲清失败如何转化为成功的机制',1],['B 用的例子比 A 的更有名',0,'同一个例子，差别在下锅没有。'],['A 的例子是编的',0,'A 的例子都真，病在堆例无析。'],['B 没有用「所以」',0]],},
+ exp:'A 是<b>三例裸奔</b>＋口语收尾（真的很重要）；B 一例吃透：点 → 证 → 析（机制）→ 结（金句回扣）。<b>考官数的是思考的深度，不是名人的数量。</b>'});
+regA({id:'d19_ab2',brief:'评论段会诊',better:'b',intro:'两段都在评《匆匆》的排比。哪段是合格的文本评论？',
+ a:'这一段作者用了排比和反复的修辞手法，写了燕子、杨柳和桃花，写得非常生动优美，让人印象深刻，体现了作者高超的写作水平。',
+ b:'开篇的排比并非为了「优美」，而是一场蓄意的铺垫：三个「有再……的时候」把自然的循环敲成稳定的节拍，读者刚被这份「万物可重来」的从容安顿下来，「但是」便陡然抽走地毯——日子的一去不返，正因前面的循环铺得足，才显得格外无可挽回。',
+ why:{stem:'B 段合格的关键是：',opts:[['回答了「如何」：说清节奏怎样建立、又怎样被打破',1],['B 没有提到「排比」这个词',0,'B 提了，且提完立刻分析——报菜名之后要上菜。'],['A 的手法判断是错的',0,'A 判断没错，病在贴标签＋空评价（生动优美 / 水平高超）。'],['B 更短',0]],},
+ exp:'「生动优美」「印象深刻」是<b>万能空话</b>，放哪篇课文都成立——因此不得分。合格的析必须<b>专属这段文字</b>：机制说得越具体，分越高。'});
+/* ================= 启动 ================= */
+function boot(){
+  S.meta.opened++;save();
+  renderHome();showView('v-home');paintDashLite();
+}
+boot();
+window.__C={S:S,LEVELS:LEVELS,CARDS:CARDS,save:save,exportReport:exportReport,openLevel:openLevel,QMAP:QMAP,OMAP:OMAP,levelDone:levelDone,levelPct:levelPct,unlockCards:unlockCards};
+</script>
+<script>
+'use strict';
+/* ===== 云同步 v2 · 漫游版：云为主档案，本机为缓存 ===== */
+(function(){
+var REPO='lilisun536-sudo/simon-study',PATH='data/progress.json';
+var MODE={name:'chinese',math:false,summer:false}; /* {name, math:bool, summer:bool} */
+var K1='simon_summer_v1',K2='simon_school_math_v1',K3='simon_chinese_v1';
+var REMOTE={mathSummary:null,summerSummary:null,sha:null};
+var lastSig='',timer=null,dirty=false;
+function tk(){try{return localStorage.getItem('simon_sync_token')||''}catch(e){return ''}}
+function b64e(s){return btoa(unescape(encodeURIComponent(s)))}
+function b64d(s){return decodeURIComponent(escape(atob(String(s).replace(/\n/g,''))))}
+function lsGet(k){try{var v=localStorage.getItem(k);return v?JSON.parse(v):null}catch(e){return null}}
+function lsSet(k,o){try{localStorage.setItem(k,JSON.stringify(o))}catch(e){}}
+function rich(k,o){if(!o)return 0;var n=0;
+ if(k===K2){if(o.it)for(var i in o.it){n+=(o.it[i].a||0)+(o.it[i].ok?1:0)}if(o.qv)for(var q in o.qv)n+=(o.qv[q]||0)*2;return n}
+ if(k===K3){var m3=(o.meta||{});return (m3.pct||0)*1000+(m3.doneLevels||0)*10+(m3.opened||0)}
+ ['answers','clsf','traces','ords','essays','rubrics','checks','dict','vocab','reviews'].forEach(function(s){if(o[s])n+=Object.keys(o[s]).length});return n}
+function mergeMath(a,b){if(!a)return b;if(!b)return a;
+ var out={meta:{},it:{},qv:{}},k;
+ var ids={};[a.it||{},b.it||{}].forEach(function(o){for(k in o)ids[k]=1});
+ for(k in ids){var x=(a.it||{})[k],y=(b.it||{})[k];
+   if(!x){out.it[k]=y}else if(!y){out.it[k]=x}
+   else{out.it[k]={a:Math.max(x.a||0,y.a||0),w:(x.w||y.w)?1:0,ok:(((x.a||0)>=(y.a||0))?x.ok:y.ok)?1:0}}}
+ var qs={};[a.qv||{},b.qv||{}].forEach(function(o){for(k in o)qs[k]=1});
+ for(k in qs)out.qv[k]=Math.max((a.qv||{})[k]||0,(b.qv||{})[k]||0);
+ var ma=a.meta||{},mb=b.meta||{};
+ out.meta={created:ma.created||mb.created,opened:Math.max(ma.opened||0,mb.opened||0),tab:(ma.tab!=null?ma.tab:mb.tab)};
+ return out}
+function summerSummary(){var S=lsGet(K1);if(!S)return null;var n=0;
+ ['answers','clsf','traces','ords','essays','rubrics','checks','dict','vocab','reviews'].forEach(function(s){if(S[s])n+=Object.keys(S[s]).length});
+ var last='';if(S.activity){var d=Object.keys(S.activity).sort();last=d[d.length-1]||''}
+ return{covered:Math.min(n,202),total:202,last:last}}
+function chineseSummary3(){var S=lsGet(K3);if(!S||!S.meta)return null;return{pct:S.meta.pct||0,done:S.meta.doneLevels||0,last:S.meta.lastLevel||''}}
+function mathSummary(){try{return PAPERS.map(function(P){var a=0,r=0,m=0,rev=0;
+ P.qs.forEach(function(q){q.parts.forEach(function(p){var t=IT(p.id);if(t.a)a++;if(t.ok)r++});
+   var c=stChip(q);if(c[1]==='已掌握')m++;if(c[1]==='需复习')rev++});
+ return{key:P.key,name:P.name,code:P.code,answered:a,of:P.items,right:r,mastered:m,ofQ:P.qs.length,review:rev}})}catch(e){return null}}
+function fetchRemote(){var api='https://api.github.com/repos/'+REPO+'/contents/'+PATH+'?ref=main';
+ var H={'Accept':'application/vnd.github+json'};var t=tk();if(t)H['Authorization']='Bearer '+t;
+ return window.fetch(api,{headers:H,cache:'no-store'}).then(function(r){
+   if(r.status===404)return null;if(!r.ok)throw 'HTTP '+r.status;return r.json()})
+ .then(function(j){if(!j)return null;REMOTE.sha=j.sha||null;
+   var p=null;try{p=JSON.parse(b64d(j.content))}catch(e){}
+   if(p){REMOTE.mathSummary=p.mathSummary||REMOTE.mathSummary;REMOTE.summerSummary=p.summerSummary||REMOTE.summerSummary}
+   return p})
+ .catch(function(e){
+   return window.fetch('https://raw.githubusercontent.com/'+REPO+'/main/'+PATH+'?_='+Date.now(),{cache:'no-store'})
+   .then(function(r){if(!r.ok)return null;return r.text()})
+   .then(function(t2){if(!t2)return null;var p=null;try{p=JSON.parse(t2)}catch(e2){}
+     if(p){REMOTE.mathSummary=p.mathSummary||null;REMOTE.summerSummary=p.summerSummary||null}
+     return p}).catch(function(){return null})})}
+function pull(done){
+ if(!window.fetch){done&&done(false);return}
+ fetchRemote().then(function(p){
+   if(!p||!p.keys){done&&done(false);return}
+   var changed=false;
+   /* 数学：逐题合并 */
+   var lm=lsGet(K2),cm=p.keys[K2];
+   if(cm){var mm=mergeMath(lm,cm);
+     if(JSON.stringify(mm)!==JSON.stringify(lm)){lsSet(K2,mm);changed=true}
+     if(lm&&JSON.stringify(mm)!==JSON.stringify(cm))dirty=true}
+   /* 暑期：择富采用 */
+   var ls=lsGet(K1),cs=p.keys[K1];
+   if(cs&&rich(K1,cs)>rich(K1,ls)){lsSet(K1,cs);changed=true}
+   else if(ls&&rich(K1,ls)>rich(K1,cs||null))dirty=true;
+   var lc3=lsGet(K3),cc3=p.keys[K3];
+   if(cc3&&rich(K3,cc3)>rich(K3,lc3)){lsSet(K3,cc3);changed=true}
+   else if(lc3&&rich(K3,lc3)>rich(K3,cc3||null))dirty=true;
+   if(changed){
+     var g='sy2r_'+MODE.name;
+     try{if(!sessionStorage.getItem(g)){sessionStorage.setItem(g,'1');location.reload();return}}catch(e){}
+   }
+   done&&done(changed);
+ }).catch(function(){done&&done(false)})}
+function collect(){var keys={};var v1=lsGet(K1),v2=lsGet(K2),v3=lsGet(K3);if(v1)keys[K1]=v1;if(v2)keys[K2]=v2;if(v3)keys[K3]=v3;
+ return{v:2,ts:new Date().toISOString(),from:MODE.name,keys:keys,
+   mathSummary:MODE.math?mathSummary():(REMOTE.mathSummary||null),
+   summerSummary:MODE.summer?summerSummary():(REMOTE.summerSummary||null),chineseSummary:chineseSummary3()}}
+function sig(s){return s.replace(/"ts":\s*"[^"]*"/,'')}
+function paint(st,t0){var e=document.getElementById('syncPill');if(!e)return;
+ var m={off:'',busy:'同步中…',ok:'已同步 '+(t0?t0.toTimeString().slice(0,5):''),err:'同步失败·稍后自动重试'}[st]||'';
+ e.textContent=m;e.style.display=m?'inline-block':'none'}
+function push(done,keepalive){
+ var t=tk();if(!t){paint('off');done&&done(false,'未配置令牌');return}
+ if(!window.fetch){done&&done(false,'环境不支持');return}
+ var body=JSON.stringify(collect(),null,1);
+ if(sig(body)===lastSig){dirty=false;paint('ok',push._t0);done&&done(true,'无变化');return}
+ paint('busy');
+ var api='https://api.github.com/repos/'+REPO+'/contents/'+PATH;
+ var H={'Authorization':'Bearer '+t,'Accept':'application/vnd.github+json'};
+ fetchRemote().then(function(){
+   /* 拉最新 sha 与对端摘要后再写，最大限度保全 */
+   var body2=JSON.stringify(collect(),null,1);
+   var payload={message:'sync('+MODE.name+') '+new Date().toISOString().slice(0,16),content:b64e(body2)};
+   if(REMOTE.sha)payload.sha=REMOTE.sha;
+   var opt={method:'PUT',headers:H,body:JSON.stringify(payload)};
+   if(keepalive&&opt.body.length<58000)opt.keepalive=true;
+   return window.fetch(api,opt).then(function(r){
+     if(r&&r.ok){lastSig=sig(body2);dirty=false;push._t0=new Date();paint('ok',push._t0);done&&done(true,'ok')}
+     else{paint('err');done&&done(false,'HTTP '+(r&&r.status))}})
+ }).catch(function(e){paint('err');done&&done(false,String(e))})}
+function schedule(){dirty=true;if(!tk())return;clearTimeout(timer);timer=setTimeout(function(){push()},90000)}
+function flush(){if(dirty&&tk())push(null,true)}
+window.addEventListener('pagehide',flush);
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')flush()});
+window.__SY2={pull:pull,push:push,schedule:schedule,collect:collect,mergeMath:mergeMath,rich:rich,REMOTE:REMOTE,flush:flush};
+pull(function(){});
+setInterval(function(){if(tk())push()},180000);
+window.addEventListener('load',function(){if(tk())setTimeout(function(){push()},4000)});
+})();
+</script>
+</body>
+</html>

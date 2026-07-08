@@ -2319,7 +2319,7 @@ window.__M={ST:function(){return ST},checkSpec:checkSpec,QS:QS,QS2:QS2,QS3:QS3,Q
 (function(){
 var REPO='lilisun536-sudo/simon-study',PATH='data/progress.json';
 var MODE={name:'math',math:true,summer:false}; /* {name, math:bool, summer:bool} */
-var K1='simon_summer_v1',K2='simon_school_math_v1';
+var K1='simon_summer_v1',K2='simon_school_math_v1',K3='simon_chinese_v1';
 var REMOTE={mathSummary:null,summerSummary:null,sha:null};
 var lastSig='',timer=null,dirty=false;
 function tk(){try{return localStorage.getItem('simon_sync_token')||''}catch(e){return ''}}
@@ -2329,6 +2329,7 @@ function lsGet(k){try{var v=localStorage.getItem(k);return v?JSON.parse(v):null}
 function lsSet(k,o){try{localStorage.setItem(k,JSON.stringify(o))}catch(e){}}
 function rich(k,o){if(!o)return 0;var n=0;
  if(k===K2){if(o.it)for(var i in o.it){n+=(o.it[i].a||0)+(o.it[i].ok?1:0)}if(o.qv)for(var q in o.qv)n+=(o.qv[q]||0)*2;return n}
+ if(k===K3){var m3=(o.meta||{});return (m3.pct||0)*1000+(m3.doneLevels||0)*10+(m3.opened||0)}
  ['answers','clsf','traces','ords','essays','rubrics','checks','dict','vocab','reviews'].forEach(function(s){if(o[s])n+=Object.keys(o[s]).length});return n}
 function mergeMath(a,b){if(!a)return b;if(!b)return a;
  var out={meta:{},it:{},qv:{}},k;
@@ -2345,6 +2346,7 @@ function summerSummary(){var S=lsGet(K1);if(!S)return null;var n=0;
  ['answers','clsf','traces','ords','essays','rubrics','checks','dict','vocab','reviews'].forEach(function(s){if(S[s])n+=Object.keys(S[s]).length});
  var last='';if(S.activity){var d=Object.keys(S.activity).sort();last=d[d.length-1]||''}
  return{covered:Math.min(n,202),total:202,last:last}}
+function chineseSummary3(){var S=lsGet(K3);if(!S||!S.meta)return null;return{pct:S.meta.pct||0,done:S.meta.doneLevels||0,last:S.meta.lastLevel||''}}
 function mathSummary(){try{return PAPERS.map(function(P){var a=0,r=0,m=0,rev=0;
  P.qs.forEach(function(q){q.parts.forEach(function(p){var t=IT(p.id);if(t.a)a++;if(t.ok)r++});
    var c=stChip(q);if(c[1]==='已掌握')m++;if(c[1]==='需复习')rev++});
@@ -2377,16 +2379,19 @@ function pull(done){
    var ls=lsGet(K1),cs=p.keys[K1];
    if(cs&&rich(K1,cs)>rich(K1,ls)){lsSet(K1,cs);changed=true}
    else if(ls&&rich(K1,ls)>rich(K1,cs||null))dirty=true;
+   var lc3=lsGet(K3),cc3=p.keys[K3];
+   if(cc3&&rich(K3,cc3)>rich(K3,lc3)){lsSet(K3,cc3);changed=true}
+   else if(lc3&&rich(K3,lc3)>rich(K3,cc3||null))dirty=true;
    if(changed){
      var g='sy2r_'+MODE.name;
      try{if(!sessionStorage.getItem(g)){sessionStorage.setItem(g,'1');location.reload();return}}catch(e){}
    }
    done&&done(changed);
  }).catch(function(){done&&done(false)})}
-function collect(){var keys={};var v1=lsGet(K1),v2=lsGet(K2);if(v1)keys[K1]=v1;if(v2)keys[K2]=v2;
+function collect(){var keys={};var v1=lsGet(K1),v2=lsGet(K2),v3=lsGet(K3);if(v1)keys[K1]=v1;if(v2)keys[K2]=v2;if(v3)keys[K3]=v3;
  return{v:2,ts:new Date().toISOString(),from:MODE.name,keys:keys,
    mathSummary:MODE.math?mathSummary():(REMOTE.mathSummary||null),
-   summerSummary:MODE.summer?summerSummary():(REMOTE.summerSummary||null)}}
+   summerSummary:MODE.summer?summerSummary():(REMOTE.summerSummary||null),chineseSummary:chineseSummary3()}}
 function sig(s){return s.replace(/"ts":\s*"[^"]*"/,'')}
 function paint(st,t0){var e=document.getElementById('syncPill');if(!e)return;
  var m={off:'',busy:'同步中…',ok:'已同步 '+(t0?t0.toTimeString().slice(0,5):''),err:'同步失败·稍后自动重试'}[st]||'';

@@ -1,13 +1,13 @@
 {
  "v": 2,
- "ts": "2026-07-08T06:33:30.606Z",
+ "ts": "2026-07-08T09:48:48.845Z",
  "from": "study",
  "keys": {
   "simon_summer_v1": {
    "meta": {
     "created": "2026-07-05",
-    "view": "sci",
-    "opened": 14,
+    "view": "dash",
+    "opened": 15,
     "rate": "1"
    },
    "activity": {

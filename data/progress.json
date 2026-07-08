@@ -1,19 +1,20 @@
 {
  "v": 2,
- "ts": "2026-07-07T08:06:43.754Z",
- "from": "study",
+ "ts": "2026-07-08T01:21:35.455Z",
+ "from": "hub",
  "keys": {
   "simon_summer_v1": {
    "meta": {
     "created": "2026-07-05",
     "view": "listen",
-    "opened": 8,
+    "opened": 9,
     "rate": "1"
    },
    "activity": {
     "2026-07-05": true,
     "2026-07-06": true,
-    "2026-07-07": true
+    "2026-07-07": true,
+    "2026-07-08": true
    },
    "answers": {
     "ecu_u0l0_q0": {
@@ -1030,6 +1031,6 @@
  "summerSummary": {
   "covered": 24,
   "total": 202,
-  "last": "2026-07-07"
+  "last": "2026-07-08"
  }
 }

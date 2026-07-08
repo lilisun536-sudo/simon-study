@@ -1,7 +1,7 @@
 {
  "v": 2,
- "ts": "2026-07-08T05:31:27.482Z",
- "from": "hub",
+ "ts": "2026-07-08T05:31:33.729Z",
+ "from": "chinese",
  "keys": {
   "simon_summer_v1": {
    "meta": {
@@ -1029,6 +1029,26 @@
     "6": 1,
     "7": 1
    }
+  },
+  "simon_chinese_v1": {
+   "meta": {
+    "created": "2026-07-08",
+    "opened": 1,
+    "lastLevel": "",
+    "doneLevels": 0,
+    "pct": 0
+   },
+   "activity": {
+    "2026-07-08": true
+   },
+   "q": {},
+   "ex": {},
+   "essays": {},
+   "micro": {},
+   "checks": {},
+   "cards": {},
+   "flips": {},
+   "reviews": {}
   }
  },
  "mathSummary": [
@@ -1082,5 +1102,9 @@
   "total": 202,
   "last": "2026-07-08"
  },
- "chineseSummary": null
+ "chineseSummary": {
+  "pct": 0,
+  "done": 0,
+  "last": ""
+ }
 }

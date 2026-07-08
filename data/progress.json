@@ -1,7 +1,7 @@
 {
  "v": 2,
- "ts": "2026-07-08T05:08:47.654Z",
- "from": "math",
+ "ts": "2026-07-08T05:31:27.482Z",
+ "from": "hub",
  "keys": {
   "simon_summer_v1": {
    "meta": {
@@ -1081,5 +1081,6 @@
   "covered": 42,
   "total": 202,
   "last": "2026-07-08"
- }
+ },
+ "chineseSummary": null
 }

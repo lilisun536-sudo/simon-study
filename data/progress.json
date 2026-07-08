@@ -1,6 +1,6 @@
 {
  "v": 2,
- "ts": "2026-07-08T01:24:03.292Z",
+ "ts": "2026-07-08T01:38:06.668Z",
  "from": "study",
  "keys": {
   "simon_summer_v1": {
@@ -81,6 +81,41 @@
      "pick": 2,
      "ok": false,
      "d": "2026-07-05"
+    },
+    "wr_w1_fn_q1": {
+     "pick": 3,
+     "ok": false,
+     "d": "2026-07-08"
+    },
+    "wr_w1_fn_q2": {
+     "pick": 0,
+     "ok": true,
+     "d": "2026-07-08"
+    },
+    "wr_w1_fn_q3": {
+     "pick": 1,
+     "ok": true,
+     "d": "2026-07-08"
+    },
+    "wr_w1_fn_q4": {
+     "pick": 2,
+     "ok": true,
+     "d": "2026-07-08"
+    },
+    "wr_w1_sg_q0": {
+     "pick": 2,
+     "ok": true,
+     "d": "2026-07-08"
+    },
+    "wr_w1_sg_q1": {
+     "pick": 2,
+     "ok": true,
+     "d": "2026-07-08"
+    },
+    "wr_w1_sg_q2": {
+     "pick": 2,
+     "ok": false,
+     "d": "2026-07-08"
     }
    },
    "clsf": {
@@ -119,9 +154,23 @@
      "last": 80
     }
    },
-   "essays": {},
-   "rubrics": {},
-   "checks": {},
+   "essays": {
+    "wr_w1_essay": "Nowadays, students spend a lot of time studying, but many of them do not know the best way to learn. I strongly agree that schools should teach students how to learn because it can help them study better and reduce stress.\n\nFirst, learning good study methods can improve memory. Roediger and Karpicke found that testing yourself is more useful than reading the same notes again and again. For example, students can do short quizzes after class instead of only reading textbooks. This helps them remember information for a longer time and makes revision more effective.\n\nAnother reason is that students should learn how to manage their time. The Ebbinghaus Forgetting Curve shows that people forget information quickly if they do not review it. If students know when to revise, they do not need to study everything the night before an exam. Also, research shows that getting enough sleep helps people remember what they have learnt. Good planning and enough sleep can help students feel less stressed and get better grades.\n\nSome people think schools should only teach subjects like maths and science because there is not enough class time. However, learning how to study is also an important skill. If students know how to learn well, they can do better in every subject.\n\nIn conclusion, I believe schools should make learning skills a compulsory subject because students can remember more, study more efficiently and feel less pressure during exams."
+   },
+   "rubrics": {
+    "wr_w1_tr": "6.5",
+    "wr_w1_cc": "6",
+    "wr_w1_lr": "6",
+    "wr_w1_gra": "6"
+   },
+   "checks": {
+    "wr_w1_c1": true,
+    "wr_w1_c2": true,
+    "wr_w1_c3": true,
+    "wr_w1_c5": true,
+    "wr_w1_c4": true,
+    "wr_w1_c6": true
+   },
    "vocab": {
     "cognition": {
      "box": 1,
@@ -1029,7 +1078,7 @@
   }
  ],
  "summerSummary": {
-  "covered": 24,
+  "covered": 42,
   "total": 202,
   "last": "2026-07-08"
  }

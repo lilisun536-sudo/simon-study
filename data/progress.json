@@ -1,13 +1,13 @@
 {
  "v": 2,
- "ts": "2026-07-09T01:17:08.375Z",
- "from": "hub",
+ "ts": "2026-07-09T01:18:07.897Z",
+ "from": "study",
  "keys": {
   "simon_summer_v1": {
    "meta": {
     "created": "2026-07-05",
-    "view": "writing",
-    "opened": 16,
+    "view": "plan",
+    "opened": 15,
     "rate": "1"
    },
    "activity": {
@@ -142,6 +142,11 @@
      "pick": 1,
      "ok": false,
      "d": "2026-07-08"
+    },
+    "ecu_u0l2_q2": {
+     "pick": 0,
+     "ok": false,
+     "d": "2026-07-09"
     }
    },
    "clsf": {
@@ -1137,7 +1142,7 @@
   }
  ],
  "summerSummary": {
-  "covered": 49,
+  "covered": 50,
   "total": 202,
   "last": "2026-07-09"
  },

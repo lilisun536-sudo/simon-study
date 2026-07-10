@@ -1,13 +1,13 @@
 {
  "v": 2,
- "ts": "2026-07-09T01:24:04.756Z",
+ "ts": "2026-07-10T01:50:13.002Z",
  "from": "study",
  "keys": {
   "simon_summer_v1": {
    "meta": {
     "created": "2026-07-05",
     "view": "econ",
-    "opened": 15,
+    "opened": 16,
     "rate": "1"
    },
    "activity": {
@@ -15,7 +15,8 @@
     "2026-07-06": true,
     "2026-07-07": true,
     "2026-07-08": true,
-    "2026-07-09": true
+    "2026-07-09": true,
+    "2026-07-10": true
    },
    "answers": {
     "ecu_u0l0_q0": {
@@ -185,6 +186,11 @@
     },
     "ec_q2": {
      "pick": 0,
+     "ok": true,
+     "d": "2026-07-09"
+    },
+    "ec_q3": {
+     "pick": 1,
      "ok": true,
      "d": "2026-07-09"
     }
@@ -1182,9 +1188,9 @@
   }
  ],
  "summerSummary": {
-  "covered": 58,
+  "covered": 59,
   "total": 202,
-  "last": "2026-07-09"
+  "last": "2026-07-10"
  },
  "chineseSummary": {
   "pct": 0,

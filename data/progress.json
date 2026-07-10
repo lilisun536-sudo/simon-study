@@ -1,13 +1,13 @@
 {
  "v": 2,
- "ts": "2026-07-10T02:54:19.075Z",
- "from": "hub",
+ "ts": "2026-07-10T09:53:52.901Z",
+ "from": "study",
  "keys": {
   "simon_summer_v1": {
    "meta": {
     "created": "2026-07-05",
-    "view": "econ",
-    "opened": 17,
+    "view": "psy",
+    "opened": 16,
     "rate": "1"
    },
    "activity": {
@@ -193,6 +193,81 @@
      "pick": 1,
      "ok": true,
      "d": "2026-07-09"
+    },
+    "ec_q4": {
+     "pick": 1,
+     "ok": true,
+     "d": "2026-07-10"
+    },
+    "ec_q5": {
+     "pick": 1,
+     "ok": true,
+     "d": "2026-07-10"
+    },
+    "ec_q6": {
+     "pick": 2,
+     "ok": true,
+     "d": "2026-07-10"
+    },
+    "ec_q7": {
+     "pick": 2,
+     "ok": true,
+     "d": "2026-07-10"
+    },
+    "ec_q8": {
+     "pick": 1,
+     "ok": true,
+     "d": "2026-07-10"
+    },
+    "ec_q9": {
+     "pick": 0,
+     "ok": false,
+     "d": "2026-07-10"
+    },
+    "psy_u0l1_q0": {
+     "pick": 0,
+     "ok": true,
+     "d": "2026-07-10"
+    },
+    "psy_u0l1_q1": {
+     "pick": 1,
+     "ok": true,
+     "d": "2026-07-10"
+    },
+    "psy_u0l1_q2": {
+     "pick": 2,
+     "ok": true,
+     "d": "2026-07-10"
+    },
+    "psy_u0l2_q0": {
+     "pick": 1,
+     "ok": true,
+     "d": "2026-07-10"
+    },
+    "psy_u0l2_q1": {
+     "pick": 1,
+     "ok": true,
+     "d": "2026-07-10"
+    },
+    "psy_u0l2_q2": {
+     "pick": 2,
+     "ok": true,
+     "d": "2026-07-10"
+    },
+    "psy_u0l3_q0": {
+     "pick": 1,
+     "ok": true,
+     "d": "2026-07-10"
+    },
+    "psy_u0l3_q1": {
+     "pick": 2,
+     "ok": true,
+     "d": "2026-07-10"
+    },
+    "psy_u0l3_q2": {
+     "pick": 0,
+     "ok": true,
+     "d": "2026-07-10"
     }
    },
    "clsf": {
@@ -245,7 +320,8 @@
    },
    "essays": {
     "wr_w1_essay": "Nowadays, students spend a lot of time studying, but many of them do not know the best way to learn. I strongly agree that schools should teach students how to learn because it can help them study better and reduce stress.\n\nFirst, learning good study methods can improve memory. Roediger and Karpicke found that testing yourself is more useful than reading the same notes again and again. For example, students can do short quizzes after class instead of only reading textbooks. This helps them remember information for a longer time and makes revision more effective.\n\nAnother reason is that students should learn how to manage their time. The Ebbinghaus Forgetting Curve shows that people forget information quickly if they do not review it. If students know when to revise, they do not need to study everything the night before an exam. Also, research shows that getting enough sleep helps people remember what they have learnt. Good planning and enough sleep can help students feel less stressed and get better grades.\n\nSome people think schools should only teach subjects like maths and science because there is not enough class time. However, learning how to study is also an important skill. If students know how to learn well, they can do better in every subject.\n\nIn conclusion, I believe schools should make learning skills a compulsory subject because students can remember more, study more efficiently and feel less pressure during exams.",
-    "wr_w2_essay": "I agree in most of the cases, because taxing sugary drinks can reduce sugar consumption and improve people’s health. However, I do not think it is always the most effective solution, because education and healthy campaigns are also important.\n\nFirstly, increasing the price of sugary drinks can make people buy less of them. According to the law of demand, when the price become higher, the quantity demanded usually decrease. This is especially true for teenagers because they often have limited pocket money. As a result, many people may choose water or other healthier drinks instead. Therefore, the government can reduce obesity and diabetes by putting tax on sugary drinks.\n\nHowever, there are still some disadvantages. Rich people may not care about the higher price because they can still afford it. On the other hand, low-income families may have to spend more money if they continue buying the same drinks. Therefore, this kind of tax is a little unfair for some groups. Besides, if people simply change to other unhealthy food, the tax may not improve public health very much.\n\nIn addition, health education may have a longer effect than taxation. If schools teach students about healthy eating habits and companies provide clearer food labels, people can understand why too much sugar is harmful. They may change their lifestyle by themselves instead of only because drinks become more expensive. This can create healthier habits in the long term.\n\nIn conclusion, I believe taxing sugary drinks is an effective policy and it can improve public health to some extent. However, I do not think it is the most effective method. Governments should combine taxation with education and other health policies to achieve better results."
+    "wr_w2_essay": "I agree in most of the cases, because taxing sugary drinks can reduce sugar consumption and improve people’s health. However, I do not think it is always the most effective solution, because education and healthy campaigns are also important.\n\nFirstly, increasing the price of sugary drinks can make people buy less of them. According to the law of demand, when the price become higher, the quantity demanded usually decrease. This is especially true for teenagers because they often have limited pocket money. As a result, many people may choose water or other healthier drinks instead. Therefore, the government can reduce obesity and diabetes by putting tax on sugary drinks.\n\nHowever, there are still some disadvantages. Rich people may not care about the higher price because they can still afford it. On the other hand, low-income families may have to spend more money if they continue buying the same drinks. Therefore, this kind of tax is a little unfair for some groups. Besides, if people simply change to other unhealthy food, the tax may not improve public health very much.\n\nIn addition, health education may have a longer effect than taxation. If schools teach students about healthy eating habits and companies provide clearer food labels, people can understand why too much sugar is harmful. They may change their lifestyle by themselves instead of only because drinks become more expensive. This can create healthier habits in the long term.\n\nIn conclusion, I believe taxing sugary drinks is an effective policy and it can improve public health to some extent. However, I do not think it is the most effective method. Governments should combine taxation with education and other health policies to achieve better results.",
+    "ec_case1": "2"
    },
    "rubrics": {
     "wr_w1_tr": "6.5",
@@ -1123,14 +1199,13 @@
   "simon_chinese_v1": {
    "meta": {
     "created": "2026-07-08",
-    "opened": 2,
+    "opened": 1,
     "lastLevel": "",
     "doneLevels": 0,
     "pct": 0
    },
    "activity": {
-    "2026-07-08": true,
-    "2026-07-10": true
+    "2026-07-08": true
    },
    "q": {},
    "ex": {},
@@ -1189,7 +1264,7 @@
   }
  ],
  "summerSummary": {
-  "covered": 59,
+  "covered": 75,
   "total": 202,
   "last": "2026-07-10"
  },

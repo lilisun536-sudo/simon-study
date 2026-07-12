@@ -1,13 +1,13 @@
 {
  "v": 2,
- "ts": "2026-07-12T12:14:16.521Z",
+ "ts": "2026-07-12T12:22:57.008Z",
  "from": "study",
  "keys": {
   "simon_summer_v1": {
    "meta": {
     "created": "2026-07-05",
-    "view": "math",
-    "opened": 18,
+    "view": "dash",
+    "opened": 19,
     "rate": "1"
    },
    "activity": {
@@ -306,7 +306,11 @@
     "m2": "A",
     "m3": "B",
     "m4": "A",
-    "m5": "B"
+    "m5": "B",
+    "m6": "C",
+    "m7": "D",
+    "m8": "D",
+    "m9": "B"
    },
    "traces": {},
    "ords": {
@@ -1295,7 +1299,7 @@
   }
  ],
  "summerSummary": {
-  "covered": 81,
+  "covered": 85,
   "total": 202,
   "last": "2026-07-12"
  },

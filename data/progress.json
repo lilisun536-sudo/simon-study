@@ -1,13 +1,13 @@
 {
  "v": 2,
- "ts": "2026-07-10T09:53:52.901Z",
+ "ts": "2026-07-12T12:14:04.124Z",
  "from": "study",
  "keys": {
   "simon_summer_v1": {
    "meta": {
     "created": "2026-07-05",
     "view": "psy",
-    "opened": 16,
+    "opened": 17,
     "rate": "1"
    },
    "activity": {
@@ -16,7 +16,8 @@
     "2026-07-07": true,
     "2026-07-08": true,
     "2026-07-09": true,
-    "2026-07-10": true
+    "2026-07-10": true,
+    "2026-07-12": true
    },
    "answers": {
     "ecu_u0l0_q0": {
@@ -265,6 +266,21 @@
      "d": "2026-07-10"
     },
     "psy_u0l3_q2": {
+     "pick": 0,
+     "ok": true,
+     "d": "2026-07-10"
+    },
+    "psy_u1l0_q0": {
+     "pick": 1,
+     "ok": true,
+     "d": "2026-07-10"
+    },
+    "psy_u1l0_q1": {
+     "pick": 1,
+     "ok": true,
+     "d": "2026-07-10"
+    },
+    "psy_u1l0_q2": {
      "pick": 0,
      "ok": true,
      "d": "2026-07-10"
@@ -1264,9 +1280,9 @@
   }
  ],
  "summerSummary": {
-  "covered": 75,
+  "covered": 78,
   "total": 202,
-  "last": "2026-07-10"
+  "last": "2026-07-12"
  },
  "chineseSummary": {
   "pct": 0,

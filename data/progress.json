@@ -1,13 +1,13 @@
 {
  "v": 2,
- "ts": "2026-07-12T12:14:04.124Z",
+ "ts": "2026-07-12T12:14:16.521Z",
  "from": "study",
  "keys": {
   "simon_summer_v1": {
    "meta": {
     "created": "2026-07-05",
-    "view": "psy",
-    "opened": 17,
+    "view": "math",
+    "opened": 18,
     "rate": "1"
    },
    "activity": {
@@ -284,6 +284,21 @@
      "pick": 0,
      "ok": true,
      "d": "2026-07-10"
+    },
+    "psy_u1l1_q0": {
+     "pick": 1,
+     "ok": true,
+     "d": "2026-07-12"
+    },
+    "psy_u1l1_q1": {
+     "pick": 0,
+     "ok": false,
+     "d": "2026-07-12"
+    },
+    "psy_u1l1_q2": {
+     "pick": 1,
+     "ok": false,
+     "d": "2026-07-12"
     }
    },
    "clsf": {
@@ -1280,7 +1295,7 @@
   }
  ],
  "summerSummary": {
-  "covered": 78,
+  "covered": 81,
   "total": 202,
   "last": "2026-07-12"
  },

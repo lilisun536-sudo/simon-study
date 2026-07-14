@@ -1,12 +1,12 @@
 {
  "v": 2,
- "ts": "2026-07-14T06:59:11.068Z",
- "from": "study",
+ "ts": "2026-07-14T06:59:25.915Z",
+ "from": "math",
  "keys": {
   "simon_summer_v1": {
    "meta": {
     "created": "2026-07-05",
-    "view": "sci",
+    "view": "dash",
     "opened": 22,
     "rate": "1"
    },
@@ -400,7 +400,7 @@
   "simon_school_math_v1": {
    "meta": {
     "created": "2026-07-05",
-    "opened": 27,
+    "opened": 28,
     "tab": 0
    },
    "it": {

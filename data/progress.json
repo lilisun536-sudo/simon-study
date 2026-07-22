@@ -1,6 +1,6 @@
 {
  "v": 2,
- "ts": "2026-07-22T01:53:41.629Z",
+ "ts": "2026-07-22T03:27:38.195Z",
  "from": "math",
  "keys": {
   "simon_summer_v1": {
@@ -536,7 +536,7 @@
   "simon_school_math_v1": {
    "meta": {
     "created": "2026-07-05",
-    "opened": 32,
+    "opened": 33,
     "tab": 0
    },
    "it": {

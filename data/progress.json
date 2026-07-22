@@ -1,7 +1,7 @@
 {
  "v": 2,
- "ts": "2026-07-22T04:57:27.744Z",
- "from": "hub",
+ "ts": "2026-07-22T04:57:34.157Z",
+ "from": "math",
  "keys": {
   "simon_summer_v1": {
    "meta": {
@@ -536,7 +536,7 @@
   "simon_school_math_v1": {
    "meta": {
     "created": "2026-07-05",
-    "opened": 33,
+    "opened": 34,
     "tab": 0
    },
    "it": {
@@ -1412,9 +1412,9 @@
    "key": "a",
    "name": "卷一",
    "code": "0580/21/O/N/19",
-   "answered": 27,
+   "answered": 28,
    "of": 31,
-   "right": 25,
+   "right": 26,
    "mastered": 0,
    "ofQ": 26,
    "review": 14

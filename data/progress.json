@@ -1,13 +1,13 @@
 {
  "v": 2,
- "ts": "2026-07-22T06:55:47.886Z",
- "from": "math",
+ "ts": "2026-07-22T07:46:18.528Z",
+ "from": "hub",
  "keys": {
   "simon_summer_v1": {
    "meta": {
     "created": "2026-07-05",
-    "view": "plan",
-    "opened": 24,
+    "view": "dash",
+    "opened": 25,
     "rate": "1"
    },
    "activity": {
@@ -20,7 +20,8 @@
     "2026-07-12": true,
     "2026-07-13": true,
     "2026-07-14": true,
-    "2026-07-18": true
+    "2026-07-18": true,
+    "2026-07-22": true
    },
    "answers": {
     "ecu_u0l0_q0": {

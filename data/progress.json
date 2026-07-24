@@ -1,13 +1,13 @@
 {
  "v": 2,
- "ts": "2026-07-24T01:48:01.912Z",
- "from": "hub",
+ "ts": "2026-07-24T01:48:09.291Z",
+ "from": "study",
  "keys": {
   "simon_summer_v1": {
    "meta": {
     "created": "2026-07-05",
     "view": "dash",
-    "opened": 25,
+    "opened": 26,
     "rate": "1"
    },
    "activity": {
@@ -21,7 +21,8 @@
     "2026-07-13": true,
     "2026-07-14": true,
     "2026-07-18": true,
-    "2026-07-22": true
+    "2026-07-22": true,
+    "2026-07-24": true
    },
    "answers": {
     "ecu_u0l0_q0": {
@@ -1479,7 +1480,7 @@
  "summerSummary": {
   "covered": 115,
   "total": 202,
-  "last": "2026-07-22"
+  "last": "2026-07-24"
  },
  "chineseSummary": {
   "pct": 0,

@@ -1,13 +1,13 @@
 {
  "v": 2,
- "ts": "2026-07-24T10:01:15.204Z",
+ "ts": "2026-07-24T11:28:29.270Z",
  "from": "math",
  "keys": {
   "simon_summer_v1": {
    "meta": {
     "created": "2026-07-05",
-    "view": "plan",
-    "opened": 24,
+    "view": "dash",
+    "opened": 26,
     "rate": "1"
    },
    "activity": {
@@ -20,7 +20,9 @@
     "2026-07-12": true,
     "2026-07-13": true,
     "2026-07-14": true,
-    "2026-07-18": true
+    "2026-07-18": true,
+    "2026-07-22": true,
+    "2026-07-24": true
    },
    "answers": {
     "ecu_u0l0_q0": {
@@ -536,7 +538,7 @@
   "simon_school_math_v1": {
    "meta": {
     "created": "2026-07-05",
-    "opened": 43,
+    "opened": 44,
     "tab": 2
    },
    "it": {

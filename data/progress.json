@@ -1,7 +1,7 @@
 {
  "v": 2,
- "ts": "2026-07-31T05:51:34.652Z",
- "from": "math",
+ "ts": "2026-07-31T05:51:53.227Z",
+ "from": "chinese",
  "keys": {
   "simon_summer_v1": {
    "meta": {
@@ -1414,7 +1414,7 @@
   "simon_chinese_v1": {
    "meta": {
     "created": "2026-07-08",
-    "opened": 3,
+    "opened": 4,
     "lastLevel": "",
     "doneLevels": 0,
     "pct": 0

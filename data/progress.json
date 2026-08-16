@@ -1,6 +1,6 @@
 {
  "v": 2,
- "ts": "2026-08-16T06:18:38.150Z",
+ "ts": "2026-08-16T07:53:17.769Z",
  "from": "chinese",
  "keys": {
   "simon_summer_v1": {
@@ -1504,9 +1504,9 @@
     },
     "d3_rad1": {
      "ok": false,
-     "best": 0,
-     "tries": 0,
-     "vi": 0
+     "best": 65,
+     "tries": 2,
+     "vi": 1
     }
    },
    "essays": {
@@ -1527,7 +1527,12 @@
    },
    "cards": {},
    "flips": {},
-   "reviews": {}
+   "reviews": {
+    "d3_rad1": {
+     "brief": "口语雷达 · 第二扫（更密）",
+     "at": "2026-08-16"
+    }
+   }
   }
  },
  "mathSummary": [

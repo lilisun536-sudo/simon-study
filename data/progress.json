@@ -1,6 +1,6 @@
 {
  "v": 2,
- "ts": "2026-08-16T06:15:38.347Z",
+ "ts": "2026-08-16T06:18:38.150Z",
  "from": "chinese",
  "keys": {
   "simon_summer_v1": {
@@ -1413,9 +1413,9 @@
    "meta": {
     "created": "2026-07-08",
     "opened": 5,
-    "lastLevel": "d2",
-    "doneLevels": 1,
-    "pct": 5
+    "lastLevel": "d3",
+    "doneLevels": 2,
+    "pct": 10
    },
    "activity": {
     "2026-07-08": true,
@@ -1458,10 +1458,51 @@
      "tries": 2,
      "wrong": 0,
      "vi": 2
+    },
+    "__lvdone_d2": {
+     "mastered": true,
+     "streak": 2,
+     "tries": 1,
+     "wrong": 0,
+     "vi": 0
+    },
+    "q3_1": {
+     "streak": 2,
+     "mastered": true,
+     "tries": 2,
+     "wrong": 0,
+     "vi": 2
+    },
+    "q3_2": {
+     "streak": 2,
+     "mastered": true,
+     "tries": 2,
+     "wrong": 0,
+     "vi": 2
+    },
+    "q3_3": {
+     "streak": 2,
+     "mastered": true,
+     "tries": 2,
+     "wrong": 0,
+     "vi": 2
+    },
+    "q3_4": {
+     "streak": 2,
+     "mastered": true,
+     "tries": 2,
+     "wrong": 0,
+     "vi": 2
     }
    },
    "ex": {
     "d2_rad1": {
+     "ok": true,
+     "best": 88,
+     "tries": 6,
+     "vi": 5
+    },
+    "d3_rad1": {
      "ok": false,
      "best": 0,
      "tries": 0,
@@ -1541,8 +1582,8 @@
   "last": "2026-08-16"
  },
  "chineseSummary": {
-  "pct": 5,
-  "done": 1,
-  "last": "d2"
+  "pct": 10,
+  "done": 2,
+  "last": "d3"
  }
 }

@@ -1,12 +1,12 @@
 {
  "v": 2,
- "ts": "2026-08-16T02:57:15.112Z",
- "from": "study",
+ "ts": "2026-08-16T02:57:28.813Z",
+ "from": "hub",
  "keys": {
   "simon_summer_v1": {
    "meta": {
     "created": "2026-07-05",
-    "view": "plan",
+    "view": "dash",
     "opened": 25,
     "rate": "1"
    },

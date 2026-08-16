@@ -1,6 +1,6 @@
 {
  "v": 2,
- "ts": "2026-08-16T02:57:35.138Z",
+ "ts": "2026-08-16T06:12:37.629Z",
  "from": "chinese",
  "keys": {
   "simon_summer_v1": {
@@ -1413,7 +1413,7 @@
    "meta": {
     "created": "2026-07-08",
     "opened": 5,
-    "lastLevel": "",
+    "lastLevel": "d1",
     "doneLevels": 0,
     "pct": 0
    },
@@ -1425,7 +1425,13 @@
    },
    "q": {},
    "ex": {},
-   "essays": {},
+   "essays": {
+    "w1": {
+     "t": "",
+     "secs": 0,
+     "ts": ""
+    }
+   },
    "micro": {},
    "checks": {},
    "cards": {},
@@ -1487,6 +1493,6 @@
  "chineseSummary": {
   "pct": 0,
   "done": 0,
-  "last": ""
+  "last": "d1"
  }
 }

@@ -1,6 +1,6 @@
 {
  "v": 2,
- "ts": "2026-08-17T05:34:42.757Z",
+ "ts": "2026-08-17T05:35:13.551Z",
  "from": "chinese",
  "keys": {
   "simon_summer_v1": {
@@ -1413,9 +1413,9 @@
    "meta": {
     "created": "2026-07-08",
     "opened": 5,
-    "lastLevel": "d4",
-    "doneLevels": 3,
-    "pct": 15
+    "lastLevel": "d5",
+    "doneLevels": 4,
+    "pct": 20
    },
    "activity": {
     "2026-07-08": true,
@@ -1522,6 +1522,20 @@
      "tries": 3,
      "wrong": 1,
      "vi": 3
+    },
+    "__lvdone_d4": {
+     "mastered": true,
+     "streak": 2,
+     "tries": 1,
+     "wrong": 0,
+     "vi": 0
+    },
+    "q5_1": {
+     "streak": 0,
+     "mastered": false,
+     "tries": 0,
+     "wrong": 0,
+     "vi": 0
     }
    },
    "ex": {
@@ -1542,6 +1556,18 @@
      "best": 100,
      "tries": 1,
      "vi": 0
+    },
+    "x_d5_x": {
+     "ok": true,
+     "best": 100,
+     "tries": 0,
+     "vi": 0
+    },
+    "d5_ord1": {
+     "ok": false,
+     "best": 0,
+     "tries": 1,
+     "vi": 0
     }
    },
    "essays": {
@@ -1552,7 +1578,7 @@
     }
    },
    "micro": {
-    "mc4": ""
+    "mc4": "诚然，补习可以帮助我们解决课堂上没有听懂的问题，也可以让知识掌握得更加牢固。然而，如果把所有时间都花在补习上，反而可能让自己产生依赖，失去独立思考和学习的能力。因此，我认为补习可以作为学习的帮助，但真正重要的还是找到适合自己的学习方法，提高自主学习的能力。"
    },
    "checks": {
     "w1": {
@@ -1563,10 +1589,16 @@
     }
    },
    "cards": {
-    "G1": "2026-08-17"
+    "G1": "2026-08-17",
+    "G2": "2026-08-17"
    },
    "flips": {},
-   "reviews": {}
+   "reviews": {
+    "d5_ord1": {
+     "brief": "五段骨架拼装",
+     "at": "2026-08-17"
+    }
+   }
   }
  },
  "mathSummary": [
@@ -1621,8 +1653,8 @@
   "last": "2026-08-16"
  },
  "chineseSummary": {
-  "pct": 15,
-  "done": 3,
-  "last": "d4"
+  "pct": 20,
+  "done": 4,
+  "last": "d5"
  }
 }

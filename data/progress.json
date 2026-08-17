@@ -1,6 +1,6 @@
 {
  "v": 2,
- "ts": "2026-08-17T05:29:14.187Z",
+ "ts": "2026-08-17T05:32:12.833Z",
  "from": "chinese",
  "keys": {
   "simon_summer_v1": {
@@ -1413,9 +1413,9 @@
    "meta": {
     "created": "2026-07-08",
     "opened": 5,
-    "lastLevel": "d3",
-    "doneLevels": 2,
-    "pct": 10
+    "lastLevel": "d4",
+    "doneLevels": 3,
+    "pct": 15
    },
    "activity": {
     "2026-07-08": true,
@@ -1494,6 +1494,34 @@
      "tries": 2,
      "wrong": 0,
      "vi": 2
+    },
+    "__lvdone_d3": {
+     "mastered": true,
+     "streak": 2,
+     "tries": 1,
+     "wrong": 0,
+     "vi": 0
+    },
+    "q4_1": {
+     "streak": 2,
+     "mastered": true,
+     "tries": 2,
+     "wrong": 0,
+     "vi": 2
+    },
+    "q4_2": {
+     "streak": 2,
+     "mastered": true,
+     "tries": 3,
+     "wrong": 1,
+     "vi": 3
+    },
+    "q4_3": {
+     "streak": 2,
+     "mastered": true,
+     "tries": 3,
+     "wrong": 1,
+     "vi": 3
     }
    },
    "ex": {
@@ -1504,10 +1532,16 @@
      "vi": 5
     },
     "d3_rad1": {
+     "ok": true,
+     "best": 96,
+     "tries": 15,
+     "vi": 12
+    },
+    "d4_ord1": {
      "ok": false,
-     "best": 65,
-     "tries": 8,
-     "vi": 5
+     "best": 0,
+     "tries": 0,
+     "vi": 0
     }
    },
    "essays": {
@@ -1526,14 +1560,11 @@
      "3": true
     }
    },
-   "cards": {},
+   "cards": {
+    "G1": "2026-08-17"
+   },
    "flips": {},
-   "reviews": {
-    "d3_rad1": {
-     "brief": "口语雷达 · 第二扫（更密）",
-     "at": "2026-08-17"
-    }
-   }
+   "reviews": {}
   }
  },
  "mathSummary": [
@@ -1588,8 +1619,8 @@
   "last": "2026-08-16"
  },
  "chineseSummary": {
-  "pct": 10,
-  "done": 2,
-  "last": "d3"
+  "pct": 15,
+  "done": 3,
+  "last": "d4"
  }
 }

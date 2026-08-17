@@ -1,6 +1,6 @@
 {
  "v": 2,
- "ts": "2026-08-17T05:03:48.156Z",
+ "ts": "2026-08-17T05:29:14.187Z",
  "from": "chinese",
  "keys": {
   "simon_summer_v1": {
@@ -1506,8 +1506,8 @@
     "d3_rad1": {
      "ok": false,
      "best": 65,
-     "tries": 5,
-     "vi": 4
+     "tries": 8,
+     "vi": 5
     }
    },
    "essays": {

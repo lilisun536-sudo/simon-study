@@ -1,6 +1,6 @@
 {
  "v": 2,
- "ts": "2026-08-17T05:35:13.551Z",
+ "ts": "2026-08-27T13:28:32.517Z",
  "from": "chinese",
  "keys": {
   "simon_summer_v1": {
@@ -1412,17 +1412,18 @@
   "simon_chinese_v1": {
    "meta": {
     "created": "2026-07-08",
-    "opened": 5,
-    "lastLevel": "d5",
-    "doneLevels": 4,
-    "pct": 20
+    "opened": 6,
+    "lastLevel": "d6",
+    "doneLevels": 5,
+    "pct": 25
    },
    "activity": {
     "2026-07-08": true,
     "2026-07-10": true,
     "2026-07-31": true,
     "2026-08-16": true,
-    "2026-08-17": true
+    "2026-08-17": true,
+    "2026-08-27": true
    },
    "q": {
     "__lvdone_d1": {
@@ -1531,6 +1532,20 @@
      "vi": 0
     },
     "q5_1": {
+     "streak": 2,
+     "mastered": true,
+     "tries": 8,
+     "wrong": 3,
+     "vi": 8
+    },
+    "__lvdone_d5": {
+     "mastered": true,
+     "streak": 2,
+     "tries": 1,
+     "wrong": 0,
+     "vi": 0
+    },
+    "q6_1": {
      "streak": 0,
      "mastered": false,
      "tries": 0,
@@ -1564,9 +1579,21 @@
      "vi": 0
     },
     "d5_ord1": {
+     "ok": true,
+     "best": 100,
+     "tries": 4,
+     "vi": 3
+    },
+    "d6_ord1": {
      "ok": false,
      "best": 0,
-     "tries": 1,
+     "tries": 0,
+     "vi": 0
+    },
+    "d6_ab1": {
+     "ok": false,
+     "best": 0,
+     "tries": 0,
      "vi": 0
     }
    },
@@ -1590,15 +1617,11 @@
    },
    "cards": {
     "G1": "2026-08-17",
-    "G2": "2026-08-17"
+    "G2": "2026-08-17",
+    "P1": "2026-08-17"
    },
    "flips": {},
-   "reviews": {
-    "d5_ord1": {
-     "brief": "五段骨架拼装",
-     "at": "2026-08-17"
-    }
-   }
+   "reviews": {}
   }
  },
  "mathSummary": [
@@ -1653,8 +1676,8 @@
   "last": "2026-08-16"
  },
  "chineseSummary": {
-  "pct": 20,
-  "done": 4,
-  "last": "d5"
+  "pct": 25,
+  "done": 5,
+  "last": "d6"
  }
 }

@@ -1,7 +1,7 @@
 {
  "v": 2,
- "ts": "2026-09-25T09:42:49.234Z",
- "from": "hub",
+ "ts": "2026-09-25T09:43:54.542Z",
+ "from": "chinese",
  "keys": {
   "simon_summer_v1": {
    "meta": {
@@ -1414,7 +1414,7 @@
   "simon_chinese_v1": {
    "meta": {
     "created": "2026-07-08",
-    "opened": 6,
+    "opened": 7,
     "lastLevel": "d6",
     "doneLevels": 5,
     "pct": 25
@@ -1425,7 +1425,8 @@
     "2026-07-31": true,
     "2026-08-16": true,
     "2026-08-17": true,
-    "2026-08-27": true
+    "2026-08-27": true,
+    "2026-09-25": true
    },
    "q": {
     "__lvdone_d1": {
